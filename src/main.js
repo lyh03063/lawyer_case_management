@@ -64,6 +64,7 @@ import demo_common from "@/demo/common.vue";
 import list_case from '@/page/list_case'
 import list_message from '@/page/list_message'
 import list_accessory from '@/page/list_accessory'
+import list_remark from '@/page/list_remark'
 
 
 window.util=util;
@@ -100,6 +101,10 @@ const router = new VueRouter({
         {
           path: '/list_case',
           component: list_case
+        },
+        {
+          path: '/list_remark',
+          component: list_remark
         },
         {
           path: '/list_message',
