@@ -1,10 +1,10 @@
 // window.pub_debug=true;//开启调试模式
 
 window.PUB={}
- window.PUB.domain="http://120.76.160.41:3000"
+ // window.PUB.domain="http://120.76.160.41:3000"
 // window.PUB.domain="http://localhost:3000"
 
-
+window.PUB.domain="http://e6234kn.hn3.mofasuidao.cn"//魔法隧道地质
 
 
 import Vue from 'vue'
@@ -53,8 +53,7 @@ import "./mock.js";
 import login from "@/login";
 import manage from "@/manage";
 import listHome from "@/page/listHome";
-import listCategory from "@/page/listCategory";
-import listCommodity from "@/page/listCommodity";
+
 import util from "@/assets/js/util.js";
 
 
@@ -62,6 +61,9 @@ import util from "@/assets/js/util.js";
 import list_member from "@/page/list_member";
 import dynamic_form_demo from "@/page/dynamic_form_demo";
 import demo_common from "@/demo/common.vue";
+import list_case from '@/page/list_case'
+import list_message from '@/page/list_message'
+import list_accessory from '@/page/list_accessory'
 
 
 window.util=util;
@@ -86,14 +88,6 @@ const router = new VueRouter({
           path: '/listHome',
           component: listHome
         },
-        {
-          path: '/listCommodity',
-          component: listCommodity
-        },
-        {
-          path: '/listCategory',
-          component: listCategory,
-        },
        
         {
           path: '/dynamic_form_demo',
@@ -103,6 +97,18 @@ const router = new VueRouter({
           path: '/demo_common',
           component: demo_common
         },
+        {
+          path: '/list_case',
+          component: list_case
+        },
+        {
+          path: '/list_message',
+          component: list_message
+        },
+        {
+          path: '/list_accessory',
+          component: list_accessory
+        }
         
       ]
     },

@@ -20,6 +20,7 @@
         :collapse="isCollapse"
       >
         <template v-for="(menuEach,index) in cf">
+          <template v-if="!menuEach.show">
           <el-menu-item
             :index="menuEach.index"
             :route="menuEach.route"
@@ -31,11 +32,11 @@
           </el-menu-item>
 
           <el-submenu :index="menuEach.index" :key="index" v-else>
-            <template slot="title">
+            <template slot="title" >
               <i :class="menuEach.icon"></i>
               <span>{{menuEach.title}}</span>
             </template>
-
+         
             <el-menu-item
               style="padding-left:77px;"
               :index="item.index"
@@ -43,7 +44,9 @@
               v-for="item in menuEach.menuItem"
               :key="item.index"
             >{{item.title}}</el-menu-item>
+   
           </el-submenu>
+          </template>
         </template>
       </el-menu>
     </el-aside>

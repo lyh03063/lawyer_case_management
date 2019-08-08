@@ -12,9 +12,10 @@ export default {
   data() {
     return {
       cfList: {
-        listIndex: "list_member", //vuex对应的字段
+        listIndex: "list_accessory", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
-        twoTitle: "会员",
+        twoTitle: "案件",
+        threeTitle: "附件列表",
         flag:true,
         url: {
           list: "/crossList?page=lawyer_case", //列表接口

@@ -65,13 +65,28 @@ export default {
           title: "首页"
         },
         {
-          index: "1",
-          icon: "el-icon-menu",
-          title: "赛事",
+          index: "list_member",
+          route: "/list_member",
+          icon: "el-icon-user-solid",
+          title: "会员",
+          show:false
+        },
+        {
+          index: "2",
+          icon: "el-icon-document",
+          title: "案件",
           menuItem: [
-          
-            { index: "list_member", route: "/list_member", title: "会员" }
+            { index: "list_case", route: "/list_case", title: "案件列表" },
+            { index: "list_remark", route: "/list_remark", title: "备注" },
+            { index: "list_accessory", route: "/list_accessory", title: "附件列表" }
           ]
+        },
+        {
+          index: "list_message",
+          route: "/list_message",
+          icon: "el-icon-s-comment",
+          title: "消息",
+          show:false
         },
         
         {
@@ -88,16 +103,6 @@ export default {
               index: "demo_common",
               route: "/demo_common",
               title: "普通组件demo"
-            },
-            {
-              index: "listCategory",
-              route: "/listCategory",
-              title: "商品分类"
-            },
-            {
-              index: "listCommodity",
-              route: "/listCommodity",
-              title: "商品列表"
             }
           ]
         }
