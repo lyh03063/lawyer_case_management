@@ -58,33 +58,8 @@ import listCommodity from "@/page/listCommodity";
 import util from "@/assets/js/util.js";
 
 
-import list_lyh from "@/page/list_lyh";
-import list_cdc from "@/page/list_cdc";
-import list_cdx from "@/page/list_cdx";
-import list_dgx from "@/page/list_dgx";
-import list_dgz from "@/page/list_dgz";
-import list_hjp from "@/page/list_hjp";
-import list_lfh from "@/page/list_lfh";
-import list_lxc from "@/page/list_lxc";
-import list_wxd from "@/page/list_wxd";
-import list_xql from "@/page/list_xql";
-import list_zjw from "@/page/list_zjw";
-import list_zsr from "@/page/list_zsr";
-import list_venue from "@/page/list_venue";
-import list_franchisee from "@/page/list_franchisee";
-import list_match from "@/page/list_match";
-import list_enroll from "@/page/list_enroll";
-import list_achievement from "@/page/list_achievement";
+
 import list_member from "@/page/list_member";
-import list_sponsor from "@/page/list_sponsor";
-import list_sponsorship from "@/page/list_sponsorship";
-import list_article_category from "@/page/list_article_category";
-import list_article from "@/page/list_article";
-import list_admin from "@/page/list_admin";
-import list_area from "@/page/list_area";
-import list_msg from "@/page/list_msg";
-import list_msg_read from "@/page/list_msg_read";
-import list_recommend from "@/page/list_recommend";
 import dynamic_form_demo from "@/page/dynamic_form_demo";
 import demo_common from "@/demo/common.vue";
 
@@ -101,62 +76,12 @@ const router = new VueRouter({
       component: manage,
       redirect: '/listHome', //跳转
       children: [//子路由
-        {
-          path: '/list_venue',
-          component: list_venue
-        },
-        {
-          path: '/list_franchisee',
-          component: list_franchisee 
-        },
-        {
-          path: '/list_match',
-          component: list_match
-        },
-        {
-          path: '/list_enroll',
-          component: list_enroll
-        },
-        {
-          path: '/list_achievement',
-          component: list_achievement
-        },
+      
         {
           path: '/list_member',
           component: list_member
         },
-        {
-          path: '/list_sponsor',
-          component: list_sponsor
-        },
-        {
-          path: '/list_sponsorship',
-          component: list_sponsorship
-        },
-        {
-          path: '/list_article_category',
-          component: list_article_category
-        },
-        {
-          path: '/list_article',
-          component: list_article
-        },
-        {
-          path: '/list_area',
-          component: list_area
-        },
-        {
-          path: '/list_admin',
-          component: list_admin
-        },
-        {
-          path: '/list_msg',
-          component: list_msg
-        },
-        {
-          path: '/list_msg_read',
-          component: list_msg_read
-        },
+       
         {
           path: '/listHome',
           component: listHome
@@ -169,61 +94,7 @@ const router = new VueRouter({
           path: '/listCategory',
           component: listCategory,
         },
-        {
-          path: '/list_recommend',
-          component: list_recommend
-        },
-      
        
-        
-        {
-          path: '/list_lyh',
-          component: list_lyh
-        },
-        {
-          path: '/list_cdc',
-          component: list_cdc
-        },
-        {
-          path: '/list_cdx',
-          component: list_cdx
-        },
-        {
-          path: '/list_dgx',
-          component: list_dgx
-        },
-        {
-          path: '/list_dgz',
-          component: list_dgz
-        },
-        {
-          path: '/list_hjp',
-          component: list_hjp
-        },
-        {
-          path: '/list_lfh',
-          component: list_lfh
-        },
-        {
-          path: '/list_lxc',
-          component: list_lxc
-        },
-        {
-          path: '/list_wxd',
-          component: list_wxd
-        },
-        {
-          path: '/list_xql',
-          component: list_xql
-        },
-        {
-          path: '/list_zjw',
-          component: list_zjw
-        },
-        {
-          path: '/list_zsr',
-          component: list_zsr
-        },
         {
           path: '/dynamic_form_demo',
           component: dynamic_form_demo
