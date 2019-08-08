@@ -26,75 +26,39 @@ export default {
         //-------列配置数组-------
         columns: [
           {
-            label: "会员号",
-            prop: "P1",
-            width: 80
-          },
-          {
-            label: "会员名称",
+            label: "案件名称",
             prop: "name",
-            width: 100
+            width: 120
           },
           {
-            label: "微信号",
-            prop: "openid",
+            label: "案件描述",
+            prop: "description",
+            width: 350
+          },
+          {
+            label: "案号",
+            prop: "caseId",
             width: 100
           },
            {
-            label: "性别",
-            prop: "sex",
+            label: "状态",
+            prop: "status",
             width: 65
-          },
+          }, 
           {
-            label: "身份证号",
-            prop: "idCard",
+            label: "诉讼费",
+            prop: "litigationFee",
             width: 100
           },
           {
-            label: "参赛次数",
-            prop: "entries",
-            width: 65,
-            // slot:"slot_list_column_entries"
-            statistics:{listIndex:'list_enroll', targetIdKey:'memberId'}
-          },
-           {
-            label: "成绩数",
-            prop: "countAchievement",
-            width: 65,
-            statistics:{listIndex:'list_achievement', targetIdKey:'memberId'}
+            label: "担保费",
+            prop: "guaranteeFee",
+            width: 100
           },
           {
-            label: "唐球积分",
-            prop: "integral",
-            width: 65
-          },       
-          {
-            label: "备注",
-            prop: "remark",
-            width: 65
-          },
-          {
-            label: "职业",
-            prop: "career",
-            width: 50
-          },
-          {
-            label: "球龄",
-            prop: "ballAge",
-            width: 65,
-            formatter: function(rowData) {
-              if (rowData.ballAge == 1) {
-                return "一年以下";
-              } else if (rowData.ballAge == 2) {
-                return "一到三年";
-              } else if (rowData.ballAge == 3) {
-                return "三到五年";
-              } else if (rowData.ballAge == 4) {
-                return "五到十年";
-              } else {
-                return "十年以上";
-              }
-            }
+            label: "保全费",
+            prop: "insuranceFee",
+            width: 100
           }
         ],
         //-------筛选表单字段数组-------
@@ -113,59 +77,58 @@ export default {
         //-------详情字段数组-------
         detailItems: [
           {
-            label: "会员编号",
-            prop: "P1",
-          },
-          {
-            label: "会员名称",
+            label: "案件名称",
             prop: "name",
           },
           {
-            label: "微信号",
-            prop: "openid",
+            label: "描述",
+            prop: "description",
           },
           {
-            label: "身份证号",
-            prop: "idCard",
+            label: "案号",
+            prop: "caseId",
           },
           {
-            label: "参赛次数",
-            prop: "entries",
+            label: "状态",
+            prop: "status",
           },
           {
-            label: "唐球积分",
-            prop: "integral",
-            width: 65
+            label: "诉讼费",
+            prop: "litigationFee",
+          },
+          {
+            label: "担保费",
+            prop: "guaranteeFee"
           },     
+          {
+            label: "保全费",
+            prop: "insuranceFee"
+          },
+          {
+            label: "原告信息",
+            prop: "plaintiffInfo"
+          },
+          {
+            label: "被告信息",
+            prop: "defendantInfo"
+          },
+          {
+            label: "一审信息",
+            prop: "firstInstanceInfo"
+          },
+          {
+            label: "诉保信息",
+            prop: "guaranteeInfo"
+          },
+          {
+            label: "二审信息",
+            prop: "secondInstanceInfo"
+          },
+          {
+            label: "执行信息",
+            prop: "executionInfo"
+          },
           
-          {
-            label: "职业",
-            prop: "career",
-            width: 50
-          },
-          {
-            label: "球龄",
-            prop: "ballAge",
-            width: 65,
-            formatter: function(rowData) {
-              if (rowData.ballAge == 1) {
-                return "一年以下";
-              } else if (rowData.ballAge == 2) {
-                return "一到三年";
-              } else if (rowData.ballAge == 3) {
-                return "三到五年";
-              } else if (rowData.ballAge == 4) {
-                return "五到十年";
-              } else {
-                return "十年以上";
-              }
-            }
-          },
-          {
-            label: "备注",
-            prop: "remark",
-            width: 150
-          }  
         ],
         //-------新增、修改表单字段数组-------
         formItems: [
