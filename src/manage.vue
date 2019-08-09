@@ -47,6 +47,7 @@ export default {
     checkMsg(){
       this.newMsg = false;
       window.clearInterval(this.alertTime);
+      this.$refs.msgAlert.style.color='white'
     },
     msgAlert(){
       if (this.$refs.msgAlert.style.color=='white') {
