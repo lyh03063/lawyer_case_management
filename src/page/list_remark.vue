@@ -18,10 +18,10 @@ export default {
         threeTitle: "备注",
         flag:true,
         url: {
-          list: "/crossList?page=lawyer_case", //列表接口
-          add: "/crossAdd?page=lawyer_case", //新增接口
-          modify: "/crossModify?page=lawyer_case", //修改接口
-          delete: "/crossDelete?page=lawyer_case" //删除接口
+          list: "/crossList?page=lawyer_remark", //列表接口
+          add: "/crossAdd?page=lawyer_remark", //新增接口
+          modify: "/crossModify?page=lawyer_remark", //修改接口
+          delete: "/crossDelete?page=lawyer_remark" //删除接口
         },
         //-------列配置数组-------
         columns: [

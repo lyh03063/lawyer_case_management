@@ -226,14 +226,14 @@ export default {
   watch: {
     formDataNeed: {
       handler(newName, oldName) {
-        console.log("formDataNeed变更");
+        // console.log("formDataNeed变更");
         this.$emit("input", this.formDataNeed);
       },
       deep: true
     },
     value: {
       handler(newName, oldName) {
-        console.log("form-value变更");
+        // console.log("form-value变更");
         this.formDataNeed = this.value||{};
       },
       deep: true
@@ -243,7 +243,7 @@ export default {
          //给递归表单字段做一层空对象的保障
     
 initRecursionProp() {
-  console.log("initRecursionProp#######");
+  // console.log("initRecursionProp#######");
       this.cf.formItems.forEach(itemEach => { //循环：{表单字段配置数组}
                    if (itemEach.cfForm&&itemEach.prop) {//如果是递归字段
                      this.formDataNeed[itemEach.prop]=this.formDataNeed[itemEach.prop]||{};
@@ -311,13 +311,13 @@ initRecursionProp() {
     },
     //初始化表单函数
     initForm() {
-      console.log("this.docGet", this.docGet);
+      // console.log("this.docGet", this.docGet);
       if (this.docGet) {
         //ajax获取到的表单数据存在
         let jsonData = {};
         this.cf.formItems.forEach(itemEach => {
           //循环：{表单字段配置数组}
-          console.log("this.docGet#######", this.docGet);
+          // console.log("this.docGet#######", this.docGet);
           jsonData[itemEach.prop] = this.docGet[itemEach.prop];
          
         });
@@ -357,6 +357,7 @@ initRecursionProp() {
   },
   mounted() {
     this.spanIndex = Math.floor(24 / this.cf.col_span);
+   
     if (!this.cf.col_span && this.cf.inline) {
       //如果form表单已经启动了行内模式和不进行分块
       this.clearall = true; //控制是否变为行内块状元素
@@ -383,9 +384,10 @@ initRecursionProp() {
 }
 
 .form-group-box{
+  width: 100%;
   border: 1px #ddd solid;
 border-radius: 5px;
-padding: 10px;
-margin:0 0 20px 0;
+padding:5px 10px;
+margin:0 0 10px 0;
 }
 </style>

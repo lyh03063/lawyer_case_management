@@ -9,6 +9,7 @@
       :before-close="closeDialogDetailFun"
       :append-to-body="true"
     >
+    <template v-if="!cf.customDetail">
       <table class="table-normal WP100" >
         <tr v-for="item in cf.detailItems" :key="item.prop">
           <td class="W100">{{item.label}}</td>
@@ -26,6 +27,12 @@
           </td>
         </tr>
       </table>
+    </template>
+    
+    <template v-if="cf.customDetail" >
+
+      <slot name="customDetail" :detailData="row"></slot>
+    </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialogDetailFun">关 闭</el-button>
       </span>
@@ -104,6 +111,7 @@ export default {
       },
       //------------------修改表单组件配置--------------
       cfFormModify: {
+        col_span:this.cf.col_span,
         urlInit: this.cf.url.detail,
         formItems: this.cf.formItems,
         btns: [

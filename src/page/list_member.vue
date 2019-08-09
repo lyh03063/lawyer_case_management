@@ -17,10 +17,10 @@ export default {
         twoTitle: "会员",
         flag:true,
         url: {
-          list: "/crossList?page=lawyer_case", //列表接口
-          add: "/crossAdd?page=lawyer_case", //新增接口
-          modify: "/crossModify?page=lawyer_case", //修改接口
-          delete: "/crossDelete?page=lawyer_case" //删除接口
+          list: "/crossList?page=lawyer_member", //列表接口
+          add: "/crossAdd?page=lawyer_member", //新增接口
+          modify: "/crossModify?page=lawyer_member", //修改接口
+          delete: "/crossDelete?page=lawyer_member" //删除接口
         },
         //-------列配置数组-------
         columns: [
