@@ -1,17 +1,24 @@
 <template>
   <div class>
-    <listData :cf="cfList"></listData>
+    <listData :cf="cfList">
+      <template v-slot:customDetail="{detailData}" >
+          <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
+      </template>
+    </listData>
   </div>
 </template>
 <script>
 import listData from "@/components/list-data/list-data.vue";
+import case_detail_dialogs from '@/components/case_detail_dialogs'
 
 export default {
   
-  components: { listData },
+  components: { listData ,case_detail_dialogs},
   data() {
     return {
       cfList: {
+        customDetail:true,
+        col_span:120,
         listIndex: "list_case", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
         twoTitle: "案件",
@@ -25,15 +32,72 @@ export default {
           delete: "/crossDelete?page=lawyer_case" //删除接口
         },
         //-------列配置数组-------
-        columns: [
-          {
-            label: "Id",
-            prop: "P1",
-            width: 80
-          },
+         columns: [
           {
             label: "案件名称",
             prop: "name",
+            width: 120
+          },
+          {
+            label: "案件描述",
+            prop: "description",
+            width: 350
+          },
+          {
+            label: "案号",
+            prop: "caseId",
+            width: 100
+          },
+           {
+            label: "案件状态",
+            prop: "status",
+            width: 120,
+            formatter:(rowdata)=>{
+              switch (rowdata.status) {
+                case 1:
+                  return "待立案"
+                  break;
+                case 2:
+                  return "已立案待保全"
+                  break;
+                case 3:
+                  return "已保全"
+                  break;
+                case 4:
+                  return "待一审开庭"
+                  break;
+                case 5:
+                  return "待二审开庭"
+                  break;
+                case 6:
+                  return "调解中"
+                  break;
+                case 7:
+                  return "收款监督"
+                  break;
+                case 8:
+                  return "已结案"
+                  break;
+                default:
+                  return "无"
+                  break;
+              }
+            }
+
+          }, 
+          {
+            label: "诉讼费",
+            prop: "litigationFee",
+            width: 100
+          },
+          {
+            label: "担保费",
+            prop: "guaranteeFee",
+            width: 100
+          },
+          {
+            label: "保全费",
+            prop: "insuranceFee",
             width: 100
           }
         ],
@@ -46,16 +110,7 @@ export default {
           }
         ],
         //-------详情字段数组-------
-        detailItems: [
-          {
-            label: "Id",
-            prop: "P1",
-          },
-          {
-            label: "案件名称",
-            prop: "name",
-          } 
-        ],
+       
         //-------新增、修改表单字段数组-------
         formItems: [
          {
@@ -76,7 +131,14 @@ export default {
             prop: "status",
             type: "select",
             default:1,
-            options: [{ value: 1, label: "待立案" }, { value: 2, label: "已立案待保全" }]
+            options: [{ value: 1, label: "待立案" },
+             { value: 2, label: "已立案待保全" },
+             { value: 3, label: "已保全" },
+             { value: 4, label: "待一审开庭" },
+             { value: 5, label: "待二审开庭" },
+             { value: 6, label: "调解中" },
+             { value: 7, label: "收款监督" },
+             { value: 8, label: "已结案" },]
           },
           {
             label: "诉讼费",
@@ -95,7 +157,9 @@ export default {
             prop: "plaintiffInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
+              col_span:120,
               formItems: [
+                
                 {
                   label: "单位名称",
                   prop: "company"
@@ -112,6 +176,7 @@ export default {
             prop: "defendantInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
+              col_span:120,
               formItems: [
                 {
                   label: "单位名称",
@@ -129,6 +194,7 @@ export default {
             prop: "firstInstanceInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
+              col_span:120,
               formItems: [
                 {
                   label: "单位",
@@ -154,6 +220,7 @@ export default {
             prop: "guaranteeInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
+              col_span:120,
               formItems: [
                 {
                   label: "单位",
@@ -176,6 +243,7 @@ export default {
             prop: "secondInstanceInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
+              col_span:120,
               formItems: [
                 {
                   label: "单位",
@@ -201,6 +269,7 @@ export default {
             prop: "executionInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
+              col_span:120,
               formItems: [
                 {
                   label: "单位",

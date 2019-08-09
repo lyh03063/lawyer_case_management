@@ -4,8 +4,8 @@ window.PUB={}
  // window.PUB.domain="http://120.76.160.41:3000"
 // window.PUB.domain="http://localhost:3000"
 
-window.PUB.domain="http://e6234kn.hn3.mofasuidao.cn"//魔法隧道地质
-
+// window.PUB.domain="http://e6234kn.hn3.mofasuidao.cn"//魔法隧道地质
+window.PUB.domain="http://120.76.160.41:3000"
 
 import Vue from 'vue'
 Vue.config.productionTip = false

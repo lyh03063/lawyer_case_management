@@ -124,6 +124,10 @@
         <slot :name="item.slot" :row="row" v-if="item.slot"></slot>
       </template>
 
+      <template v-slot:customDetail="{detailData}">
+          <slot name="customDetail" :detailData="detailData"></slot>
+      </template>
+     
       <!--这里的for循环的item不要跟上面的重名，否则冲突！！！所以使用formItem-->
       <template v-slot:[formItem.slot]="{formData}" v-for="formItem in cf.formItems">
         <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
