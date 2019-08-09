@@ -5,6 +5,7 @@
         <el-row>
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
+            <span class="el-icon-bell msg-alert" ref="msgAlert" @click="checkMsg"></span>
             <span class="MR10">当前登录用户:{{this. currentUserName}}</span>
             <a href="javascript:;" class="MR10" @click="logout">退出登录</a>
             <a target="_blank" href="javascript:;">官网首页</a>
@@ -25,6 +26,7 @@
 <script>
 import Vue from "vue";
 import NavMenu from "./components/NavMenu/NavMenu";
+import { clearInterval } from 'timers';
 export default {
   components: { NavMenu }, //注册组件
   methods: {
@@ -41,6 +43,17 @@ export default {
       localStorage.isLogin = "0";
       localStorage.loginUserName = null;
       this.$router.push({ path: "/login" }); //跳转到manage
+    },
+    checkMsg(){
+      this.newMsg = false;
+      window.clearInterval(this.alertTime);
+    },
+    msgAlert(){
+      if (this.$refs.msgAlert.style.color=='white') {
+        this.$refs.msgAlert.style.color = 'rgb(64, 158, 255)'
+      }else{
+        this.$refs.msgAlert.style.color='white'
+      }
     }
   },
   computed: {
@@ -55,7 +68,8 @@ export default {
   data() {
     return {
       // 导航菜单列表
-
+      alertTime:0,
+      newMsg:true,
       navMenuList: [
         {
           //菜单
@@ -128,7 +142,14 @@ export default {
         return false;
       }
     };
-  }
+  },
+  mounted(){
+    if(this.newMsg){
+      this.$refs.msgAlert.style.color=='white'
+        this.alertTime = setInterval(()=>{
+      this.msgAlert()
+      },300)}
+    }
 };
 </script>
 
@@ -140,6 +161,11 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   border-color: #e6a23c;
   -webkit-box-shadow: -1px 0 0 0 #e6a23c;
   box-shadow: -1px 0 0 0 #e6a23c;
+}
+.msg-alert{
+  margin-right: 10px;
+  color: rgb(64, 158, 255);
+  cursor: pointer;
 }
 </style>
 
