@@ -15,8 +15,8 @@
         >
           <el-form-item prop="userName">
             <div class>
-              <el-input v-model.number="ruleForm.userName" placeholder="管理账户">
-                <template slot="prepend">管理账户</template>
+              <el-input v-model.number="ruleForm.userName" placeholder="请输入用户名">
+                <template slot="prepend">用户名</template>
               </el-input>
             </div>
           </el-form-item>
