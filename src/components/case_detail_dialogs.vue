@@ -13,10 +13,10 @@
             <table>
                 <tr v-for="(item,index) in caseMsgLeft" :key="index">
                     <td>{{item.text}}</td>
-                    <td v-if="!item.company">{{caseMsg[item.index]}}</td>
+                    <td v-if="!item.company">{{caseMsg[item.index]?caseMsg[item.index]:"无"}}</td>
                     <td v-if="item.company">
-                        <span>{{item.company+caseMsg[item.index].company}}</span>
-                        <span>{{item.contact+caseMsg[item.index].contact}}</span>
+                        <span>{{item.company}}{{caseMsg[item.index]?caseMsg[item.index].company:"无"}}</span>
+                        <span>{{item.contact}}{{caseMsg[item.index]?caseMsg[item.index].contact:"无"}}</span>
                     </td>
                 </tr>
             </table>

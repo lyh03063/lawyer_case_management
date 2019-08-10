@@ -56,11 +56,6 @@ export default {
         //-------筛选表单字段数组-------
         searchFormItems: [
           {
-            label: "会员id",
-            prop: "name",
-            type: "input"
-          },
-          {
             label: "案件id",
             prop: "caseId",
             type: "input"

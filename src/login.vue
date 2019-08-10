@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dialog-cover"></div>
-    <div class="login-father-box" v-show="ak47">
+    <div class="login-father-box">
       <div class="login-box">
         <h1>案件管理系统</h1>
         <h2>管理员登录</h2>
@@ -45,16 +45,13 @@ export default {
       if (value === "") {
         callback(new Error("请输入密码"));
       }
-      // else if (!regpassWordword.test(value)) {
-      //   callback(new Error("密码格式不合规,请设置8-20位，英文字母+数字的组合"));
-      // }
       else {
         callback(); //通过校验
       }
     };
 
     return {
-      ak47: true,
+      memberList:[],
       objURL: {
         list: "/crossList?page=tangball_admin"
       },
@@ -75,32 +72,47 @@ export default {
   },
 
   methods: {
-    async adminLogin() {
-      let response = await axios({
-        //请求接口
+    async getMemberList() {
+      let {data} = await axios({
         method: "post",
-        url: PUB.domain+this.objURL.list,
-        data: { findJson: this.ruleForm }
+        url: PUB.domain+"/crossList?page=lawyer_member",
+        data:{
+          pageIndex:1,
+          pageSize:99999
+        }
       }).catch(function(error) {
         alert("异常:" + error);
       });
-
-
-      let { list } = response.data;
-      list.forEach(element => {
-        //把列表的userName循环出来做本地储存
-         this.isUserName=element.userName
-       
-      });
-     
-      if (list.length > 0) {
-        alert("登录成功");
-        this.$router.push({ path: "/listhome" });
-        localStorage.isLogin = 1;
-        localStorage.loginUserName=this.isUserName//存储用户名
-      } else {
-        alert("请检查用户名或者密码");
-        this.ruleForm = {};
+      this.memberList = data.list;
+    },
+    userLogin(){
+      let userList = this.memberList.filter((merber)=>{
+        return merber.user==this.ruleForm.userName
+      })
+      if (userList.length>0) {
+        let arr = userList.filter((merber)=>{
+          return merber.password == this.ruleForm.passWord
+        })
+        if (arr.length>0) {
+          this.$message({
+          message: '登录成功',
+          type: 'success'
+        });
+          if(arr[0].role==1) {
+            localStorage.userId="",
+            localStorage.superAdmin=1
+          }else{
+            localStorage.userId=arr[0].P1
+            localStorage.commonMerber=1
+          }
+          localStorage.isLogin = 1;
+          localStorage.loginUserName=arr[0].user//存储用户名
+          this.$router.push({ path: "/listhome" });
+        }else{
+          this.$message.error("密码错误,请重新输入");
+        }
+      }else{
+        this.$message.error("用户名错误,请重新输入");
       }
     },
     submitForm(formName) {
@@ -111,35 +123,24 @@ export default {
         //表单组件执行validate校验方法
         if (valid) {
           //如果validate为真执行以下放方法
-          this.adminLogin();
+          this.userLogin()
         }
       });
     }
   },
-  created() {
-
-    //------------如果已经登录------------
+  beforeCreate(){
     if (localStorage.isLogin == 1) {
-      this.ak47 = false;
-      // this.$message({
-      //   message: "您已登录,请勿重新登录",
-      //   type: "warning",
-      //   duration: 1200
-      // });
+      this.$message({
+          message: '登录成功',
+          type: 'success'
+        });
       setTimeout(() => {
         this.$router.push({ path: "/listHome" });
       }, 10);
-      //跳转到后台首页
     }
-    // } else {
-    //   this.$router.push({ path: "/home" });
-    // }
-  },beforeMount(){
-    
-    console.log("挂载前$el是未定义的",this.$el)
-  },mounted(){
-        console.log("$el是temlate，渲染出整个div",this.$el)
-    
+  },
+  mounted(){
+        this.getMemberList();
   }
 };
 </script>

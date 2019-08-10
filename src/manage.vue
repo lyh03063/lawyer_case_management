@@ -6,9 +6,8 @@
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
             <span class="el-icon-bell msg-alert" ref="msgAlert" @click="checkMsg"></span>
-            <span class="MR10">当前登录用户:{{this. currentUserName}}</span>
+            <span class="MR10">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
             <a href="javascript:;" class="MR10" @click="logout">退出登录</a>
-            <a target="_blank" href="javascript:;">官网首页</a>
           </div>
         </el-row>
       </el-header>
@@ -41,6 +40,9 @@ export default {
     logout() {
       //退出登录函数
       localStorage.isLogin = "0";
+      localStorage.superAdmin = 0;
+      localStorage.commonMerber=0;
+      localStorage.userId="",
       localStorage.loginUserName = null;
       this.$router.push({ path: "/login" }); //跳转到manage
     },
@@ -48,6 +50,7 @@ export default {
       this.newMsg = false;
       window.clearInterval(this.alertTime);
       this.$refs.msgAlert.style.color='white'
+      this.$router.push({ path: "/list_message" });
     },
     msgAlert(){
       if (this.$refs.msgAlert.style.color=='white') {
@@ -145,6 +148,9 @@ export default {
     };
   },
   mounted(){
+    if (localStorage.commonMerber==1) {
+      this.navMenuList[1].show = true
+    }
     if(this.newMsg){
       this.$refs.msgAlert.style.color=='white'
         this.alertTime = setInterval(()=>{
