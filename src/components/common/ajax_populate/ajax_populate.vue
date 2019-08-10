@@ -78,6 +78,7 @@ export default {
       PUB_ajax_populate[this.keyExit] = "pending...";
       this.ajax.param = this.ajax.param;
       if (this.id) {
+        console.log('this.id',this.id);
         this.ajax.param[this.idKey] = this.id;
       }
 

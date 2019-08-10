@@ -18,7 +18,7 @@ export default {
     return {
       cfList: {
         customDetail:true,
-        col_span:120,
+        // col_span:240,
         listIndex: "list_case", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
         twoTitle: "案件",
@@ -125,6 +125,7 @@ export default {
           {
             label: "描述",
             prop: "description",
+            type:"textarea"
           } ,
           {
             label: "状态",
@@ -157,7 +158,7 @@ export default {
             prop: "plaintiffInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span:120,
+              col_span:240,
               formItems: [
                 
                 {
@@ -176,7 +177,7 @@ export default {
             prop: "defendantInfo",
             default:{},//默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span:120,
+              col_span:240,
               formItems: [
                 {
                   label: "单位名称",

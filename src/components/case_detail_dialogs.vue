@@ -11,7 +11,7 @@
         <el-row>
           <el-col :span="22" class="case-box-left">
             <table>
-                <tr v-for="item in caseMsgLeft" :key="item">
+                <tr v-for="(item,index) in caseMsgLeft" :key="index">
                     <td>{{item.text}}</td>
                     <td v-if="!item.company">{{caseMsg[item.index]}}</td>
                     <td v-if="item.company">
@@ -24,7 +24,7 @@
           </el-col>
         </el-row>
           <div class="subfield">案件流程信息</div>
-              <el-row v-for="item in caseMsgRight" :key="item">
+              <el-row v-for="(item,index) in caseMsgRight" :key="index">
                   <el-col :span="3" class="case-box-right">{{item.text}}</el-col>
                   <el-col :span="20" >
                       <div class="case-box-right">
@@ -48,6 +48,41 @@
 export default {
   props: {
     caseMsg: Object
+  },
+  mounted(){
+      switch (this.caseMsg.status) {
+        case 1:
+          this.caseMsg.status = "待立案" 
+          break;
+        case 2:
+          this.caseMsg.status ="已立案待保全" 
+          break;
+        case 3:
+          this.caseMsg.status ="已保全" 
+          break;
+        case 4:
+          this.caseMsg.status ="待一审开庭" 
+          break;
+        case 5:
+          this.caseMsg.status ="待二审开庭" 
+          break;
+        case 6:
+          this.caseMsg.status ="调解中" 
+          break;
+        case 7:
+          this.caseMsg.status ="收款监督" 
+          break;
+        case 8:
+         this.caseMsg.status ="已结案" 
+         break;
+        default:
+         this.caseMsg.status ="无" 
+         break;
+      }
+
+  },
+  methods:{
+
   },
   data() {
       
@@ -80,13 +115,15 @@ export default {
   margin-right: 20px;
 }
 .subfield{
-    margin-left: -50px;
+    margin-left: -30px;
     margin-bottom: 10px;
     padding-left: 20px;;
     height: 50px;
     line-height: 50px;
-    background-color: gray;
-    color: white
+    background-color: rgb(220, 220, 220);
+    color: black;
+    font-weight: 700
+    
 }
 .case-box-left table tr td{
     padding-left: 30px;
