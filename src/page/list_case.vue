@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       cfList: {
-        customDetail:true,
+        customDetail:true,//使用自定义详情插槽
         // col_span:240,
         listIndex: "list_case", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
@@ -41,7 +41,7 @@ export default {
           {
             label: "案件描述",
             prop: "description",
-            width: 350
+            width: 200
           },
           {
             label: "案号",
@@ -85,6 +85,11 @@ export default {
             }
 
           }, 
+           {
+            label: "创建人id",
+            prop: "createPerson",
+            width: 100
+          },
           {
             label: "诉讼费",
             prop: "litigationFee",
@@ -113,6 +118,17 @@ export default {
        
         //-------新增、修改表单字段数组-------
         formItems: [
+          {
+            label: "创建人id",
+            prop: "createPerson",
+            type: "select",
+            ajax: {
+              url: "/crossList?page=lawyer_member",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
+            rules: [{ required: true, message: "会员id" }]
+          },
          {
             label: "案件名称",
             prop: "name",

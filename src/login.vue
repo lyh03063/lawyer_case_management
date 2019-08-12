@@ -34,6 +34,7 @@
 <script>
 export default {
   data() {
+    // 饿了么定义的登录框校验
     var validateuserName = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入管理员账户"));
@@ -72,6 +73,7 @@ export default {
   },
 
   methods: {
+    // 获取会员接口数据
     async getMemberList() {
       let {data} = await axios({
         method: "post",
@@ -85,10 +87,13 @@ export default {
       });
       this.memberList = data.list;
     },
+    // 用户登录的方法
     userLogin(){
+      // 遍历数据判断用户输入的用户名是否存在
       let userList = this.memberList.filter((merber)=>{
         return merber.user==this.ruleForm.userName
       })
+      // 如果用户名存在,遍历数组判断密码是否正确
       if (userList.length>0) {
         let arr = userList.filter((merber)=>{
           return merber.password == this.ruleForm.passWord
@@ -98,13 +103,19 @@ export default {
           message: '登录成功',
           type: 'success'
         });
+        // 如果是超级管理员登录
           if(arr[0].role==1) {
+            // 超级管理员可以看到所有页面,所以不用设置id
             localStorage.userId="",
+            // 超级管理员登录为1
             localStorage.superAdmin=1
           }else{
+            // 普通管理员只能看到关于他的信息，保存普通会员的id
             localStorage.userId=arr[0].P1
+            // 普通管理员登录为1 
             localStorage.commonMerber=1
           }
+          // 用户登录
           localStorage.isLogin = 1;
           localStorage.loginUserName=arr[0].user//存储用户名
           this.$router.push({ path: "/listhome" });
@@ -129,6 +140,7 @@ export default {
     }
   },
   beforeCreate(){
+    // 页面渲染钱判断用户是否已经登录,已登录跳回home界面
     if (localStorage.isLogin == 1) {
       this.$message({
           message: '登录成功',
@@ -140,6 +152,7 @@ export default {
     }
   },
   mounted(){
+    // 加载页面获取会员所有接口数据
         this.getMemberList();
   }
 };

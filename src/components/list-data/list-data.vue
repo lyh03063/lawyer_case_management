@@ -341,6 +341,7 @@ export default {
     }
 
     this.Objparma.findJson = findJsonDefault;
+    // 如果是普通会员登录，需要将其id传过去，让接口只显示与其有关的数据
     this.Objparma.findJson.memberId=localStorage.userId
     this.Objparma.sortJson = this.cf.sortJsonDefault;
 

@@ -39,11 +39,11 @@ export default {
     // },
     logout() {
       //退出登录函数
-      localStorage.isLogin = "0";
-      localStorage.superAdmin = 0;
-      localStorage.commonMerber=0;
-      localStorage.userId="",
-      localStorage.loginUserName = null;
+      localStorage.isLogin = "0";//登录状态设置为0
+      localStorage.superAdmin = 0;//超级管理员登录状态为0
+      localStorage.commonMerber=0;//普通会员登录状态为0
+      localStorage.userId="",//登录会员的id状态为空
+      localStorage.loginUserName = null;//登录会员的用户名为空
       this.$router.push({ path: "/login" }); //跳转到manage
     },
     checkMsg(){
@@ -87,7 +87,7 @@ export default {
           route: "/list_member",
           icon: "el-icon-user-solid",
           title: "会员",
-          show:false
+          show:false//通过控制来show来设置改导航是否显示
         },
         {
           index: "2",
@@ -148,15 +148,23 @@ export default {
     };
   },
   mounted(){
+    // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.commonMerber==1) {
       this.navMenuList[1].show = true
     }
+    // 如果有新消息，则提示
     if(this.newMsg){
       this.$refs.msgAlert.style.color=='white'
         this.alertTime = setInterval(()=>{
       this.msgAlert()
       },300)}
+    },
+     beforeCreate(){
+    // 如果用户未登录，跳转登录页面
+    if (localStorage.isLogin != 1) {
+        this.$router.push({ path: "/login" });
     }
+  },
 };
 </script>
 
