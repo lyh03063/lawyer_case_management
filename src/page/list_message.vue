@@ -32,6 +32,11 @@ export default {
             width: 80
           },
           {
+            label: "已读",
+            prop: "read",
+            width: 80
+          },
+          {
             label: "变更内容",
             prop: "change",
             width: 300
@@ -99,6 +104,10 @@ export default {
          {
             label: "会员姓名",
             prop: "name",
+          },
+         {
+            label: "已读",
+            prop: "read",
           },
          {
             label: "会员id",

@@ -4,16 +4,20 @@
       <template v-slot:customDetail="{detailData}" >
           <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
       </template>
+      <template v-slot:slot_form_item_memberIdList="{formData}">
+        <msgTransfer v-model="formData.collaborator" url='/crossList?page=lawyer_member' keyValue="name"></msgTransfer>
+      </template>
     </listData>
   </div>
 </template>
 <script>
 import listData from "@/components/list-data/list-data.vue";
 import case_detail_dialogs from '@/components/case_detail_dialogs'
+import msgTransfer from '../components/form_item/msg_transfer'
 
 export default {
   
-  components: { listData ,case_detail_dialogs},
+  components: { listData ,case_detail_dialogs,msgTransfer},
   data() {
     return {
       cfList: {
@@ -36,17 +40,17 @@ export default {
           {
             label: "案件名称",
             prop: "name",
-            width: 120
+            width: 90
           },
           {
             label: "案件描述",
             prop: "description",
-            width: 200
+            width: 150
           },
           {
             label: "案号",
             prop: "caseId",
-            width: 100
+            width: 70
           },
            {
             label: "案件状态",
@@ -90,6 +94,11 @@ export default {
             prop: "createPerson",
             width: 100
           },
+           {
+            label: "协作者id数组",
+            prop: "collaborator",
+            width: 150
+          },
           {
             label: "诉讼费",
             prop: "litigationFee",
@@ -128,6 +137,12 @@ export default {
               keyValue: "P1"
             },
             rules: [{ required: true, message: "会员id" }]
+          },
+          {
+            label: "协作者id数组",
+            prop: "collaborator",
+            type: "jsonEditor",
+            slot:"slot_form_item_memberIdList"
           },
          {
             label: "案件名称",
