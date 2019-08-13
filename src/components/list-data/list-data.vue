@@ -23,8 +23,8 @@
     <space height="10"></space>
     <!--主列表-->
     <debug_list>
-      <debug_item v-model="cf.dynamicDict" text="动态数据字典配置"/>
-      <debug_item v-model="tableData" text="列表数据"/>
+      <debug_item v-model="cf.dynamicDict" text="动态数据字典配置" />
+      <debug_item v-model="tableData" text="列表数据" />
     </debug_list>
     <el-table
       ref="multipleTable"
@@ -125,9 +125,9 @@
       </template>
 
       <template v-slot:customDetail="{detailData}">
-          <slot name="customDetail" :detailData="detailData"></slot>
+        <slot name="customDetail" :detailData="detailData"></slot>
       </template>
-     
+
       <!--这里的for循环的item不要跟上面的重名，否则冲突！！！所以使用formItem-->
       <template v-slot:[formItem.slot]="{formData}" v-for="formItem in cf.formItems">
         <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
@@ -285,7 +285,7 @@ export default {
         url: PUB.domain + this.cf.url.list,
         data: this.Objparma
       });
-      
+
       let { list, page } = data; //解构赋值
       this.tableData = list;
       this.page = page;
@@ -303,12 +303,13 @@ export default {
 
         for await (const populateCFEach of this.cf.dynamicDict) {
           // await   funPopulate(populateCFEach);//调用：{根据填充配置进行一次ajax请求关联数据的函数}
+          let { page, populateColumn, idColumn, idColumn2 } = populateCFEach;
           this.tableData = await util.ajaxPopulate({
             listData: this.tableData,
-            page: "tangball_article_category",
-            populateColumn: "categoryDoc",
-            idColumn: "articleCategory",
-            idColumn2: "P1"
+            page,
+            populateColumn,
+            idColumn,
+            idColumn2
           });
         }
       }
@@ -343,12 +344,15 @@ export default {
     this.Objparma.findJson = findJsonDefault;
     // 如果是普通会员登录，需要将其id传过去，让接口只显示与其有关的数据
     if (this.cf.url.list == "/crossList?page=lawyer_case") {
-      if (localStorage.superAdmin==1) {
-      }else{
-        this.Objparma.findJson.$or = [{createPerson:localStorage.userId},{collaborator:localStorage.userId-0}]
-        }
-    }else{
-      this.Objparma.findJson.memberId=localStorage.userId
+      if (localStorage.superAdmin == 1) {
+      } else {
+        this.Objparma.findJson.$or = [
+          { createPerson: localStorage.userId },
+          { collaborator: localStorage.userId - 0 }
+        ];
+      }
+    } else {
+      this.Objparma.findJson.memberId = localStorage.userId;
     }
     this.Objparma.sortJson = this.cf.sortJsonDefault;
 
