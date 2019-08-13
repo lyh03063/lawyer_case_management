@@ -1,12 +1,6 @@
 <template>
   <div class>
     <listData :cf="cfList">
-      <template v-slot:slot_item_columns_createPerson="{row}">
-        <id_to_name v-model="row.createPerson" url="/crossList?page=lawyer_member" keyValue="user"></id_to_name>
-      </template>
-      <template v-slot:slot_item_columns_collaborator="{row}">
-        <id_to_name v-model="row.collaborator" url="/crossList?page=lawyer_member" keyValue="user"></id_to_name>
-      </template>
       <template v-slot:customDetail="{detailData}">
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
       </template>
@@ -18,7 +12,7 @@
           v-if="userId==''||userId==formData.P1"
         ></msgTransfer>
         <div v-else>
-          <id_to_name v-model="formData.collaborator" url="/crossList?page=lawyer_member" keyValue="user"></id_to_name></div>
+          {{createUser}}</div>
       </template>
       <template v-slot:slot_form_item_createPerson="{formData}">
         <select_ajax
@@ -39,12 +33,11 @@
 <script>
 import listData from "@/components/list-data/list-data.vue";
 import case_detail_dialogs from "@/components/case_detail_dialogs";
-import id_to_name from "@/components/id_to_name";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
 
 export default {
-  components: { listData, case_detail_dialogs, msgTransfer,select_ajax ,id_to_name},
+  components: { listData, case_detail_dialogs, msgTransfer,select_ajax },
   data() {
     return {
       userId: localStorage.userId,
@@ -56,7 +49,8 @@ export default {
         twoTitle: "案件",
         threeTitle: "案件列表",
         flag: true,
-        dynamicDict: [{ page: "crossList?page=lawyer_member",populateColumn: "memberUser", idColumn: "createPerson", idColumn2: "P1" }],
+        dynamicDict: [{ page: "lawyer_member",populateColumn: "createUser", idColumn: "createPerson", idColumn2: "P1" },
+        { page: "lawyer_member",populateColumn: "collaboratorName", idColumn: "collaborator", idColumn2: "P1" },],
         url: {
           list: "/crossList?page=lawyer_case", //列表接口
           add: "/crossAdd?page=lawyer_case", //新增接口
@@ -118,15 +112,19 @@ export default {
             }
           },
           {
-            label: "创建人id",
-            prop: "memberUser",
+            label: "创建人",
+            prop: "createUser",
             width: 100,
+            formatter:(data)=>{
+              if (data.createUser) {
+                return data.createUser.user
+              }
+            }
           },
           {
-            label: "协作者id数组",
+            label: "协作者",
             prop: "collaborator",
             width: 150,
-            // slot:'slot_item_columns_collaborator'
           },
           {
             label: "诉讼费",
@@ -157,13 +155,13 @@ export default {
         //-------新增、修改表单字段数组-------
         formItems: [
           {
-            label: "创建人id",
+            label: "创建人",
             prop: "createPerson",
             type: "select",
             slot: "slot_form_item_createPerson"
           },
           {
-            label: "协作者id数组",
+            label: "协作者",
             prop: "collaborator",
             type: "jsonEditor",
             slot: "slot_form_item_memberIdList"
