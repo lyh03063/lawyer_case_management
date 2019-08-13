@@ -5,8 +5,13 @@
         <el-row>
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
-            <span class="el-icon-bell msg-alert" ref="msgAlert" @click="checkMsg"></span>
-            <span class="MR10">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
+            <el-badge :value="12" class="item" v-if="newMsg">
+            <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg"></span>
+            </el-badge>
+            <el-badge v-if="!newMsg">
+            <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg" ></span>
+            </el-badge>
+            <span class="MR10 ML20">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
             <a href="javascript:;" class="MR10" @click="logout">退出登录</a>
           </div>
         </el-row>
@@ -43,7 +48,7 @@ export default {
       this.newMsg = false;
       window.clearInterval(this.alertTime);
       this.$refs.msgAlert.style.color='white'
-      this.$router.push({ path: "/list_message" });
+      this.$router.push({ path: "/message_datail" });
     },
 
   },
@@ -138,6 +143,7 @@ export default {
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.commonMerber==1) {
       this.navMenuList[1].show = true
+      this.navMenuList[3].show = true
     }
     },
      beforeCreate(){
@@ -159,8 +165,10 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   box-shadow: -1px 0 0 0 #e6a23c;
 }
 .msg-alert{
-  margin-right: 10px;
-  color: rgb(64, 158, 255);
+  font-size: 25px;
+  margin-right: 0px;
+  margin-top: -3px;
+  /* color: rgb(64, 158, 255); */
   cursor: pointer;
 }
 </style>

@@ -1,13 +1,23 @@
 <template>
   <div class>
-     <el-transfer v-model="memberIdList" 
-     :titles="['未指定会员', '已指定会员']"
-     :data="memberList"
-      @change="change"
+    <div><span class="MR20">已指定的id数组：{{memberIdList}}</span>
+      <el-button plain @click="showTransfer = true" >修改</el-button>
+    </div>
+    <el-dialog title="提示" :visible.sync="showTransfer" width="50%" :append-to-body="true">
+      <el-transfer
+        v-model="memberIdList"
+        :titles="['未指定会员', '已指定会员']"
+        :data="memberList"
+        @change="change"
       >
-      <!-- 插槽插入自定义搜索框 -->
-      <el-input v-model="search" placeholder="输入关键字搜索" slot="left-footer"></el-input>
+        <!-- 插槽插入自定义搜索框 -->
+        <el-input v-model="search" placeholder="输入关键字搜索" slot="left-footer"></el-input>
       </el-transfer>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showTransfer = false">取 消</el-button>
+        <el-button type="primary" @click="showTransfer = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -15,127 +25,129 @@
 export default {
   props: {
     value: Array,
-    url:{//父组件传过来的地址
-      type:String,
-      default:"/crossList?page=tangball_member"
+    url: {
+      //父组件传过来的地址
+      type: String,
+      default: "/crossList?page=tangball_member"
     },
-    keyValue:{//父组件传过来的搜索key
-      type:String,
-      default:'name'
+    keyValue: {
+      //父组件传过来的搜索key
+      type: String,
+      default: "name"
     }
   },
   data() {
     return {
-      param:{},
-      search:"",//搜索框搜索的内容
-      memberList: [],//会员数组
-      checkedMemberList:[],//已经选中的会员数据
-      memberIdList: this.value,//父组件传过来的会员id
+      showTransfer: false,
+      param: {},
+      search: "", //搜索框搜索的内容
+      memberList: [], //会员数组
+      checkedMemberList: [], //已经选中的会员数据
+      memberIdList: this.value //父组件传过来的会员id
     };
   },
-  watch:{
+  watch: {
     // 每当搜索框的值发生变化时，请求axios数据
-    search:function(event){
+    search: function(event) {
       // 保存用户已选中的数据
-      this.getMenberFromId(this.memberIdList)
+      this.getMenberFromId(this.memberIdList);
       // 根据用户输入的姓名连接接口请求数据
       this.getMenber(event);
     },
-    value:function (newdoc,olddoc) {
-      console.log(newdoc,olddoc);
-      
+    value: function(newdoc, olddoc) {
+      console.log(newdoc, olddoc);
     }
   },
   methods: {
     /**
-    * @name 获取会员数据的方法
-    * @desc 如果是搜索时调用的，也就是name存在是，就根据name去获取数据
-    *       如果name不存在就是一开始调用，就直接获取全部数据
-    * @param name 用户输入要搜索的关键字
-    */
+     * @name 获取会员数据的方法
+     * @desc 如果是搜索时调用的，也就是name存在是，就根据name去获取数据
+     *       如果name不存在就是一开始调用，就直接获取全部数据
+     * @param name 用户输入要搜索的关键字
+     */
     async getMenber(name) {
-      if(name){
+      if (name) {
         let { data } = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + this.url,
-        data:{
-          findJson: {
-              [this.keyValue]:{
+          //请求接口
+          method: "post",
+          url: PUB.domain + this.url,
+          data: {
+            findJson: {
+              [this.keyValue]: {
                 $options: "i",
-                $regex:name
+                $regex: name
               }
             }
-        }
-      });
-      this.memberList = this.transferData(data.list).concat(this.checkedMemberList);
-      // 防止同时出现两个相同的会员，对象数组去重
-      var obj = {}
-      this.memberList = this.memberList.reduce((item,next)=>{
-        obj[next.key]?'':obj[next.key] = true && item.push(next);
-        return item
-      },[])
-      }else{
-      let { data } = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + this.url,
-        data:{
-  
-        }
-      });
-      this.memberList = this.transferData(data.list)
+          }
+        });
+        this.memberList = this.transferData(data.list).concat(
+          this.checkedMemberList
+        );
+        // 防止同时出现两个相同的会员，对象数组去重
+        var obj = {};
+        this.memberList = this.memberList.reduce((item, next) => {
+          obj[next.key] ? "" : (obj[next.key] = true && item.push(next));
+          return item;
+        }, []);
+      } else {
+        let { data } = await axios({
+          //请求接口
+          method: "post",
+          url: PUB.domain + this.url,
+          data: {}
+        });
+        this.memberList = this.transferData(data.list);
       }
-      
     },
     /**
-    * @name 根据P1获取数据的方法
-    * @desc 根据已保存选中的P1获取数据
-    * @param id 已指定的数组
-    */
+     * @name 根据P1获取数据的方法
+     * @desc 根据已保存选中的P1获取数据
+     * @param id 已指定的数组
+     */
     async getMenberFromId(id) {
       let { data } = await axios({
         //请求接口
         method: "post",
         url: PUB.domain + this.url,
-        data:{
+        data: {
           findJson: {
-              P1:id
-            }
+            P1: id
+          }
         }
       });
-      this.checkedMemberList = this.transferData(data.list)
+      this.checkedMemberList = this.transferData(data.list);
     },
     /**
-    * @name 改变数据格式的方法
-    * @desc 由于要使用element穿梭框组件，所以需要将数据改变成element支持的格式
-    *       用这个方法改变数据格式
-    * @param 
-    */
-    transferData(data){
-      let newData =[];
-        data.forEach(member => {
-          let newMember = {}
-          newMember.key=member.P1
-          newMember.label=member.P1+'('+member[this.keyValue]+')'
-          newData.push(newMember)
+     * @name 改变数据格式的方法
+     * @desc 由于要使用element穿梭框组件，所以需要将数据改变成element支持的格式
+     *       用这个方法改变数据格式
+     * @param
+     */
+    transferData(data) {
+      let newData = [];
+      data.forEach(member => {
+        let newMember = {};
+        newMember.key = member.P1;
+        newMember.label = member.P1 + "(" + member[this.keyValue] + ")";
+        newData.push(newMember);
       });
-      return newData
+      return newData;
     },
     // 数据发生变化时，触发双向绑定
     change() {
-      this.$emit("input", this.memberIdList);//触发双向绑定
-    },
+      this.$emit("input", this.memberIdList); //触发双向绑定
+    }
   },
-  mounted(){
+  mounted() {
     // 页面加载就调用此方法，参数才不会为空
     this.getMenber();
     console.log(this.value);
-    
   }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.transferDialog{
 
+}
 </style>

@@ -65,6 +65,7 @@ import list_case from '@/page/list_case'
 import list_message from '@/page/list_message'
 import list_accessory from '@/page/list_accessory'
 import list_remark from '@/page/list_remark'
+import message_datail from '@/page/message_datail'
 
 
 window.util=util;
@@ -113,6 +114,10 @@ const router = new VueRouter({
         {
           path: '/list_accessory',
           component: list_accessory
+        },
+        {
+          path: '/message_datail',
+          component: message_datail
         }
         
       ]

@@ -1,16 +1,28 @@
 <template>
   <div class>
     <listData :cf="cfList">
-
+      <template v-slot:slot_item_columns_memberId="{row}">
+        <id_to_name v-model="row.memberId" url="/crossList?page=lawyer_member" keyValue="user"></id_to_name>
+      </template>
+      <template v-slot:slot_item_columns_caseId="{row}">
+        <id_to_name v-model="row.caseId" url="/crossList?page=lawyer_case" keyValue="name"></id_to_name>
+      </template>
+      <template v-slot:slot_item_detailItems_memberId="{row}">
+        {{row.memberId}}
+      </template>
+      <template v-slot:slot_item_detailItems_caseId="{row}">
+        {{row.caseId}}
+      </template>
     </listData>
   </div>
 </template>
 <script>
 import listData from "@/components/list-data/list-data.vue";
+import id_to_name from "@/components/id_to_name";
 
 export default {
   
-  components: { listData },
+  components: { listData,id_to_name },
   data() {
     return {
       cfList: {
@@ -32,9 +44,16 @@ export default {
             width: 80
           },
           {
-            label: "已读",
+            label: "查看状态",
             prop: "read",
-            width: 80
+            width: 120,
+            formatter:(data)=>{
+              if (data.read==1) {
+                return '已读'
+              }else{
+                return '未读'
+              }
+            }
           },
           {
             label: "变更内容",
@@ -49,12 +68,14 @@ export default {
           {
             label: "会员id",
             prop: "memberId",
-            width: 100
+            width: 100,
+            slot:'slot_item_columns_memberId'
           },
           {
             label: "案件id",
             prop: "caseId",
-            width: 100
+            width: 100,
+            slot:'slot_item_columns_caseId'
           }
           
         ],
@@ -91,23 +112,26 @@ export default {
           {
             label: "会员id",
             prop: "memberId",
-            width: 100
+            width: 100,
+            slot:'slot_item_detailItems_memberId'
           },
           {
             label: "案件id",
             prop: "caseId",
-            width: 100
+            width: 100,
+            slot:'slot_item_detailItems_caseId'
           }  
         ],
         //-------新增、修改表单字段数组-------
         formItems: [
          {
-            label: "会员姓名",
-            prop: "name",
-          },
-         {
-            label: "已读",
+            label: "查看状态",
             prop: "read",
+            type: "select",
+            options:[
+              { value: 1, label: "已读" },
+              { value: 2, label: "未读" },
+            ]
           },
          {
             label: "会员id",
