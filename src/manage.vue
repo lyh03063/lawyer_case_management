@@ -29,14 +29,7 @@ import { clearInterval } from 'timers';
 export default {
   components: { NavMenu }, //注册组件
   methods: {
-    // //函数：{切换调试模式函数}
-    // toggleDebug() {
-    //   //来自vuex的当前行数据
-    //   let debug = this.$store.state.debug;
-    //   console.log("debug", debug);
-    //   this.$store.commit("setDebug", !debug);
 
-    // },
     logout() {
       //退出登录函数
       localStorage.isLogin = "0";//登录状态设置为0
@@ -52,13 +45,7 @@ export default {
       this.$refs.msgAlert.style.color='white'
       this.$router.push({ path: "/list_message" });
     },
-    msgAlert(){
-      if (this.$refs.msgAlert.style.color=='white') {
-        this.$refs.msgAlert.style.color = 'rgb(64, 158, 255)'
-      }else{
-        this.$refs.msgAlert.style.color='white'
-      }
-    }
+
   },
   computed: {
     //计算属性
@@ -152,12 +139,6 @@ export default {
     if (localStorage.commonMerber==1) {
       this.navMenuList[1].show = true
     }
-    // 如果有新消息，则提示
-    if(this.newMsg){
-      this.$refs.msgAlert.style.color=='white'
-        this.alertTime = setInterval(()=>{
-      this.msgAlert()
-      },300)}
     },
      beforeCreate(){
     // 如果用户未登录，跳转登录页面
