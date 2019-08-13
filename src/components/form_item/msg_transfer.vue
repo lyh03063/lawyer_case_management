@@ -40,6 +40,10 @@ export default {
       this.getMenberFromId(this.memberIdList)
       // 根据用户输入的姓名连接接口请求数据
       this.getMenber(event);
+    },
+    value:function (newdoc,olddoc) {
+      console.log(newdoc,olddoc);
+      
     }
   },
   methods: {
@@ -126,7 +130,8 @@ export default {
   mounted(){
     // 页面加载就调用此方法，参数才不会为空
     this.getMenber();
-
+    console.log(this.value);
+    
   }
 };
 </script>

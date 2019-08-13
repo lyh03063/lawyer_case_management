@@ -285,12 +285,13 @@ export default {
         url: PUB.domain + this.cf.url.list,
         data: this.Objparma
       });
+      
       let { list, page } = data; //解构赋值
       this.tableData = list;
       this.page = page;
       this.allCount = page.allCount; //更改总数据量
 
-      console.log("ajaxPopulate-1");
+      // console.log("ajaxPopulate-1");
 
       if (this.cf.dynamicDict) {
         //如果{填充配置数组}存在.
@@ -312,7 +313,7 @@ export default {
         }
       }
 
-      console.log("ajaxPopulate-2");
+      // console.log("ajaxPopulate-2");
     }
   },
 
@@ -340,6 +341,15 @@ export default {
     }
 
     this.Objparma.findJson = findJsonDefault;
+    // 如果是普通会员登录，需要将其id传过去，让接口只显示与其有关的数据
+    if (this.cf.url.list == "/crossList?page=lawyer_case") {
+      if (localStorage.superAdmin==1) {
+      }else{
+        this.Objparma.findJson.$or = [{createPerson:localStorage.userId},{collaborator:localStorage.userId-0}]
+        }
+    }else{
+      this.Objparma.findJson.memberId=localStorage.userId
+    }
     this.Objparma.sortJson = this.cf.sortJsonDefault;
 
     let objState = {

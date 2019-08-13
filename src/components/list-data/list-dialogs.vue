@@ -9,6 +9,7 @@
       :before-close="closeDialogDetailFun"
       :append-to-body="true"
     >
+    <!-- customDetail如果设置为ture,则使用自定义的详情窗口 -->
     <template v-if="!cf.customDetail">
       <table class="table-normal WP100" >
         <tr v-for="item in cf.detailItems" :key="item.prop">
@@ -28,7 +29,7 @@
         </tr>
       </table>
     </template>
-    
+    <!-- 自定义详情插槽 -->
     <template v-if="cf.customDetail" >
 
       <slot name="customDetail" :detailData="row"></slot>

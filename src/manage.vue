@@ -6,9 +6,8 @@
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
             <span class="el-icon-bell msg-alert" ref="msgAlert" @click="checkMsg"></span>
-            <span class="MR10">当前登录用户:{{this. currentUserName}}</span>
+            <span class="MR10">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
             <a href="javascript:;" class="MR10" @click="logout">退出登录</a>
-            <a target="_blank" href="javascript:;">官网首页</a>
           </div>
         </el-row>
       </el-header>
@@ -30,32 +29,23 @@ import { clearInterval } from 'timers';
 export default {
   components: { NavMenu }, //注册组件
   methods: {
-    // //函数：{切换调试模式函数}
-    // toggleDebug() {
-    //   //来自vuex的当前行数据
-    //   let debug = this.$store.state.debug;
-    //   console.log("debug", debug);
-    //   this.$store.commit("setDebug", !debug);
 
-    // },
     logout() {
       //退出登录函数
-      localStorage.isLogin = "0";
-      localStorage.loginUserName = null;
+      localStorage.isLogin = "0";//登录状态设置为0
+      localStorage.superAdmin = 0;//超级管理员登录状态为0
+      localStorage.commonMerber=0;//普通会员登录状态为0
+      localStorage.userId="",//登录会员的id状态为空
+      localStorage.loginUserName = null;//登录会员的用户名为空
       this.$router.push({ path: "/login" }); //跳转到manage
     },
     checkMsg(){
       this.newMsg = false;
       window.clearInterval(this.alertTime);
       this.$refs.msgAlert.style.color='white'
+      this.$router.push({ path: "/list_message" });
     },
-    msgAlert(){
-      if (this.$refs.msgAlert.style.color=='white') {
-        this.$refs.msgAlert.style.color = 'rgb(64, 158, 255)'
-      }else{
-        this.$refs.msgAlert.style.color='white'
-      }
-    }
+
   },
   computed: {
     //计算属性
@@ -84,7 +74,7 @@ export default {
           route: "/list_member",
           icon: "el-icon-user-solid",
           title: "会员",
-          show:false
+          show:false//通过控制来show来设置改导航是否显示
         },
         {
           index: "2",
@@ -145,12 +135,17 @@ export default {
     };
   },
   mounted(){
-    if(this.newMsg){
-      this.$refs.msgAlert.style.color=='white'
-        this.alertTime = setInterval(()=>{
-      this.msgAlert()
-      },300)}
+    // 如果是普通会员登录,隐藏会员导航栏
+    if (localStorage.commonMerber==1) {
+      this.navMenuList[1].show = true
     }
+    },
+     beforeCreate(){
+    // 如果用户未登录，跳转登录页面
+    if (localStorage.isLogin != 1) {
+        this.$router.push({ path: "/login" });
+    }
+  },
 };
 </script>
 

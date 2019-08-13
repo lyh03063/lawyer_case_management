@@ -25,191 +25,166 @@ export default {
         //-------列配置数组-------
         columns: [
           {
-            label: "会员号",
+            label: "会员id",
             prop: "P1",
             width: 80
           },
           {
-            label: "会员名称",
+            label: "用户名",
+            prop: "user",
+            width: 100
+          },
+          {
+            label: "姓名",
             prop: "name",
             width: 100
           },
-          {
-            label: "微信号",
-            prop: "openid",
-            width: 100
-          },
            {
-            label: "性别",
-            prop: "sex",
-            width: 65
+            label: "密码",
+            prop: "password",
+            width: 120
           },
           {
-            label: "身份证号",
-            prop: "idCard",
+            label: "案件数量",
+            prop: "caseCount",
             width: 100
           },
           {
-            label: "参赛次数",
-            prop: "entries",
-            width: 65,
-            // slot:"slot_list_column_entries"
-            statistics:{listIndex:'list_enroll', targetIdKey:'memberId'}
-          },
-           {
-            label: "成绩数",
-            prop: "countAchievement",
-            width: 65,
-            statistics:{listIndex:'list_achievement', targetIdKey:'memberId'}
+            label: "上传附件数量",
+            prop: "fileCount",
+            width: 150,
           },
           {
-            label: "唐球积分",
-            prop: "integral",
-            width: 65
+            label: "发送消息数量",
+            prop: "msgCount",
+            width: 150,
           },       
           {
-            label: "备注",
-            prop: "remark",
-            width: 65
+            label: "备注数量",
+            prop: "remarkCount",
+            width: 100
           },
           {
-            label: "职业",
-            prop: "career",
-            width: 50
-          },
-          {
-            label: "球龄",
-            prop: "ballAge",
-            width: 65,
-            formatter: function(rowData) {
-              if (rowData.ballAge == 1) {
-                return "一年以下";
-              } else if (rowData.ballAge == 2) {
-                return "一到三年";
-              } else if (rowData.ballAge == 3) {
-                return "三到五年";
-              } else if (rowData.ballAge == 4) {
-                return "五到十年";
-              } else {
-                return "十年以上";
+            label: "角色",
+            prop: "role",
+            width: 120,
+            formatter: (rowData)=>{
+              switch (rowData.role) {
+                case 1:
+                  return "超级管理员"
+                  break;
+                case 2:
+                   return "普通律师会员"
+                  break;
+                default:
+                  return "无"
+                  break;
               }
             }
-          }
+          },
         ],
-        //-------筛选表单字段数组-------
         searchFormItems: [
           {
-            label: "会员名称",
-            prop: "name",
+            label: "会员id",
+            prop: "P1",
+            type: "input"
+          },
+          {
+            label: "用户名",
+            prop: "user",
             type: "input_find_vague"
           },
           {
-            label: "身份证号",
-            prop: "idCard",
-            type: "input"
-          }
+            label: "姓名",
+            prop: "name",
+            type: "input_find_vague"
+          },
         ],
         //-------详情字段数组-------
         detailItems: [
           {
-            label: "会员编号",
+            label: "会员id",
             prop: "P1",
+            width: 80
           },
           {
-            label: "会员名称",
+            label: "用户名",
+            prop: "user",
+            width: 100
+          },
+          {
+            label: "姓名",
             prop: "name",
+            width: 100
+          },
+           {
+            label: "密码",
+            prop: "password",
+            width: 120
           },
           {
-            label: "微信号",
-            prop: "openid",
+            label: "案件数量",
+            prop: "caseCount",
+            width: 100
           },
           {
-            label: "身份证号",
-            prop: "idCard",
-          },
-          {
-            label: "参赛次数",
-            prop: "entries",
-          },
-          {
-            label: "唐球积分",
-            prop: "integral",
-            width: 65
-          },     
-          
-          {
-            label: "职业",
-            prop: "career",
-            width: 50
-          },
-          {
-            label: "球龄",
-            prop: "ballAge",
+            label: "上传附件数量",
+            prop: "fileCount",
             width: 65,
-            formatter: function(rowData) {
-              if (rowData.ballAge == 1) {
-                return "一年以下";
-              } else if (rowData.ballAge == 2) {
-                return "一到三年";
-              } else if (rowData.ballAge == 3) {
-                return "三到五年";
-              } else if (rowData.ballAge == 4) {
-                return "五到十年";
-              } else {
-                return "十年以上";
+          },
+          {
+            label: "发送消息数量",
+            prop: "msgCount",
+            width: 65
+          },       
+          {
+            label: "备注数量",
+            prop: "remarkCount",
+            width: 65
+          },
+          {
+            label: "角色",
+            prop: "role",
+            width: 120,
+            formatter: (rowData)=>{
+              switch (rowData.role) {
+                case 1:
+                  return "超级管理员"
+                  break;
+                case 2:
+                   return "普通律师会员"
+                  break;
+                default:
+                  return "无"
+                  break;
               }
             }
-          },
-          {
-            label: "备注",
-            prop: "remark",
-            width: 150
-          }  
+          },  
         ],
         //-------新增、修改表单字段数组-------
         formItems: [
          {
-            label: "会员姓名",
+            label: "用户名",
+            prop: "user",
+            type:"input"
+          },
+          {
+            label: "姓名",
             prop: "name",
-            width: 100
+            type:"input"
           },
           {
-            label: "微信openid",
-            prop: "openid",
-            width: 100
+            label: "密码",
+            prop: "password",
+            type:"input"
           },
           {
-            label: "性别",
-            prop: "sex",
-            type: "select",
-            default:1,
-            options: [{ value: 1, label: "男" }, { value: 2, label: "女" }]
-          },
-          {
-            label: "身份证号",
-            prop: "idCard",
-            width: 100
-          },
-          {
-            label: "备注",
-            prop: "remark",
-            width: 150
-          } ,
-          {
-            label: "职业",
-            prop: "career",
-            type: "input"
-          },
-          {
-            label: "球龄",
-            prop: "ballAge",
+            label: "角色",
+            prop: "role",
             type: "select",
             options: [
-              { label: "一年以下", value: 1 },
-              { label: "一到三年", value: 2 },
-              { label: "三到五年", value: 3 },
-              { label: "五到十年", value: 4 },
-              { label: "十年以上", value: 5 }
+              { label: "超级管理员", value: 1 },
+              { label: "普通律师会员", value: 2 }
             ]
           }, 
         ]
