@@ -115,7 +115,11 @@ export default {
               keyLabel: "name",
               keyValue: "P1"
             }
-          }
+          },
+          {
+            label: "备注id",
+            prop: "P1",
+          },
         ],
         //-------详情字段数组-------
         detailItems: [
