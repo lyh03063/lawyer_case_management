@@ -133,6 +133,7 @@ Vue.use(Vuex)//应用组件
 
 const store = new Vuex.Store({//定义Vuex的存储对象
   state: {
+    unReadCount:undefined,
     debug:true,
     activeMenuIndex: "",//当前激活的菜单index
     listState: {//存放列表的共享状态，
@@ -147,7 +148,9 @@ const store = new Vuex.Store({//定义Vuex的存储对象
   mutations: {//变更事件
     setDebug(state, param) {//设置debug模式
       state.debug= param;
-      
+    },
+    setUnReadCount(state,count){
+      state.unReadCount = count
     },
     setListFindJson(state, param) {//设置列表的初始筛选参数值
       state.defultFindJson[param.listIndex] = param.findJson;

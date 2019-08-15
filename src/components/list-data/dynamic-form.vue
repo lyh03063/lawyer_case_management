@@ -227,14 +227,14 @@ export default {
   watch: {
     formDataNeed: {
       handler(newName, oldName) {
-        console.log("formDataNeed变更");
+        // console.log("formDataNeed变更");
         this.$emit("input", this.formDataNeed);
       },
       deep: true
     },
     value: {
       handler(newName, oldName) {
-        console.log("form-value变更");
+        // console.log("form-value变更");
         this.formDataNeed = this.value||{};
       },
       deep: true
@@ -244,7 +244,7 @@ export default {
          //给递归表单字段做一层空对象的保障
     
 initRecursionProp() {
-  console.log("initRecursionProp#######");
+  // console.log("initRecursionProp#######");
       this.cf.formItems.forEach(itemEach => { //循环：{表单字段配置数组}
                    if (itemEach.cfForm&&itemEach.prop) {//如果是递归字段
                      this.formDataNeed[itemEach.prop]=this.formDataNeed[itemEach.prop]||{};
@@ -347,12 +347,13 @@ initRecursionProp() {
       let { data } = await axios({
         //请求接口
         method: "post",
-        url: PUB.domain||"" + this.cf.urlInit,
+        url: (PUB.domain||"") + this.cf.urlInit,
          data: this.cf.paramInit || {
           id: this.value.P1
         } //传递参数
       });
       this.docGet = data.Doc; //这里要使用大写的Doc
+      
     }
     this.initForm(); //调用：{初始化表单函数}
   },

@@ -1,17 +1,57 @@
 <template>
   <div class>
-    <listData :cf="cfList">
+    <listData :cf="cfList" @afterAdd='addMsg'>
     </listData>
   </div>
 </template>
 <script>
 import listData from "@/components/list-data/list-data.vue";
-import id_to_name from "@/components/id_to_name";
+
 export default {
   
-  components: { listData,id_to_name },
+  components: { listData},
+  methods:{
+    // 如果新增附件就新增对应的消息，需要注意的是需要先通过案件id先获取案件负责人及协作者
+      addMsg(data){
+       this.addMsgData.change[0].remarkId = data.P1
+       this.addMsgData.caseId = data.caseId
+       this.addMsgData.memberId = data.memberId
+       this.getMerberId(data.caseId)
+     },
+    //  通过案件id先获取案件负责人及协作者
+     async getMerberId(caseId){
+      //  通过案件id请求接口
+       let {data} = await axios({
+        method: "post",
+        url: PUB.domain + '/crossList?page=lawyer_case',
+        data: { findJson: {
+          P1:caseId
+        }} 
+      })
+      // 如果有协作者就为每一个协作者创建对应的消息对象,保存在addMsglist中
+      if (data.list[0].collaborator) {
+         data.list[0].collaborator.forEach(memberId => {
+           if (memberId!=data.list[0].createPerson) {
+             this.addMsgData.receiveMemberId = memberId
+             let addData = JSON.parse(JSON.stringify(this.addMsgData))
+             this.addMsglist.push(addData);
+           }
+       })
+      }
+      await axios({
+        //请求接口,新建消息
+        method: "post",
+        url: PUB.domain + '/crossAdd?page=lawyer_msg',
+        data: { data: this.addMsglist} 
+      })
+      // 清空新消息数组
+      this.addMsglist = []
+     }
+  },
   data() {
     return {
+        addMsgData:{read:0,change:[{type:2,remarkId:''}],memberId:'',caseId:'',receiveMemberId:''},
+        addMsglist:[],
       cfList: {
         listIndex: "list_remark", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
@@ -67,9 +107,14 @@ export default {
         //-------筛选表单字段数组-------
         searchFormItems: [
           {
-            label: "案件id",
+            label: "案件名称",
             prop: "caseId",
-            type: "input"
+            type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_case",
+              keyLabel: "name",
+              keyValue: "P1"
+            }
           }
         ],
         //-------详情字段数组-------
@@ -127,7 +172,7 @@ export default {
               keyLabel: "name",
               keyValue: "P1"
             },
-            rules: [{ required: true, message: "会员id" }]
+            rules: [{ required: true, message: "会员名称" }]
           },
           {
             label: "案件名称",
@@ -138,16 +183,12 @@ export default {
               keyLabel: "name",
               keyValue: "P1"
             },
-            rules: [{ required: true, message: "案件id" }]
+            rules: [{ required: true, message: "案件名称" }]
           }
         ]
       }
     };
   },
-
-  methods: {
-    
-  }
 };
 </script>
 

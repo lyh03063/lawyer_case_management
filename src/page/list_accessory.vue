@@ -1,16 +1,57 @@
 <template>
   <div class>
-    <listData :cf="cfList">
+    <listData :cf="cfList" @afterAdd='addMsg'>
     </listData>
   </div>
 </template>
 <script>
 import listData from "@/components/list-data/list-data.vue";
 export default {
-  
   components: { listData },
+   methods: {
+    // 如果新增附件就新增对应的消息，需要注意的是需要先通过案件id先获取案件负责人及协作者
+      addMsg(data){
+       this.addMsgData.change[0].fileId = data.P1
+       this.addMsgData.caseId = data.caseId
+       this.addMsgData.memberId = data.memberId
+       this.getMerberId(data.caseId)
+     },
+    //  通过案件id先获取案件负责人及协作者
+     async getMerberId(caseId){
+      //  通过案件id请求接口
+       let {data} = await axios({
+        method: "post",
+        url: PUB.domain + '/crossList?page=lawyer_case',
+        data: { findJson: {
+          P1:caseId
+        }} 
+      })
+      // 如果有协作者就为每一个协作者创建对应的消息对象,保存在addMsglist中
+      if (data.list[0].collaborator) {
+         data.list[0].collaborator.forEach(memberId => {
+           if (memberId!=data.list[0].createPerson) {
+             this.addMsgData.receiveMemberId = memberId
+             let addData = JSON.parse(JSON.stringify(this.addMsgData))
+             this.addMsglist.push(addData);
+           }
+       })
+      }
+      // 创建负责人消息对象，保存在addMsglist中
+      
+      await axios({
+        //请求接口,新建消息
+        method: "post",
+        url: PUB.domain + '/crossAdd?page=lawyer_msg',
+        data: { data: this.addMsglist} 
+      })
+      // 清空新消息数组
+      this.addMsglist = []
+     }
+  },
   data() {
     return {
+      addMsgData:{read:0,change:[{type:3,fileId:''}],memberId:'',caseId:'',receiveMemberId:''},
+      addMsglist:[],
       cfList: {
         listIndex: "list_accessory", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
@@ -53,7 +94,7 @@ export default {
             width: 150
           },
           {
-            label: "会员id",
+            label: "上传会员",
             prop: "memberName",
             width: 100,
             formatter:(data)=>{
@@ -63,7 +104,7 @@ export default {
             }
           },      
          {
-            label: "案件id",
+            label: "案件名称",
             prop: "caseName",
             width: 100,
             formatter:(data)=>{
@@ -84,7 +125,17 @@ export default {
             label: "文件名",
             prop: "name",
             type: "input_find_vague"
-          }
+          },
+          {
+            label: "上传会员",
+            prop: "memberId",
+            type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_member",
+              keyLabel: "user",
+              keyValue: "P1"
+            },
+          },
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -114,7 +165,7 @@ export default {
             width: 150
           },
           {
-            label: "会员id",
+            label: "上传会员",
             prop: "memberName",
             width: 100,
             formatter:(data)=>{
@@ -124,7 +175,7 @@ export default {
             }
           },       
           {
-            label: "案件id",
+            label: "案件名称",
             prop: "caseName",
             width: 100,
             formatter:(data)=>{
@@ -151,7 +202,7 @@ export default {
             prop: "url",
           },
           {
-            label: "上传会员id",
+            label: "上传会员",
             prop: "memberId",
             type: "select",
              ajax: {
@@ -162,7 +213,7 @@ export default {
             rules: [{ required: true, message: "上传会员id" }]
           },
           {
-            label: "案件id",
+            label: "案件名称",
             prop: "caseId",
            type: "select",
              ajax: {
@@ -177,9 +228,7 @@ export default {
     };
   },
 
-  methods: {
-    
-  }
+ 
 };
 </script>
 

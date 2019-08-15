@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <listData :cf="cfList">
+    <listData :cf="cfList" @afterModify="modify">
       <template v-slot:customDetail="{detailData}">
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
       </template>
@@ -35,11 +35,74 @@ import listData from "@/components/list-data/list-data.vue";
 import case_detail_dialogs from "@/components/case_detail_dialogs";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
+import { async } from 'q';
 
 export default {
   components: { listData, case_detail_dialogs, msgTransfer,select_ajax },
+   methods: {
+    caseStatusToname(status){
+      switch (status) {
+                case 1:
+                  return "待立案";
+                  break;
+                case 2:
+                  return "已立案待保全";
+                  break;
+                case 3:
+                  return "已保全";
+                  break;
+                case 4:
+                  return "待一审开庭";
+                  break;
+                case 5:
+                  return "待二审开庭";
+                  break;
+                case 6:
+                  return "调解中";
+                  break;
+                case 7:
+                  return "收款监督";
+                  break;
+                case 8:
+                  return "已结案";
+                  break;
+                default:
+                  return "无";
+                  break;
+              }
+    },
+    modify(newdata,olddata){
+      if(newdata.status!=olddata.status){
+        this.addMsgData.change[0].type = 1;
+        this.addMsgData.change[0].before = this.caseStatusToname(olddata.status);
+        this.addMsgData.change[0].after = this.caseStatusToname(newdata.status);
+        this.addMsgData.memberId = newdata.createPerson
+        this.addMsgData.caseId = newdata.P1;
+        if (newdata.collaborator) {
+         newdata.collaborator.forEach(memberId => {
+           if (memberId!=newdata.createPerson) {
+             this.addMsgData.receiveMemberId = memberId
+             let addData = JSON.parse(JSON.stringify(this.addMsgData))
+             this.addMsglist.push(addData);
+           }
+       })
+      }
+      this.addMsg();
+      }
+    },
+    async addMsg(){
+      let { data } = await axios({
+        //请求接口
+        method: "post",
+        url: PUB.domain + '/crossAdd?page=lawyer_msg',
+        data: { data: this.addMsglist} 
+      });
+    }
+  },
   data() {
     return {
+      addMsgData:{read:0,change:[{type:'',before:'',after:''}],memberId:'',caseId:'',receiveMemberId:''},
+      addMsglist:[],
       userId: localStorage.userId,
       cfList: {
         customDetail: true, //使用自定义详情插槽
@@ -79,8 +142,8 @@ export default {
             label: "案件状态",
             prop: "status",
             width: 120,
-            formatter: rowdata => {
-              switch (rowdata.status) {
+            formatter: function (rowData) {
+              switch (rowData.status) {
                 case 1:
                   return "待立案";
                   break;
@@ -123,8 +186,17 @@ export default {
           },
           {
             label: "协作者",
-            prop: "collaborator",
+            prop: "collaboratorName",
             width: 150,
+            formatter:(data)=>{
+              if (data.collaboratorName) {
+                let collaboratorList = []
+                data.collaboratorName.forEach(element => {
+                  collaboratorList.push(element.user)
+                });
+                return collaboratorList
+              }
+            }
           },
           {
             label: "诉讼费",
@@ -349,7 +421,9 @@ export default {
     };
   },
 
-  methods: {}
+ 
+  mounted(){
+  }
 };
 </script>
 

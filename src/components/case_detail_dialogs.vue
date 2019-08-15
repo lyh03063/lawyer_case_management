@@ -38,18 +38,31 @@
               </el-row>
               <div class="H20"></div>
         <div class="subfield">备注</div>
+        <div >
+          <listData :cf="cfRemark" ></listData>
+        </div>
         <div class="subfield">附件</div>
+        <div >
+          <listData :cf="cfAccessory"></listData>
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import listData from "@/components/list-data/list-data.vue";
 export default {
+  components: {listData },
   props: {
     caseMsg: Object
   },
-  mounted(){
+  methods:{
+      addMsg(){
+        alert("新增消息")
+      }
+  },
+    mounted(){
       switch (this.caseMsg.status) {
         case 1:
           this.caseMsg.status = "待立案" 
@@ -81,12 +94,10 @@ export default {
       }
 
   },
-  methods:{
-
-  },
   data() {
       
     return {
+      remarkList:[],
         caseMsgLeft:[{text:"案件名称：",index:'name'},
         {text:"案号：",index:'caseId'},
         {text:"案件状态：",index:'status'},
@@ -101,14 +112,290 @@ export default {
         {text:'一审信息：',index:'firstInstanceInfo',company:"一审单位：",caseId:"一审案号：",person:"一审承办人：",phone:"一审电话："},
         {text:'诉保信息：',index:'guaranteeInfo',company:"诉保单位：",person:"诉保承办人：",phone:"诉保电话："},
         {text:'二审信息：',index:'secondInstanceInfo ',company:"二审单位：",caseId:"二审案号：",person:"二审承办人：",phone:"二审电话："},
-        {text:'执行信息：',index:'executionInfo',company:"执行单位：",caseId:"执行案号：",person:"执行承办人：",phone:"执行电话："},]
+        {text:'执行信息：',index:'executionInfo',company:"执行单位：",caseId:"执行案号：",person:"执行承办人：",phone:"执行电话："},],
+        cfRemark: {
+        focusMenu:false,//进行菜单聚焦
+        isShowToolBar:false,
+        flag:false,
+        isShowSearchForm:false,
+        isShowBreadcrumb:false,
+        width:'60%',
+        findJson: {type:"caseId",value:this.caseMsg.P1},
+        dynamicDict: [{ page: "lawyer_member",populateColumn: "memberName", idColumn: "memberId", idColumn2: "P1" },
+        { page: "lawyer_case",populateColumn: "caseName", idColumn: "caseId", idColumn2: "P1" },],
+        url: {
+          list: "/crossList?page=lawyer_remark", //列表接口
+          add: "/crossAdd?page=lawyer_remark", //新增接口
+          modify: "/crossModify?page=lawyer_remark", //修改接口
+          delete: "/crossDelete?page=lawyer_remark" //删除接口
+        },
+        //-------列配置数组-------
+        columns: [
+          {
+            label: "备注id",
+            prop: "P1",
+            width: 80
+          },
+          {
+            label: "备注内容",
+            prop: "content",
+            width: 300
+          },
+          {
+            label: "会员",
+            prop: "memberName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.memberName) {
+                return data.memberName.user
+              }
+            }
+          },
+          {
+            label: "案件名称",
+            prop: "caseName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.caseName) {
+                return data.caseName.name
+              }
+            }
+          },
+          {
+            label: "创建时间",
+            prop: "CreateTime",
+            width: 150
+          },
+        ],
+        //-------详情字段数组-------
+        detailItems: [
+          {
+            label: "备注id",
+            prop: "P1",
+            width: 80
+          },
+          {
+            label: "备注内容",
+            prop: "content",
+            width: 100
+          },
+          {
+            label: "会员",
+            prop: "memberName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.memberName) {
+                return data.memberName.user
+              }
+            }
+          },
+          {
+            label: "案件名称",
+            prop: "caseName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.caseName) {
+                return data.caseName.name
+              }
+            }
+          },
+          {
+            label: "创建时间",
+            prop: "CreateTime",
+            width: 100
+          },
+        ],
+        //-------新增、修改表单字段数组-------
+        formItems: [
+         {
+            label: "备注内容",
+            prop: "content",
+            width: 100,
+            type:"textarea"
+          },
+          {
+            label: "会员",
+            prop: "memberId",
+            type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_member",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
+            rules: [{ required: true, message: "会员名称" }]
+          },
+          {
+            label: "案件名称",
+            prop: "caseId",
+            type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_case",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
+            rules: [{ required: true, message: "案件名称" }]
+          }
+        ]
+      },
+        cfAccessory: {
+        focusMenu:false,//进行菜单聚焦
+        isShowToolBar:false,
+        flag:false,
+        isShowSearchForm:false,
+        isShowBreadcrumb:false,
+        width:'60%',
+        findJson: {type:"caseId",value:this.caseMsg.P1},
+        dynamicDict: [{ page: "lawyer_member",populateColumn: "memberName", idColumn: "memberId", idColumn2: "P1" },
+        { page: "lawyer_case",populateColumn: "caseName", idColumn: "caseId", idColumn2: "P1" },],
+        url: {
+          list: "/crossList?page=lawyer_file", //列表接口
+          add: "/crossAdd?page=lawyer_file", //新增接口
+          modify: "/crossModify?page=lawyer_file", //修改接口
+          delete: "/crossDelete?page=lawyer_file" //删除接口
+        },
+        //-------列配置数组-------
+        columns: [
+          {
+            label: "附件id",
+            prop: "P1",
+            width: 80
+          },
+          {
+            label: "文件名",
+            prop: "name",
+            width: 100
+          },
+          {
+            label: "文件类型",
+            prop: "suffix",
+            width: 100
+          },
+           {
+            label: "文件地址",
+            prop: "url",
+            width: 150
+          },
+          {
+            label: "创建时间",
+            prop: "CreateTime",
+            width: 150
+          },
+          {
+            label: "上传会员",
+            prop: "memberName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.memberName) {
+                return data.memberName.user
+              }
+            }
+          },      
+         {
+            label: "案件名称",
+            prop: "caseName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.caseName) {
+                return data.caseName.name
+              }
+            }
+          }
+        ],
+        //-------详情字段数组-------
+        detailItems: [
+           {
+            label: "附件id",
+            prop: "P1",
+            width: 80
+          },
+          {
+            label: "文件名",
+            prop: "name",
+            width: 100
+          },
+          {
+            label: "文件类型",
+            prop: "suffix",
+            width: 100
+          },
+           {
+            label: "文件地址",
+            prop: "url",
+            width: 150
+          },
+          {
+            label: "创建时间",
+            prop: "CreateTime",
+            width: 150
+          },
+          {
+            label: "上传会员",
+            prop: "memberName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.memberName) {
+                return data.memberName.user
+              }
+            }
+          },       
+          {
+            label: "案件名称",
+            prop: "caseName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.caseName) {
+                return data.caseName.name
+              }
+            }
+          }  
+        ],
+        //-------新增、修改表单字段数组-------
+        formItems: [
+         {
+            label: "文件名",
+            prop: "name",
+            width: 100
+          },
+          {
+            label: "文件类型",
+            prop: "suffix",
+            width: 100
+          },
+          {
+            label: "文件地址",
+            prop: "url",
+          },
+          {
+            label: "上传会员",
+            prop: "memberId",
+            type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_member",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
+            rules: [{ required: true, message: "上传会员id" }]
+          },
+          {
+            label: "案件名称",
+            prop: "caseId",
+           type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_case",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
+            rules: [{ required: true, message: "案件id" }]
+          }
+        ]
+      }
     };
   }
 };
 </script>
 <style scoped>
 .case-box {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .case-box div span {

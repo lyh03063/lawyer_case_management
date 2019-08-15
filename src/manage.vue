@@ -5,11 +5,8 @@
         <el-row>
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
-            <el-badge :value="12" class="item" v-if="newMsg">
+            <el-badge :value="unReadCount" class="item">
             <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg"></span>
-            </el-badge>
-            <el-badge v-if="!newMsg">
-            <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg" ></span>
             </el-badge>
             <span class="MR10 ML20">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
             <a href="javascript:;" class="MR10" @click="logout">退出登录</a>
@@ -34,7 +31,23 @@ import { clearInterval } from 'timers';
 export default {
   components: { NavMenu }, //注册组件
   methods: {
-
+    async getUnRead(){
+        let {data} = await axios({
+        //请求接口
+        method: "post",
+        url: PUB.domain + '/crossList?page=lawyer_msg',
+        data: { 
+          findJson:{
+              receiveMemberId:localStorage.userId,
+              read:'0'
+          }} 
+      });
+      if (data.list.length>0) {
+        this.$store.commit("setUnReadCount",data.list.length);
+      }else{
+      this.$store.commit("setUnReadCount",undefined);
+      }
+    },
     logout() {
       //退出登录函数
       localStorage.isLogin = "0";//登录状态设置为0
@@ -45,16 +58,15 @@ export default {
       this.$router.push({ path: "/login" }); //跳转到manage
     },
     checkMsg(){
-      this.newMsg = false;
-      window.clearInterval(this.alertTime);
-      this.$refs.msgAlert.style.color='white'
       this.$router.push({ path: "/message_datail" });
     },
 
   },
   computed: {
     //计算属性
-
+    unReadCount(){
+      return this.$store.state.unReadCount;
+    },
     activeMenuIndex() {
       //
       //当前激活的菜单index
@@ -64,8 +76,6 @@ export default {
   data() {
     return {
       // 导航菜单列表
-      alertTime:0,
-      newMsg:true,
       navMenuList: [
         {
           //菜单
@@ -145,6 +155,7 @@ export default {
       this.navMenuList[1].show = true
       this.navMenuList[3].show = true
     }
+    this.getUnRead();
     },
      beforeCreate(){
     // 如果用户未登录，跳转登录页面
