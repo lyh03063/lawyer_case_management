@@ -29,13 +29,14 @@
 export default {
   data() {
     return{
-        newMsgList:[],
-        msgIdList:[],
+        newMsgList:[],//保存新消息数据列表
+        msgIdList:[],//保存新消息id列表
         
     }
   },
 
   methods: {
+    // 根据会员id或者其他index获取其name的方法，只请求一次接口
     async toName(populateCFEach){
       let { page, populateColumn, idColumn, idColumn2 } = populateCFEach;
       this.newMsgList = await util.ajaxPopulate({
@@ -46,6 +47,7 @@ export default {
             idColumn2
           });
     },
+    // 获取新消息数据列表  请求接口
     async getUnReadMsg(){
         let {data} = await axios({
         //请求接口
@@ -58,16 +60,19 @@ export default {
           }} 
       });
       this.newMsgList = data.list
-      console.log('this.newMsgList',this.newMsgList);
+      // 根据会员id以及 案件id获取 会员用户名以及案件名称
       this.toName({page:'lawyer_member',populateColumn:"memberUser",idColumn:"memberId",idColumn2:"P1"})
       this.toName({page:'lawyer_case',populateColumn:"caseName",idColumn:"caseId",idColumn2:"P1"})
+      // 如果有新消息，保存所有新消息id
       if (this.newMsgList.length>0) {
         this.newMsgList.forEach(msg=>{
         this.msgIdList.push(msg.P1)
       })
+      // 将所有新消息设置为已读
         this.modifyMsg()
       }
     },
+    // 将新消息设置为已读的方法
       async modifyMsg(){
         let {data} = await axios({
         //请求接口
@@ -81,13 +86,13 @@ export default {
           modifyJson: {read:1}
           }
       });
+      // 将新消息数量保存到vuex中
       this.$store.commit("setUnReadCount",undefined);
       }
   },
   mounted(){
+    // 页面加载完成之后获取新消息列表
     this.getUnReadMsg()
-    console.log(util.ajaxPopulate);
-    
   }
 };
 </script>

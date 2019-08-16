@@ -312,13 +312,13 @@ initRecursionProp() {
     },
     //初始化表单函数
     initForm() {
-      console.log("this.docGet", this.docGet);
+      // console.log("this.docGet", this.docGet);
       if (this.docGet) {
         //ajax获取到的表单数据存在
         let jsonData = {};
         this.cf.formItems.forEach(itemEach => {
           //循环：{表单字段配置数组}
-          console.log("this.docGet#######", this.docGet);
+          // console.log("this.docGet#######", this.docGet);
           jsonData[itemEach.prop] = this.docGet[itemEach.prop];
          
         });

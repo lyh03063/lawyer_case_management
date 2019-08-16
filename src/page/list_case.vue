@@ -2,17 +2,19 @@
   <div class>
     <listData :cf="cfList" @afterModify="modify">
       <template v-slot:customDetail="{detailData}">
+        <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
       </template>
       <template v-slot:slot_form_item_memberIdList="{formData}">
+        <!-- 引入穿梭框组件，注意权限问题 如果是超级管理员，则可以修改,如果是案件负责人，可以修改  不是就只能读取-->
         <msgTransfer
           v-model="formData.collaborator"
           url="/crossList?page=lawyer_member"
           keyValue="name"
-          v-if="userId==''||userId==formData.P1"
+          v-if="superAdmin||userId==formData.createPerson"
         ></msgTransfer>
         <div v-else>
-          {{createUser}}</div>
+          <id_to_name url="/crossList?page=lawyer_member" v-model="formData.collaborator" keyValue="user"></id_to_name></div>
       </template>
       <template v-slot:slot_form_item_createPerson="{formData}">
         <select_ajax
@@ -21,10 +23,10 @@
           keyLabel="name"
           keyValue="P1"
           ajaxUrl="/crossList?page=lawyer_member"
-          v-if="userId==''||userId==formData.P1"
+          v-if="superAdmin||userId==formData.createPerson"
         ></select_ajax>
         <div v-else>
-          <id_to_name v-model="formData.createPerson" url="/crossList?page=lawyer_member" keyValue="user"></id_to_name>
+          <id_to_name url="/crossList?page=lawyer_member" v-model="formData.createPerson" keyValue="user"></id_to_name>
         </div>
       </template>
     </listData>
@@ -35,11 +37,13 @@ import listData from "@/components/list-data/list-data.vue";
 import case_detail_dialogs from "@/components/case_detail_dialogs";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
+import id_to_name from '../components/id_to_name'
 import { async } from 'q';
 
 export default {
-  components: { listData, case_detail_dialogs, msgTransfer,select_ajax },
+  components: { listData, case_detail_dialogs, msgTransfer,select_ajax,id_to_name },
    methods: {
+    //  将案件状态转换成文字状态的方法
     caseStatusToname(status){
       switch (status) {
                 case 1:
@@ -71,39 +75,55 @@ export default {
                   break;
               }
     },
+    // 修改案件之后触发的回调方法
     modify(newdata,olddata){
+      // 如果案件状态改变的话，修改新消息数据，新消息变更类型,变更前后状态，发送消息的会员id，以及案件id
       if(newdata.status!=olddata.status){
         this.addMsgData.change[0].type = 1;
         this.addMsgData.change[0].before = this.caseStatusToname(olddata.status);
         this.addMsgData.change[0].after = this.caseStatusToname(newdata.status);
-        this.addMsgData.memberId = newdata.createPerson
+        this.addMsgData.memberId = localStorage.userId
         this.addMsgData.caseId = newdata.P1;
+        // 如果案件有协作者，当协作者不是发送消息的或者不是负责人，就为其发送消息
+        // 每个消息对象保存在addMsglist中
         if (newdata.collaborator) {
          newdata.collaborator.forEach(memberId => {
-           if (memberId!=newdata.createPerson) {
+           if (memberId!=this.addMsgData.memberId) {
+              if (memberId!=newdata.createPerson) {
              this.addMsgData.receiveMemberId = memberId
+             let addData = JSON.parse(JSON.stringify(this.addMsgData))
+             this.addMsglist.push(addData);
+              }
+           }
+          //  如果案件的负责人不是消息的发送人,就为其发送消息
+           if (newdata.createPerson!=this.addMsgData.memberId) {
+              this.addMsgData.receiveMemberId = newdata.createPerson
              let addData = JSON.parse(JSON.stringify(this.addMsgData))
              this.addMsglist.push(addData);
            }
        })
       }
+      // 新增消息的方法
       this.addMsg();
       }
     },
+    // 调用接口，新增消息
     async addMsg(){
       let { data } = await axios({
         //请求接口
         method: "post",
         url: PUB.domain + '/crossAdd?page=lawyer_msg',
-        data: { data: this.addMsglist} 
+        data: { data: this.addMsglist} //所有新消息对象传递给接口
       });
     }
   },
   data() {
     return {
+      // 新消息对象的默认状态
       addMsgData:{read:0,change:[{type:'',before:'',after:''}],memberId:'',caseId:'',receiveMemberId:''},
-      addMsglist:[],
-      userId: localStorage.userId,
+      addMsglist:[],//保存每个新消息对象的数组
+      userId: localStorage.userId,//保存当前用户登录的id
+      superAdmin:false,//是否是超级超级员登录
       cfList: {
         customDetail: true, //使用自定义详情插槽
         // col_span:240,
@@ -423,6 +443,10 @@ export default {
 
  
   mounted(){
+    // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
+    if (localStorage.superAdmin=1) {
+      this.superAdmin = true
+    }
   }
 };
 </script>

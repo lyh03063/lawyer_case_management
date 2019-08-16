@@ -13,7 +13,7 @@ export default {
       addMsg(data){
        this.addMsgData.change[0].fileId = data.P1
        this.addMsgData.caseId = data.caseId
-       this.addMsgData.memberId = data.memberId
+       this.addMsgData.memberId = localStorage.userId
        this.getMerberId(data.caseId)
      },
     //  通过案件id先获取案件负责人及协作者
@@ -29,15 +29,21 @@ export default {
       // 如果有协作者就为每一个协作者创建对应的消息对象,保存在addMsglist中
       if (data.list[0].collaborator) {
          data.list[0].collaborator.forEach(memberId => {
-           if (memberId!=data.list[0].createPerson) {
+           if (memberId!=this.addMsgData.memberId) {
+              if (memberId!=data.list[0].createPerson) {
              this.addMsgData.receiveMemberId = memberId
              let addData = JSON.parse(JSON.stringify(this.addMsgData))
              this.addMsglist.push(addData);
+              }
            }
        })
       }
       // 创建负责人消息对象，保存在addMsglist中
-      
+      if (data.list[0].createPerson!=this.addMsgData.memberId) {
+              this.addMsgData.receiveMemberId = data.list[0].createPerson
+             let addData = JSON.parse(JSON.stringify(this.addMsgData))
+             this.addMsglist.push(addData);
+           }
       await axios({
         //请求接口,新建消息
         method: "post",
@@ -50,8 +56,9 @@ export default {
   },
   data() {
     return {
+      // 新消息对象的默认状态
       addMsgData:{read:0,change:[{type:3,fileId:''}],memberId:'',caseId:'',receiveMemberId:''},
-      addMsglist:[],
+      addMsglist:[],//保存所有新消息对象的数组
       cfList: {
         listIndex: "list_accessory", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
