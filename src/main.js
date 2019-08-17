@@ -28,6 +28,8 @@ import  "./assets/js/mix.js";//注意位置要提前
 
 
 
+import dm_components from "dmagic-components";
+Vue.use(dm_components);
 
 
 

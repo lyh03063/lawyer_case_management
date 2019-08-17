@@ -67,21 +67,21 @@
     </el-row>
     <!-- 新增备注弹窗 -->
     <el-dialog title="新增" :visible.sync="showAddRemark" width="60%" append-to-body>
-        <dynamicForm v-model="remarkAdd" :cf="cfRemarkAdd" @submit="addRemark" @cancel="showAddRemark=false">
+        <dm_dynamic_form v-model="remarkAdd" :cf="cfRemarkAdd" @submit="addRemark" @cancel="showAddRemark=false">
         <template v-slot:[item.slot]="{formData}" v-for="item in cfRemarkAdd.formItems">
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
           <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         </template>
-      </dynamicForm>
+      </dm_dynamic_form>
     </el-dialog>
     <!-- 新增附件弹窗 -->
     <el-dialog title="新增" :visible.sync="showAddAccessory" width="60%" append-to-body>
-        <dynamicForm v-model="accessoryAdd" :cf="cfAccessoryAdd" @submit="addAccessory" @cancel="showAddAccessory=false">
+        <dm_dynamic_form v-model="accessoryAdd" :cf="cfAccessoryAdd" @submit="addAccessory" @cancel="showAddAccessory=false">
         <template v-slot:[item.slot]="{formData}" v-for="item in cfAccessoryAdd.formItems">
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
           <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         </template>
-      </dynamicForm>
+      </dm_dynamic_form>
     </el-dialog>
   </div>
 </template>
@@ -89,10 +89,9 @@
 <script>
 import listData from "@/components/list-data/list-data.vue";
 import remarkDetail from "@/components/remark_detail";
-import dynamicForm from '@/components/list-data/dynamic-form';
 import accessory_detail from '@/components/accessory_detail'
 export default {
-  components: { listData, remarkDetail,dynamicForm ,accessory_detail},
+  components: { listData, remarkDetail,accessory_detail},
   props: {
     caseMsg: Object//父组件传过来的案件信息
   },

@@ -57,12 +57,12 @@
 
       <br>
 
-      <dynamicForm v-model="formAdd" :cf="cfFormAdd" @submit="addData" @cancel="closeDialogAddFun">
+      <dm_dynamic_form v-model="formAdd" :cf="cfFormAdd" @submit="addData" @cancel="closeDialogAddFun">
         <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
           <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         </template>
-      </dynamicForm>
+      </dm_dynamic_form>
     </el-dialog>
 
     <!--修改数据表单弹窗-->
@@ -76,7 +76,7 @@
       <debug_list level-up="1">
         <debug_item v-model="formModify" text="修改表单的绑定数据"/>
       </debug_list>
-      <dynamicForm
+      <dm_dynamic_form
         v-model="formModify"
         :cf="cfFormModify"
         @submit="modifyData"
@@ -86,17 +86,17 @@
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
           <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         </template>
-      </dynamicForm>
+      </dm_dynamic_form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import dynamicForm from "./dynamic-form";
+
 export default {
   components: {
     //注册组件
-    dynamicForm
+
   },
   props: ["cf"],
 

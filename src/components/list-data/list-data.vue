@@ -7,7 +7,7 @@
     </el-breadcrumb>
 
     <div class="search-form-box MT12" v-if="cf.isShowSearchForm">
-      <dynamicForm @submit1="searchList" :cf="cfSearchForm" v-model="Objparma.findJson"></dynamicForm>
+      <dm_dynamic_form @submit1="searchList" :cf="cfSearchForm" v-model="Objparma.findJson"></dm_dynamic_form>
     </div>
 
     <el-row size="mini" class="MT10" v-if="cf.isShowToolBar">
@@ -141,10 +141,10 @@
 <script>
 import Vue from "vue";
 import listDialogs from "./list-dialogs";
-import dynamicForm from "./dynamic-form";
+
 import { log } from "util";
 export default {
-  components: { listDialogs, dynamicForm }, //注册组件
+  components: { listDialogs }, //注册组件
   props: {
     cf: {
       //列表的配置
