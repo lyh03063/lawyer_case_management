@@ -19,7 +19,8 @@ export default {
         twoTitle: "消息",
         flag:true,
         dynamicDict: [{ page: "lawyer_member",populateColumn: "memberName", idColumn: "memberId", idColumn2: "P1" },
-        { page: "lawyer_case",populateColumn: "caseName", idColumn: "caseId", idColumn2: "P1" },],
+        { page: "lawyer_case",populateColumn: "caseName", idColumn: "caseId", idColumn2: "P1" },
+        { page: "lawyer_member",populateColumn: "receiveName", idColumn: "receiveMemberId", idColumn2: "P1" },],
         url: {
           list: "/crossList?page=lawyer_msg", //列表接口
           add: "/crossAdd?page=lawyer_msg", //新增接口
@@ -48,7 +49,22 @@ export default {
           {
             label: "变更内容",
             prop: "change",
-            width: 300
+            width: 300,
+            formatter:(data)=>{
+               if (data.memberName&&data.caseName) {
+              switch (data.change[0].type) {
+                case 1:
+                  return data.memberName.user+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
+                case 2:
+                  return data.memberName.user+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
+                case 3:
+                  return data.memberName.user+"在"+data.caseName.name+"案件上传了新的附件，"+"备注的id是"+data.change[0].fileId
+                default:
+                  return "无"
+                  break;
+              }
+            }
+            }
           },
           {
             label: "创建时间",
@@ -56,12 +72,22 @@ export default {
             width: 150
           },
           {
-            label: "会员",
+            label: "发送会员",
             prop: "memberName",
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
                 return data.memberName.user
+              }
+            }
+          },
+          {
+            label: "接收会员",
+            prop: "receiveName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.receiveName) {
+                return data.receiveName.user
               }
             }
           },
@@ -85,10 +111,15 @@ export default {
             type: "input"
           },
           {
-            label: "案件id",
+            label: "案件名称",
             prop: "caseId",
-            type: "input"
-          }
+            type: "select",
+             ajax: {
+              url: "/crossList?page=lawyer_case",
+              keyLabel: "name",
+              keyValue: "P1"
+            }
+          },
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -100,7 +131,22 @@ export default {
           {
             label: "变更内容",
             prop: "change",
-            width: 300
+            width: 300,
+            formatter:(data)=>{
+              if (data.memberName&&data.caseName) {
+                switch (data.change[0].type) {
+                case 1:
+                  return data.memberName.user+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
+                case 2:
+                  return data.memberName.user+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
+                case 3:
+                  return data.memberName.user+"在"+data.caseName.name+"案件上传了新的附件，"+"备注的id是"+data.change[0].fileId
+                default:
+                  return "无"
+                  break;
+              }
+              }
+            }
           },
           {
             label: "创建时间",
@@ -114,6 +160,16 @@ export default {
             formatter:(data)=>{
               if (data.memberName) {
                 return data.memberName.user
+              }
+            }
+          },
+          {
+            label: "接收会员",
+            prop: "receiveName",
+            width: 100,
+            formatter:(data)=>{
+              if (data.receiveName) {
+                return data.receiveName.user
               }
             }
           },
@@ -136,7 +192,7 @@ export default {
             type: "select",
             options:[
               { value: 1, label: "已读" },
-              { value: 2, label: "未读" },
+              { value: 0, label: "未读" },
             ]
           },
          {

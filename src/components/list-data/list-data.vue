@@ -7,7 +7,7 @@
     </el-breadcrumb>
 
     <div class="search-form-box MT12" v-if="cf.isShowSearchForm">
-      <dynamicForm @submit1="searchList" :cf="cfSearchForm" v-model="Objparma.findJson"></dynamicForm>
+      <dm_dynamic_form @submit1="searchList" :cf="cfSearchForm" v-model="Objparma.findJson"></dm_dynamic_form>
     </div>
 
     <el-row size="mini" class="MT10" v-if="cf.isShowToolBar">
@@ -115,8 +115,8 @@
     <listDialogs
       ref="listDialogs"
       :cf="cf"
-      @after-add="$emit('after-add')"
-      @after-modify="$emit('after-modify')"
+      @afterAdd="(data)=>{$emit('afterAdd',data)}"
+      @afterModify="(newdata,olddata)=>{$emit('afterModify',newdata,olddata)}"
       @after-delete="$emit('after-delete')"
     >
       <template v-slot:[item.slot]="{row}" v-for="item in cf.detailItems">
@@ -141,10 +141,10 @@
 <script>
 import Vue from "vue";
 import listDialogs from "./list-dialogs";
-import dynamicForm from "./dynamic-form";
+
 import { log } from "util";
 export default {
-  components: { listDialogs, dynamicForm }, //注册组件
+  components: { listDialogs }, //注册组件
   props: {
     cf: {
       //列表的配置
@@ -343,16 +343,19 @@ export default {
 
     this.Objparma.findJson = findJsonDefault;
     // 如果是普通会员登录，需要将其id传过去，让接口只显示与其有关的数据
-    if (this.cf.url.list == "/crossList?page=lawyer_case") {
-      if (localStorage.superAdmin == 1) {
-      } else {
+    if(localStorage.commonMerber == 1){
+      if (this.cf.url.list == "/crossList?page=lawyer_case") {
         this.Objparma.findJson.$or = [
           { createPerson: localStorage.userId },
           { collaborator: localStorage.userId - 0 }
         ];
+      } else {
+        this.Objparma.findJson.memberId = localStorage.userId;
       }
-    } else {
-      this.Objparma.findJson.memberId = localStorage.userId;
+    }
+    // 如果有需要传值
+    if (this.cf.findJson) {
+      this.Objparma.findJson[this.cf.findJson.type]=this.cf.findJson.value
     }
     this.Objparma.sortJson = this.cf.sortJsonDefault;
 

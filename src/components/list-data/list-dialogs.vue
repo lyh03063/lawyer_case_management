@@ -5,7 +5,7 @@
       title="查看详情"
       :visible.sync="isShowDialogDetail"
       v-if="isShowDialogDetail"
-      width="80%"
+      :width="cf.width||'80%'"
       :before-close="closeDialogDetailFun"
       :append-to-body="true"
     >
@@ -44,7 +44,7 @@
       title="新增数据"
       :visible.sync="isShowDialogAdd"
       v-if="isShowDialogAdd"
-      width="80%"
+      :width="cf.width||'80%'"
       :before-close="closeDialogAddFun"
       :append-to-body="true"
     >
@@ -57,12 +57,12 @@
 
       <br>
 
-      <dynamicForm v-model="formAdd" :cf="cfFormAdd" @submit="addData" @cancel="closeDialogAddFun">
+      <dm_dynamic_form v-model="formAdd" :cf="cfFormAdd" @submit="addData" @cancel="closeDialogAddFun">
         <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
           <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         </template>
-      </dynamicForm>
+      </dm_dynamic_form>
     </el-dialog>
 
     <!--修改数据表单弹窗-->
@@ -70,13 +70,13 @@
       title="修改数据"
       :visible.sync="isShowDialogModify"
       v-if="isShowDialogModify"
-      width="80%"
+      :width="cf.width||'80%'"
       :append-to-body="true"
     >
       <debug_list level-up="1">
         <debug_item v-model="formModify" text="修改表单的绑定数据"/>
       </debug_list>
-      <dynamicForm
+      <dm_dynamic_form
         v-model="formModify"
         :cf="cfFormModify"
         @submit="modifyData"
@@ -86,17 +86,17 @@
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
           <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         </template>
-      </dynamicForm>
+      </dm_dynamic_form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import dynamicForm from "./dynamic-form";
+
 export default {
   components: {
     //注册组件
-    dynamicForm
+
   },
   props: ["cf"],
 
@@ -123,6 +123,7 @@ export default {
       formAdd: {}, //新增数据的表单数据
       formModify: {}, //修改数据的表单数据
       isShowDialogModify: false, //是否显示修改弹窗
+      beforeModify:{},//修改前数据
       editorOption: {
         //编辑器的配置
         modules: {
@@ -203,8 +204,7 @@ export default {
           if (this.cf.isRefreshAfterCUD) {
             this.$parent.getDataList(); //更新数据列表
           }
-
-          this.$emit("after-modify"); //触发外部事件
+          this.$emit("afterModify",this.formModify,this.beforeModify); //触发外部事件      
         })
         .catch(function(error) {
           alert("异常:" + error);
@@ -222,7 +222,8 @@ export default {
           this.$message({
             message: "新增成功",
             duration: 1500,
-            type: "success"
+            type: "success",
+            
           });
           this.closeDialogAddFun(); //关闭弹窗
           //如果{增删改操作后是否自动刷新}为真
@@ -230,7 +231,10 @@ export default {
             this.$parent.getDataList(); //更新数据列表
           }
           this.initFormDataAdd(); //调用：{初始化新增数据表单函数}
-          this.$emit("after-add"); //触发外部事件
+          this.$emit("afterAdd",response.data.addData); //触发外部事件
+          // console.log(1111);
+          
+          this.formAdd={}
         })
         .catch(function(error) {
           alert("异常:" + error);
@@ -238,6 +242,7 @@ export default {
     },
     //-------------显示修改弹窗的函数--------------
     showModify(row) {
+      this.beforeModify = row
       let str = JSON.stringify(row); //转换成字符串
       let rowNew = JSON.parse(str); //转换成对象
 
@@ -247,7 +252,9 @@ export default {
       this.dataIdModify = rowNew.P1;
     }
   },
-  mounted() {}
+  mounted() {
+    
+  }
 };
 </script>
 

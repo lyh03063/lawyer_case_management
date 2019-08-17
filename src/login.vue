@@ -106,7 +106,7 @@ export default {
         // 如果是超级管理员登录
           if(arr[0].role==1) {
             // 超级管理员可以看到所有页面,所以不用设置id
-            localStorage.userId="",
+            localStorage.userId=arr[0].P1,
             // 超级管理员登录为1
             localStorage.superAdmin=1
           }else{
