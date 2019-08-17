@@ -109,45 +109,30 @@ export default {
           show:false
         },
         
-        {
-          index: "4",
-          icon: "el-icon-setting",
-          title: "demo页面",
-          menuItem: [
-            {
-              index: "dynamic_form_demo",
-              route: "/dynamic_form_demo",
-              title: "动态表单demo"
-            },
-            {
-              index: "demo_common",
-              route: "/demo_common",
-              title: "普通组件demo"
-            }
-          ]
-        }
+        // {
+        //   index: "4",
+        //   icon: "el-icon-setting",
+        //   title: "demo页面",
+        //   menuItem: [
+        //     {
+        //       index: "dynamic_form_demo",
+        //       route: "/dynamic_form_demo",
+        //       title: "动态表单demo"
+        //     },
+        //     {
+        //       index: "demo_common",
+        //       route: "/demo_common",
+        //       title: "普通组件demo"
+        //     }
+        //   ]
+        // }
       ]
     };
   },
   created() {
     //*引用当前用户名
     this.currentUserName = localStorage.loginUserName;
-    document.onkeydown = e => {
-      //绑定ctrl+D事件
-      var keyCode = e.keyCode || e.which || e.charCode;
-      var ctrlKey = e.ctrlKey || e.metaKey;
-      if (ctrlKey && keyCode == 68) {
-        console.log("ctrlKey", ctrlKey);
-        console.log("keyCode", keyCode);
-        // this.toggleDebug();//调用：{切换调试模式函数}
-
-        let debug = this.$store.state.debug;
-        console.log("debug", debug);
-        this.$store.commit("setDebug", !debug);
-        e.preventDefault(); //阻止默认事件
-        return false;
-      }
-    };
+    
   },
   mounted(){
     // 如果是普通会员登录,隐藏会员导航栏
