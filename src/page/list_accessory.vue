@@ -37,6 +37,8 @@ export default {
               }
            }
        })
+      }else{
+        return false
       }
       // 创建负责人消息对象，保存在addMsglist中
       if (data.list[0].createPerson!=this.addMsgData.memberId) {

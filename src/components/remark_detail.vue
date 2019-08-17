@@ -6,20 +6,24 @@
           <div v-if="(!showAll)&&index==2" @click="showAll=true" class="all-remark">查看所有备注</div>
           <div v-if="showAll" class="remarkDetail-box">
             <div class="remarkContent">
-              <div class="button-box">
+              <div class="button-box"  v-if="userID==item.memberId">
                 <el-button plain size="mini" v-if="!showModify[index].show" @click="modifyRemark(index)">修改</el-button>
                 <el-button plain size="mini" v-if="showModify[index].show" @click="saveRemark(index,item)">保存</el-button>
                 <el-button plain size="mini" >删除</el-button>
               </div>
               <table >
                 <tr>
+                  <td>备注内容：</td>
+                  <td v-if="!modifyContent[index].show">{{item.content}}</td>
+                  <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入备注" size="mini" type="textarea"></el-input></td>
+                </tr>
+                <tr>
                   <td>备注人：</td>
                   <td>{{item.memberName?item.memberName.user:''}}</td>
                 </tr>
                 <tr>
-                  <td>备注内容：</td>
-                  <td v-if="!modifyContent[index].show">{{item.content}}</td>
-                  <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入备注" size="mini" type="textarea"></el-input></td>
+                  <td>创建时间:：</td>
+                  <td>{{item.CreateTime}}</td>
                 </tr>
               </table>
             </div>
@@ -28,21 +32,25 @@
         </div>
         <div v-else class="remarkDetail-box">
           <div class="remarkContent">
-            <div class="button-box">
+            <div class="button-box"  v-if="userID==item.memberId">
                 <el-button plain size="mini" v-if="!showModify[index].show" @click="modifyRemark(index)">修改</el-button>
                 <el-button plain size="mini" v-if="showModify[index].show" @click="saveRemark(index,item)">保存</el-button>
                 <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
           </div>
             <table>
               <tr>
-                <td>备注人：</td>
-                <td>{{item.memberName?item.memberName.user:''}}</td>
-              </tr>
-              <tr>
                 <td>备注内容：</td>
                 <td v-if="!modifyContent[index].show">{{item.content}}</td>
                 <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入备注" size="mini" type="textarea"></el-input></td>
               </tr>
+              <tr>
+                <td>备注人：</td>
+                <td>{{item.memberName?item.memberName.user:''}}</td>
+              </tr>
+              <tr>
+                  <td>创建时间:：</td>
+                  <td>{{item.CreateTime}}</td>
+                </tr>
             </table>
           </div>
         </div>
@@ -59,7 +67,7 @@ export default {
   },
   data() {
     return {
-      
+      userID:localStorage.userId,
       showAll: false,//显示所有数据的index
       showModify:[],//保存每个修改保存按钮是否显示的index数组
       modifyContent:[],//保存每个修改内容文本域是否显示的index数组

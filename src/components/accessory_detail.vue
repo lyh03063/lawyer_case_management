@@ -6,18 +6,22 @@
           <div v-if="(!showAll)&&index==2" @click="showAll=true" class="all-remark">查看所有附件</div>
           <div v-if="showAll" class="remarkDetail-box">
             <div class="remarkContent">
-              <div class="button-box">
+              <div class="button-box" v-if="userID==item.memberId">
                 <el-button plain size="mini" >详情</el-button>
                 <el-button plain size="mini" >删除</el-button>
               </div>
               <table >
                 <tr>
+                  <td>附件名字：</td>
+                  <td >{{item.name}}</td>
+                </tr>
+                <tr>
                   <td>上传会员：</td>
                   <td>{{item.memberName?item.memberName.user:''}}</td>
                 </tr>
                 <tr>
-                  <td>附件名字：</td>
-                  <td >{{item.name}}</td>
+                  <td>创建时间:：</td>
+                  <td>{{item.CreateTime}}</td>
                 </tr>
               </table>
             </div>
@@ -26,19 +30,23 @@
         </div>
         <div v-else class="remarkDetail-box">
           <div class="remarkContent">
-            <div class="button-box">
+            <div class="button-box" v-if="userID==item.memberId">
                 <el-button plain size="mini"  >详情</el-button>
                 <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
           </div>
             <table>
               <tr>
+                <td>附件名字：</td>
+                <td>{{item.name}}</td>
+              </tr>
+              <tr>
                 <td>上传会员：</td>
                 <td>{{item.memberName?item.memberName.user:''}}</td>
               </tr>
               <tr>
-                <td>附件名字：</td>
-                <td>{{item.name}}</td>
-              </tr>
+                  <td>创建时间:：</td>
+                  <td>{{item.CreateTime}}</td>
+                </tr>
             </table>
           </div>
         </div>
@@ -55,6 +63,7 @@ export default {
   },
   data() {
     return {
+      userID:localStorage.userId,
       showAll: false,//显示所有数据的index
       accessoryList: []//附件列表数据
     };

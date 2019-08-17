@@ -12,7 +12,9 @@
           url="/crossList?page=lawyer_member"
           keyValue="name"
           v-if="superAdmin||userId==formData.createPerson"
-        ></msgTransfer>
+          :showName="true"
+        >
+        </msgTransfer>
         <div v-else>
           <id_to_name
             url="/crossList?page=lawyer_member"
@@ -303,7 +305,7 @@ export default {
           {
             label: "协作者",
             prop: "collaborator",
-            type: "jsonEditor",
+            // type: "jsonEditor",
             slot: "slot_form_item_memberIdList"
           },
           
