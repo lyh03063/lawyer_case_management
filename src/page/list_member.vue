@@ -39,11 +39,11 @@ export default {
             prop: "name",
             width: 100
           },
-           {
-            label: "密码",
-            prop: "password",
-            width: 120
-          },
+          //  {
+          //   label: "密码",
+          //   prop: "password",
+          //   width: 120
+          // },
           {
             label: "案件数",
             prop: "caseCount",
