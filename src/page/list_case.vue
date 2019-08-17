@@ -21,7 +21,7 @@
           ></id_to_name>
         </div>
       </template>
-      <template v-slot:slot_form_item_createPerson="{formData}">
+      <!-- <template v-slot:slot_form_item_createPerson="{formData}">
         <select_ajax
           class
           v-model="formData.createPerson"
@@ -37,7 +37,7 @@
             keyValue="user"
           ></id_to_name>
         </div>
-      </template>
+      </template> -->
     </listData>
   </div>
 </template>
@@ -155,6 +155,9 @@ export default {
         twoTitle: "案件",
         threeTitle: "案件列表",
         flag: true,
+        formDataAddInit:{//新增表单的初始数据
+          createPerson: Number(localStorage.userId)
+        },
         dynamicDict: [
           {
             page: "lawyer_member",
@@ -286,12 +289,12 @@ export default {
 
         //-------新增、修改表单字段数组-------
         formItems: [
-          {
-            label: "创建人",
-            prop: "createPerson",
-            type: "select",
-            slot: "slot_form_item_createPerson"
-          },
+          // {
+          //   label: "创建人",
+          //   prop: "createPerson",
+          //   type: "select",
+          //   slot: "slot_form_item_createPerson"
+          // },
           {
             label: "案件名称",
             prop: "name",
