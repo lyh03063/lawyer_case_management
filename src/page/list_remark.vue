@@ -39,6 +39,8 @@ export default {
              }
            }
        })
+      }else{
+        return false
       }
        if (data.list[0].createPerson!=this.addMsgData.memberId) {
               this.addMsgData.receiveMemberId = data.list[0].createPerson

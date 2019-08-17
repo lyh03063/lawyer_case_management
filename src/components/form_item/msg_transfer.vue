@@ -1,7 +1,11 @@
 <template>
   <div class>
-    <div><span class="MR20">已指定的id数组：{{memberIdList}}</span>
+    <div>
+      <span class="MR20" v-if="showName">{{memberNameList}}</span>
+      <span class="MR20" v-else>{{memberIdList}}</span>
+      <div class="button-box">
       <el-button plain @click="showTransfer = true" >修改</el-button>
+      </div>
     </div>
     <el-dialog title="提示" :visible.sync="showTransfer" width="50%" :append-to-body="true">
       <el-transfer
@@ -34,10 +38,15 @@ export default {
       //父组件传过来的搜索key
       type: String,
       default: "name"
+    },
+    showName:{
+      type:Boolean,
+      default:false
     }
   },
   data() {
     return {
+      memberNameList:[],
       showTransfer: false,
       param: {},
       search: "", //搜索框搜索的内容
@@ -54,8 +63,22 @@ export default {
       // 根据用户输入的姓名连接接口请求数据
       this.getMenber(event);
     },
-    value: function(newdoc, olddoc) {
-      console.log(newdoc, olddoc);
+    value: async function() {
+      if (this.showName) {
+        let { data } = await axios({
+          //请求接口
+          method: "post",
+          url: PUB.domain + "/crossList?page=lawyer_member",
+          data: {
+            findJson:{P1:this.memberIdList}
+          }
+        })
+        this.memberNameList=[],
+        data.list.forEach((member)=>{
+          this.memberNameList.push(member.name)
+        })
+        this.memberNameList.join();
+      }
     }
   },
   methods: {
@@ -138,16 +161,28 @@ export default {
       this.$emit("input", this.memberIdList); //触发双向绑定
     }
   },
-  mounted() {
+  async mounted() {
     // 页面加载就调用此方法，参数才不会为空
     this.getMenber();
-    console.log(this.value);
+    if (this.showName) {
+        let { data } = await axios({
+          //请求接口
+          method: "post",
+          url: PUB.domain + "/crossList?page=lawyer_member",
+          data: {
+            findJson:{P1:this.memberIdList}
+          }
+        });
+        this.memberNameList=[],
+        data.list.forEach((member)=>{
+          this.memberNameList.push(member.name)
+        })
+        
+      }
   }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.transferDialog{
 
-}
 </style>

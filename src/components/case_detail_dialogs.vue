@@ -4,9 +4,7 @@
       <debug_item v-model="caseMsg" text="案件信息" />
       <debug_item v-model="caseMsg.P1" text="测试的对象" />
     </debug_list>
-    <el-row class>
-      <el-col :span="1" class="H100"></el-col>
-      <el-col :span="22" class="case-box">
+      <div class="case-box">
         <div class="subfield">案件基本信息</div>
         <el-row>
           <el-col :span="22" class="case-box-left">
@@ -63,8 +61,7 @@
         <div>
           <accessory_detail :caseMsg="caseMsg" ref="accessoryDetail"></accessory_detail>
         </div>
-      </el-col>
-    </el-row>
+      </div>
     <!-- 新增备注弹窗 -->
     <el-dialog title="新增" :visible.sync="showAddRemark" width="60%" append-to-body>
         <dm_dynamic_form v-model="remarkAdd" :cf="cfRemarkAdd" @submit="addRemark" @cancel="showAddRemark=false">
@@ -128,6 +125,8 @@ export default {
              }
            }
        })
+      }else{
+        return false
       }
       // 当案件负责人不是消息发送人时，对其发送消息
        if (this.caseMsg.createPerson!=this.addMsgData.memberId) {
@@ -170,6 +169,8 @@ export default {
              }
            }
        })
+      }else{
+        return false
       }
       // 当案件负责人不是消息发送人时，对其发送消息
        if (this.caseMsg.createPerson!=this.addMsgData.memberId) {
@@ -333,6 +334,8 @@ export default {
 </script>
 <style scoped>
 .case-box {
+  margin-left:30px;
+  margin-right: 10px;
   font-size: 14px;
 }
 
@@ -362,7 +365,7 @@ export default {
 }
 .button-box {
   float: right;
-  margin-right: 30px;
+  margin-right: 10px;
 }
 </style>
 
