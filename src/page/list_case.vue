@@ -184,7 +184,7 @@ export default {
           {
             label: "案件名称",
             prop: "name",
-            width: 150
+            width:250
           },
           // {
           //   label: "案件描述",
@@ -349,7 +349,7 @@ export default {
             prop: "plaintiffInfo",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span: 240,
+              col_span: 12,
               formItems: [
                 {
                   label: "单位名称",
@@ -367,7 +367,7 @@ export default {
             prop: "defendantInfo",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span: 240,
+              col_span: 12,
               formItems: [
                 {
                   label: "单位名称",
@@ -385,7 +385,7 @@ export default {
             prop: "firstInstanceInfo",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span: 120,
+              col_span: 12,
               formItems: [
                 {
                   label: "单位",
@@ -411,7 +411,7 @@ export default {
             prop: "guaranteeInfo",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span: 120,
+              col_span: 12,
               formItems: [
                 {
                   label: "单位",
@@ -434,7 +434,7 @@ export default {
             prop: "secondInstanceInfo",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span: 120,
+              col_span: 12,
               formItems: [
                 {
                   label: "单位",
@@ -460,7 +460,7 @@ export default {
             prop: "executionInfo",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
-              col_span: 120,
+              col_span: 12,
               formItems: [
                 {
                   label: "单位",
