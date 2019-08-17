@@ -77,7 +77,8 @@ export default {
         data.list.forEach((member)=>{
           this.memberNameList.push(member.name)
         })
-        this.memberNameList.join();
+        this.memberNameList=this.memberNameList.join();
+        
       }
     }
   },
@@ -177,7 +178,7 @@ export default {
         data.list.forEach((member)=>{
           this.memberNameList.push(member.name)
         })
-        
+        this.memberNameList=this.memberNameList.join();
       }
   }
 };
