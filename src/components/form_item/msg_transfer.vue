@@ -117,7 +117,7 @@ export default {
           //请求接口
           method: "post",
           url: PUB.domain + this.url,
-          data: {findJson:{P1: { "$ne" : localStorage.userId}}}
+          data: {}
         });
         this.memberList = this.transferData(data.list);
       }
