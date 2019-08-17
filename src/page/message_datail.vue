@@ -95,7 +95,7 @@ export default {
         data: {
           findJson: {
             receiveMemberId: localStorage.userId,
-            // read: "0"
+            read: "0"//未读
           }
         }
       });
