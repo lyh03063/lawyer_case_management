@@ -9,7 +9,7 @@
             <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg"></span>
             </el-badge>
             <span class="MR10 ML20">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
-            <a href="javascript:;" class="MR10" @click="logout">退出登录</a>
+            <a href="javascript:;" class="MR10" @click="logout" style="color:#fff">退出登录</a>
           </div>
         </el-row>
       </el-header>
