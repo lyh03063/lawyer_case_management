@@ -3,9 +3,7 @@
     <div>
       <span class="MR20" v-if="showName">{{memberNameList}}</span>
       <span class="MR20" v-else>{{memberIdList}}</span>
-      <div class="button-box">
       <el-button plain @click="showTransfer = true" >修改</el-button>
-      </div>
     </div>
     <el-dialog title="提示" :visible.sync="showTransfer" width="50%" :append-to-body="true">
       <el-transfer
