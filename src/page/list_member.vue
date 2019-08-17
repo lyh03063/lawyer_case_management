@@ -45,25 +45,25 @@ export default {
             width: 120
           },
           {
-            label: "案件数量",
+            label: "案件数",
             prop: "caseCount",
             width: 100
           },
-          {
-            label: "上传附件数量",
-            prop: "fileCount",
-            width: 150,
-          },
-          {
-            label: "发送消息数量",
-            prop: "msgCount",
-            width: 150,
-          },       
-          {
-            label: "备注数量",
-            prop: "remarkCount",
-            width: 100
-          },
+          // {
+          //   label: "附件数",
+          //   prop: "fileCount",
+          //   width: 150,
+          // },
+          // {
+          //   label: "发送消息数量",
+          //   prop: "msgCount",
+          //   width: 150,
+          // },       
+          // {
+          //   label: "备注数量",
+          //   prop: "remarkCount",
+          //   width: 100
+          // },
           {
             label: "角色",
             prop: "role",
