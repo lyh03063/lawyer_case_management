@@ -1,9 +1,10 @@
 <template>
   <div class>
     <div>
-      <span class="MR20" v-if="showName">{{memberNameList}}</span>
-      <span class="MR20" v-else>{{memberIdList}}</span>
-      <el-button plain @click="showTransfer = true" >修改</el-button>
+      <span class="MR20" v-if="showName&&memberNameList!=''">{{memberNameList}}</span>
+      <span class="MR20" v-else-if="memberIdList">{{memberIdList}}</span>
+      <el-button plain @click="showTransfer = true" v-if="memberNameList!=''">修改</el-button>
+      <el-button plain @click="showTransfer = true" v-else>设置</el-button>
     </div>
     <el-dialog title="提示" :visible.sync="showTransfer" width="50%" :append-to-body="true">
       <el-transfer
@@ -164,6 +165,7 @@ export default {
     // 页面加载就调用此方法，参数才不会为空
     this.getMenber();
     if (this.showName) {
+      if (this.memberIdList) {
         let { data } = await axios({
           //请求接口
           method: "post",
@@ -177,6 +179,8 @@ export default {
           this.memberNameList.push(member.name)
         })
         this.memberNameList=this.memberNameList.join();
+      }
+        
       }
   }
 };
