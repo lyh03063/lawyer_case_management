@@ -1,11 +1,6 @@
-// window.pub_debug=true;//开启调试模式
 
-window.PUB={}
- // window.PUB.domain="http://120.76.160.41:3000"
-// window.PUB.domain="http://localhost:3000"
-window.PUB.domain='http://test.dmagic.cn'
-// window.PUB.domain="http://e6234kn.hn3.mofasuidao.cn"//魔法隧道地质
-// window.PUB.domain="http://120.76.160.41:3000"
+
+
 
 import Vue from 'vue'
 Vue.config.productionTip = false
@@ -17,8 +12,8 @@ window.axios = axios;
 
 import ajax from "@/assets/js/ajax.js";
 window.ajax = ajax;
-
-
+import util from "@/assets/js/util.js";
+window.util=util;
 
 
 
@@ -56,7 +51,7 @@ import login from "@/login";
 import manage from "@/manage";
 import listHome from "@/page/listHome";
 
-import util from "@/assets/js/util.js";
+
 
 
 
@@ -70,7 +65,7 @@ import list_remark from '@/page/list_remark'
 import message_datail from '@/page/message_datail'
 
 
-window.util=util;
+
 
 // 3. 创建 router 实例，然后传 `routes` 配置
 const router = new VueRouter({

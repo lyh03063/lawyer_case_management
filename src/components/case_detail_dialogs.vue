@@ -210,15 +210,20 @@ export default {
             prop: "name",
             width: 100
           },
-          {
-            label: "文件类型",
-            prop: "suffix",
-            width: 100
-          },
-          {
-            label: "文件地址",
+          // {
+          //   label: "文件类型",
+          //   prop: "suffix",
+          //   width: 100
+          // },
+          // {
+          //   label: "文件地址",
+          //   prop: "url",
+          // },
+           {
+            label: "文件上传",
             prop: "url",
-          }
+            type: "upload"
+          },
         ],
         btns: [
           { text: "新增", event: "submit", type: "primary", validate: true },
