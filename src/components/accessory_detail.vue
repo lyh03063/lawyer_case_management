@@ -12,8 +12,11 @@
               </div>
               <table >
                 <tr>
-                  <td>附件名字：</td>
-                  <td >{{item.name}}</td>
+                  <td>附件名字1：</td>
+                  <td >{{item.name}} 
+                    
+                    <a v-if="getFileUrl(item)"  target="_blank"  :href="getFileUrl(item)">下载</a>
+                     </td>
                 </tr>
                 <tr>
                   <td>上传会员：</td>
@@ -37,7 +40,8 @@
             <table>
               <tr>
                 <td>附件名字：</td>
-                <td>{{item.name}}</td>
+                <td>
+                  {{item.name}}  <a class="link-blue" v-if="getFileUrl(item)"  target="_blank"  :href="getFileUrl(item)">下载</a></td>
               </tr>
               <tr>
                 <td>上传会员：</td>
@@ -70,6 +74,16 @@ export default {
   },
 
   methods: {
+    getFileUrl(item){
+
+      let url=this.$lodash.get(item,`url[0].url`)
+      if(url){
+        url+="?attname="
+      }
+
+    return  url
+
+    },
     //   删除附件的方法 
     async deleteRemark(accessory){
       let clickStatus = await this.$confirm("确认删除该数据？", "提示", {

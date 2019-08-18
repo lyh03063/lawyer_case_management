@@ -206,9 +206,11 @@ export default {
       cfAccessoryAdd:{//给动态表单组件传过去的新增附件配置
         formItems: [
          {
-            label: "文件名",
+            label: "文件说明",
             prop: "name",
-            width: 100
+            width: 100,
+            rules: [{ required: true, message: "文件说明不能为空" }]
+
           },
           // {
           //   label: "文件类型",
@@ -222,7 +224,12 @@ export default {
            {
             label: "文件上传",
             prop: "url",
-            type: "upload"
+            type: "upload",
+            uploadConfig: {
+              limit: 1,
+              listType: "text",
+             
+            }
           },
         ],
         btns: [

@@ -7,6 +7,8 @@ Vue.config.productionTip = false
 
 import lodash from 'lodash'//导入lodash方法库
 window.lodash=lodash
+Vue.prototype.$lodash = lodash//让vue实例中可访问$store
+
 import axios from "axios";
 window.axios = axios;
 
