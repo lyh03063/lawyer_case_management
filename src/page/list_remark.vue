@@ -66,7 +66,7 @@ export default {
         listIndex: "list_remark", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
         twoTitle: "案件",
-        threeTitle: "备注",
+        threeTitle: "进展",
         flag:true,
         isShowToolBar:false,
         isShowModify:false,
@@ -82,12 +82,12 @@ export default {
         //-------列配置数组-------
         columns: [
           {
-            label: "备注id",
+            label: "进展id",
             prop: "P1",
             width: 80
           },
           {
-            label: "备注内容",
+            label: "内容",
             prop: "content",
             width: 300
           },
@@ -130,19 +130,19 @@ export default {
             }
           },
           {
-            label: "备注id",
+            label: "进展id",
             prop: "P1",
           },
         ],
         //-------详情字段数组-------
         detailItems: [
           {
-            label: "备注id",
+            label: "进展id",
             prop: "P1",
             width: 80
           },
           {
-            label: "备注内容",
+            label: "内容",
             prop: "content",
             width: 100
           },
@@ -175,7 +175,7 @@ export default {
         //-------新增、修改表单字段数组-------
         formItems: [
          {
-            label: "备注内容",
+            label: "内容",
             prop: "content",
             width: 100,
             type:"textarea"

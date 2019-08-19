@@ -3,7 +3,7 @@
     <div v-if="remarkList.length>0">
       <div v-for="(item,index) in remarkList" :key="index">
         <div v-if="index>1">
-          <div v-if="(!showAll)&&index==2" @click="showAll=true" class="all-remark">查看所有备注</div>
+          <div v-if="(!showAll)&&index==2" @click="showAll=true" class="all-remark">查看所有进展</div>
           <div v-if="showAll" class="remarkDetail-box">
             <div class="remarkContent">
               <div class="button-box"  v-if="userID==item.memberId">
@@ -13,12 +13,12 @@
               </div>
               <table >
                 <tr>
-                  <td>备注内容：</td>
+                  <td>内容：</td>
                   <td v-if="!modifyContent[index].show">{{item.content}}</td>
-                  <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入备注" size="mini" type="textarea"></el-input></td>
+                  <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input></td>
                 </tr>
                 <tr>
-                  <td>备注人：</td>
+                  <td>增加会员：</td>
                   <td>{{item.memberName?item.memberName.user:''}}</td>
                 </tr>
                 <tr>
@@ -39,12 +39,12 @@
           </div>
             <table>
               <tr>
-                <td>备注内容：</td>
+                <td>内容：</td>
                 <td v-if="!modifyContent[index].show">{{item.content}}</td>
-                <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入备注" size="mini" type="textarea"></el-input></td>
+                <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input></td>
               </tr>
               <tr>
-                <td>备注人：</td>
+                <td>增加会员：</td>
                 <td>{{item.memberName?item.memberName.user:''}}</td>
               </tr>
               <tr>
@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div v-else>该案件还没有备注</div>
+    <div v-else>该案件还没有进展</div>
   </div>
 </template>
 <script>
@@ -71,12 +71,12 @@ export default {
       showAll: false,//显示所有数据的index
       showModify:[],//保存每个修改保存按钮是否显示的index数组
       modifyContent:[],//保存每个修改内容文本域是否显示的index数组
-      remarkList: []//备注列表
+      remarkList: []//进展列表
     };
   },
 
   methods: {
-    // 删除备注的方法
+    // 删除进展的方法
     async deleteRemark(remark){
       let clickStatus = await this.$confirm("确认删除该数据？", "提示", {
         confirmButtonText: "确定",
@@ -134,18 +134,18 @@ export default {
           type: "success"
         });
     },
-    // 获取备注列表的方法
+    // 获取进展列表的方法
     async getRemark() {
       let { data } = await axios({
         //请求接口
         method: "post",
         url: PUB.domain + "/crossList?page=lawyer_remark",
         data: {
-          findJson: { caseId: this.caseMsg.P1 }//根据案件id获取有关的所有备注
+          findJson: { caseId: this.caseMsg.P1 }//根据案件id获取有关的所有进展
         }
       });
       this.remarkList = data.list;
-      // 根据备注列表的长度为每个备注框设置初始index
+      // 根据进展列表的长度为每个进展框设置初始index
       this.remarkList.forEach((doc)=>{
         let obj = {show:false}
         this.showModify.push(obj)

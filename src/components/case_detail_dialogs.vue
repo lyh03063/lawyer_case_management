@@ -4,6 +4,7 @@
       <debug_item v-model="caseMsg" text="案件信息" />
       <debug_item v-model="caseMsg.P1" text="测试的对象" />
     </debug_list>
+    
       <div class="case-box">
         <div class="subfield">案件基本信息</div>
         <el-row>
@@ -44,7 +45,7 @@
         </el-row>
         <div class="H20"></div>
         <div class="subfield">
-          <div style="float:left">备注</div>
+          <div style="float:left">进展</div>
           <div class="button-box">
             <el-button size="mini" type="info" @click="showAddRemark = true">新增</el-button>
           </div>
@@ -62,7 +63,7 @@
           <accessory_detail :caseMsg="caseMsg" ref="accessoryDetail"></accessory_detail>
         </div>
       </div>
-    <!-- 新增备注弹窗 -->
+    <!-- 新增进展弹窗 -->
     <el-dialog title="新增" :visible.sync="showAddRemark" width="60%" append-to-body>
         <dm_dynamic_form v-model="remarkAdd" :cf="cfRemarkAdd" @submit="addRemark" @cancel="showAddRemark=false">
         <template v-slot:[item.slot]="{formData}" v-for="item in cfRemarkAdd.formItems">
@@ -138,22 +139,22 @@ export default {
       this.addMsg();
       this.$refs.accessoryDetail.getAccessory();
     },
-    // 新建备注的方法
+    // 新建进展的方法
     async addRemark() {
-        this.showAddRemark=false//关闭备注弹窗
-        // 请求备注接口
+        this.showAddRemark=false//关闭进展弹窗
+        // 请求进展接口
         let { data } = await axios({
           method: "post",
           url: PUB.domain + '/crossAdd?page=lawyer_remark',
-          data: { data: this.remarkAdd }//向接口传递新增备注数据
+          data: { data: this.remarkAdd }//向接口传递新增进展数据
         })
         this.$message({
             message: "新增成功",
             type: "success",
           });
-        // 新增完成之后重新定义新增备注数据，其中案件id以及会员id固定
+        // 新增完成之后重新定义新增进展数据，其中案件id以及会员id固定
         this.remarkAdd={caseId:this.caseMsg.P1,memberId:localStorage.userId},
-        // 设置新增消息的数据，备注id，案件id，发送消息会员id
+        // 设置新增消息的数据，进展id，案件id，发送消息会员id
         this.addMsgData.change[0].type = 2
         this.addMsgData.change[0].remarkId = data.addData.P1
        this.addMsgData.caseId = this.remarkAdd.caseId
@@ -199,8 +200,8 @@ export default {
       // 每条新增消息数据
       addMsgData:{read:0,change:[{type:0,remarkId:'',fileId:''}],memberId:'',caseId:'',receiveMemberId:''},
       addMsglist:[],//保存新增消息对象的列表
-      showAddRemark:false,//新增备注弹窗index
-      remarkAdd: {caseId:this.caseMsg.P1,memberId:localStorage.userId},//新增备注数据对象
+      showAddRemark:false,//新增进展弹窗index
+      remarkAdd: {caseId:this.caseMsg.P1,memberId:localStorage.userId},//新增进展数据对象
       showAddAccessory:false,//新增附件弹窗index
       accessoryAdd:{caseId:this.caseMsg.P1,memberId:localStorage.userId},//新增附件数据对象
       cfAccessoryAdd:{//给动态表单组件传过去的新增附件配置
@@ -237,14 +238,14 @@ export default {
           { text: "取消", event: "cancel" }
         ]
       },
-      cfRemarkAdd: {//给动态表单组件传过去的新增备注配置
+      cfRemarkAdd: {//给动态表单组件传过去的新增进展配置
         formItems:[
          {
-            label: "备注内容",
+            label: "进展内容",
             prop: "content",
             width: 100,
             type:"textarea",
-            rules: [{ required: true, message: "备注内容不能为空" }]
+            rules: [{ required: true, message: "进展内容不能为空" }]
           }
         ],
         btns: [

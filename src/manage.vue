@@ -92,7 +92,7 @@ export default {
           title: "案件",
           menuItem: [
             { index: "list_case", route: "/list_case", title: "案件列表" },
-            { index: "list_remark", route: "/list_remark", title: "备注" },
+            { index: "list_remark", route: "/list_remark", title: "进展" },
             { index: "list_accessory", route: "/list_accessory", title: "附件列表" }
           ],
           show:true

@@ -86,24 +86,9 @@ export default {
             width: 80
           },
           {
-            label: "文件名",
+            label: "文件说明",
             prop: "name",
             width: 100
-          },
-          {
-            label: "文件类型",
-            prop: "suffix",
-            width: 100
-          },
-           {
-            label: "文件地址",
-            prop: "url",
-            width: 300
-          },
-          {
-            label: "创建时间",
-            prop: "CreateTime",
-            width: 150
           },
           {
             label: "上传会员",
@@ -134,7 +119,7 @@ export default {
             type: "input"
           },
           {
-            label: "文件名",
+            label: "文件说明",
             prop: "name",
             type: "input_find_vague"
           },
@@ -157,19 +142,9 @@ export default {
             width: 80
           },
           {
-            label: "文件名",
+            label: "文件说明",
             prop: "name",
             width: 100
-          },
-          {
-            label: "文件类型",
-            prop: "suffix",
-            width: 100
-          },
-           {
-            label: "文件地址",
-            prop: "url",
-            width: 300
           },
           {
             label: "创建时间",
@@ -200,7 +175,7 @@ export default {
         //-------新增、修改表单字段数组-------
         formItems: [
          {
-            label: "文件名",
+            label: "文件说明",
             prop: "name",
             width: 100
           },
