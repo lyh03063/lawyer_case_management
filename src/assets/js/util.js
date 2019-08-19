@@ -83,6 +83,7 @@ async function ajaxPopulate(populateConfig) {
   let { listData, page, populateColumn, idColumn, idColumn2, findJson = {} } = populateConfig;
   let arrId = [];
   listData.forEach(itemEach => {//循环：{原数据数组}
+    console.log("itemEach", itemEach);
     let idEach = itemEach[idColumn]
     if (idEach) {//如果{idEach}存在
 

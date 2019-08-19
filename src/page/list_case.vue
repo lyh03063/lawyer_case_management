@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <listData :cf="cfList" @afterModify="modify">
+    <dm_list_data :cf="cfList" @afterModify="modify">
       <template v-slot:customDetail="{detailData}">
         <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
@@ -40,7 +40,7 @@
           ></id_to_name>
         </div>
       </template> -->
-    </listData>
+    </dm_list_data>
   </div>
 </template>
 <script>
@@ -236,7 +236,7 @@ export default {
           },
           {
             label: "创建人",
-            prop: "createUser",
+            prop: "createPerson",
             width: 100,
             formatter: data => {
               if (data.createUser) {
@@ -246,7 +246,7 @@ export default {
           },
           {
             label: "协作者",
-            prop: "collaboratorName",
+            prop: "collaborator",
             width: 150,
             formatter: data => {
               if (data.collaboratorName) {
