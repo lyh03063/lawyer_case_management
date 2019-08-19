@@ -166,17 +166,20 @@ export default {
          {
             label: "用户名",
             prop: "user",
-            type:"input"
+            type:"input",
+            rules: [{ required: true, message: "用户名不能为空" }]
           },
           {
             label: "姓名",
             prop: "name",
-            type:"input"
+            type:"input",
+            rules: [{ required: true, message: "姓名不能为空" }]
           },
           {
             label: "密码",
             prop: "password",
-            type:"input"
+            type:"input",
+            rules: [{ required: true, message: "密码不能为空" }]
           },
           {
             label: "角色",
@@ -185,7 +188,8 @@ export default {
             options: [
               { label: "超级管理员", value: 1 },
               { label: "普通律师会员", value: 2 }
-            ]
+            ],
+            rules: [{ required: true, message: "角色未选" }]
           }, 
         ]
       }

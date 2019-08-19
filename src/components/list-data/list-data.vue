@@ -83,6 +83,7 @@
             icon="el-icon-notebook-2"
             circle
             size="mini"
+            v-if="cf.isShowDetail"
           ></el-button>
           <el-button
             title="编辑"
@@ -90,6 +91,7 @@
             size="mini"
             circle
             @click="$refs.listDialogs.showModify(scope.row)"
+            v-if="cf.isShowModify"
           ></el-button>
           <el-button
             title="删除"
@@ -97,6 +99,7 @@
             size="mini"
             circle
             @click="confirmDelete(scope.row.P1)"
+            v-if="cf.isShowDelete"
           ></el-button>
         </template>
       </el-table-column>
@@ -326,6 +329,9 @@ export default {
       (this.cf.isShowOperateColumn = true);
     this.cf.isShowToolBar === false || (this.cf.isShowToolBar = true);
     this.cf.isRefreshAfterCUD === false || (this.cf.isRefreshAfterCUD = true);
+    this.cf.isShowDetail === false || (this.cf.isShowDetail = true);
+    this.cf.isShowModify === false || (this.cf.isShowModify = true);
+    this.cf.isShowDelete === false || (this.cf.isShowDelete = true);
 
     let findJsonDefault = this.cf.findJsonDefault || {};
     //读取vuex的当前列表页默认筛选参数

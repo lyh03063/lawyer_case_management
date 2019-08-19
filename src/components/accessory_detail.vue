@@ -7,7 +7,7 @@
           <div v-if="showAll" class="remarkDetail-box">
             <div class="remarkContent">
               <div class="button-box" v-if="userID==item.memberId">
-                <el-button plain size="mini" >详情</el-button>
+                <!-- <el-button plain size="mini" >详情</el-button> -->
                 <el-button plain size="mini" >删除</el-button>
               </div>
               <table >
@@ -34,7 +34,7 @@
         <div v-else class="remarkDetail-box">
           <div class="remarkContent">
             <div class="button-box" v-if="userID==item.memberId">
-                <el-button plain size="mini"  >详情</el-button>
+                <!-- <el-button plain size="mini"  >详情</el-button> -->
                 <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
           </div>
             <table>

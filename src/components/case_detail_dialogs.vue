@@ -243,7 +243,8 @@ export default {
             label: "备注内容",
             prop: "content",
             width: 100,
-            type:"textarea"
+            type:"textarea",
+            rules: [{ required: true, message: "备注内容不能为空" }]
           }
         ],
         btns: [

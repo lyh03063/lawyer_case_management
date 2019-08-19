@@ -20,7 +20,7 @@
         :collapse="isCollapse"
       >
         <template v-for="(menuEach,index) in cf">
-          <template v-if="!menuEach.show">
+          <template v-if="menuEach.show">
           <el-menu-item
             :index="menuEach.index"
             :route="menuEach.route"

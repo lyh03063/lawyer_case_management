@@ -17,7 +17,10 @@ export default {
         listIndex: "list_message", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
         twoTitle: "消息",
-        flag:true,
+        // flag:true,
+        isShowToolBar:false,
+        isShowModify:false,
+        isShowDelete:false,
         dynamicDict: [{ page: "lawyer_member",populateColumn: "memberName", idColumn: "memberId", idColumn2: "P1" },
         { page: "lawyer_case",populateColumn: "caseName", idColumn: "caseId", idColumn2: "P1" },
         { page: "lawyer_member",populateColumn: "receiveName", idColumn: "receiveMemberId", idColumn2: "P1" },],

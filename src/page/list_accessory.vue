@@ -67,6 +67,9 @@ export default {
         twoTitle: "案件",
         threeTitle: "附件列表",
         flag:true,
+        isShowToolBar:false,
+        isShowModify:false,
+        isShowDelete:false,
         dynamicDict: [{ page: "lawyer_member",populateColumn: "memberName", idColumn: "memberId", idColumn2: "P1" },
         { page: "lawyer_case",populateColumn: "caseName", idColumn: "caseId", idColumn2: "P1" },],
         url: {

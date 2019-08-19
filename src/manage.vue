@@ -82,15 +82,10 @@ export default {
           index: "listHome",
           route: "/listHome",
           icon: "el-icon-house",
-          title: "首页"
+          title: "首页",
+          show:true
         },
-        {
-          index: "list_member",
-          route: "/list_member",
-          icon: "el-icon-user-solid",
-          title: "会员",
-          show:false//通过控制来show来设置改导航是否显示
-        },
+        
         {
           index: "2",
           icon: "el-icon-document",
@@ -99,14 +94,22 @@ export default {
             { index: "list_case", route: "/list_case", title: "案件列表" },
             { index: "list_remark", route: "/list_remark", title: "备注" },
             { index: "list_accessory", route: "/list_accessory", title: "附件列表" }
-          ]
+          ],
+          show:true
+        },
+        {
+          index: "list_member",
+          route: "/list_member",
+          icon: "el-icon-user-solid",
+          title: "会员",
+          show:true//通过控制来show来设置改导航是否显示
         },
         {
           index: "list_message",
           route: "/list_message",
           icon: "el-icon-s-comment",
           title: "消息",
-          show:false
+          show:true
         },
         
         // {
@@ -137,8 +140,12 @@ export default {
   mounted(){
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.commonMerber==1) {
-      this.navMenuList[1].show = true
-      this.navMenuList[3].show = true
+      this.navMenuList.forEach((doc)=>{
+        if (doc.index=='list_member'||doc.index=="list_message") {
+          doc.show = false
+        }
+        
+      })
     }
     this.getUnRead();
     },
