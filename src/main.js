@@ -44,27 +44,10 @@ Vue.use(loading);   //作为全局组件，必须有install
 
 
 
-import VueRouter from 'vue-router'
+// import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import "./mock.js";
 
-
-import login from "@/login";
-import manage from "@/manage";
-import listHome from "@/page/listHome";
-
-
-
-
-
-import list_member from "@/page/list_member";
-import dynamic_form_demo from "@/page/dynamic_form_demo";
-import demo_common from "@/demo/common.vue";
-import list_case from '@/page/list_case'
-import list_message from '@/page/list_message'
-import list_accessory from '@/page/list_accessory'
-import list_remark from '@/page/list_remark'
-import message_datail from '@/page/message_datail'
 
 
 
@@ -73,50 +56,51 @@ import message_datail from '@/page/message_datail'
 const router = new VueRouter({
   routes: [
     { path: '/', redirect: '/login' },
-    { path: '/login', component: login },
+    { path: '/login',
+     component: resolve => require(['@/login'],resolve),},
     {
       path: '/manage',
-      component: manage,
+      component:resolve => require(['@/manage'],resolve),
       redirect: '/listHome', //跳转
       children: [//子路由
       
         {
           path: '/list_member',
-          component: list_member
+          component:resolve => require(['@/page/list_member'],resolve),
         },
        
         {
           path: '/listHome',
-          component: listHome
+          component:resolve => require(['@/page/listHome'],resolve),
         },
        
         {
           path: '/dynamic_form_demo',
-          component: dynamic_form_demo
+          component:resolve => require(['@/page/dynamic_form_demo'],resolve),
         },
         {
           path: '/demo_common',
-          component: demo_common
+          component:resolve => require(['@/demo/common.vue'],resolve),
         },
         {
           path: '/list_case',
-          component: list_case
+          component:resolve => require(['@/page/list_case'],resolve),
         },
         {
           path: '/list_remark',
-          component: list_remark
+          component:resolve => require(['@/page/list_remark'],resolve),
         },
         {
           path: '/list_message',
-          component: list_message
+          component:resolve => require(['@/page/list_message'],resolve),
         },
         {
           path: '/list_accessory',
-          component: list_accessory
+          component:resolve => require(['@/page/list_accessory'],resolve),
         },
         {
           path: '/message_datail',
-          component: message_datail
+          component:resolve => require(['@/page/message_datail'],resolve),
         }
         
       ]
