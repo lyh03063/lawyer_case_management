@@ -10,23 +10,22 @@
                 <!-- <el-button plain size="mini" >详情</el-button> -->
                 <el-button plain size="mini" >删除</el-button>
               </div>
-              <table >
-                <tr>
-                  <td>附件名字1：</td>
-                  <td >{{item.name}} 
+              <div >
+
+                  <span>附件说明：</span>
+                  <span>{{item.name}} </span>
                     
                     <a v-if="getFileUrl(item)"  target="_blank"  :href="getFileUrl(item)">下载</a>
-                     </td>
-                </tr>
-                <tr>
-                  <td>上传会员：</td>
-                  <td>{{item.memberName?item.memberName.user:''}}</td>
-                </tr>
-                <tr>
-                  <td>创建时间:：</td>
-                  <td>{{item.CreateTime}}</td>
-                </tr>
-              </table>
+           
+                </div>
+                <div>
+            
+                  <span>上传会员：</span>
+                  <span>{{item.memberName?item.memberName.user:''}}&nbsp;&nbsp;&nbsp;</span>
+                
+                  <span>创建时间：</span>
+                  <span>{{item.CreateTime}}</span>
+              </div>
             </div>
           </div>
           <div v-if="showAll&&index==accessoryList.length-1" @click="showAll=false" class="all-remark">收起</div>
@@ -37,21 +36,22 @@
                 <!-- <el-button plain size="mini"  >详情</el-button> -->
                 <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
           </div>
-            <table>
-              <tr>
-                <td>附件名字：</td>
-                <td>
-                  {{item.name}}  <a class="link-blue" v-if="getFileUrl(item)"  target="_blank"  :href="getFileUrl(item)">下载</a></td>
-              </tr>
-              <tr>
-                <td>上传会员：</td>
-                <td>{{item.memberName?item.memberName.user:''}}</td>
-              </tr>
-              <tr>
-                  <td>创建时间:：</td>
-                  <td>{{item.CreateTime}}</td>
-                </tr>
-            </table>
+             <div >
+
+                  <span>附件说明：</span>
+                  <span>{{item.name}} </span>
+                    
+                    <a v-if="getFileUrl(item)"  target="_blank"  :href="getFileUrl(item)">下载</a>
+           
+                </div>
+                <div>
+            
+                  <span>上传会员：</span>
+                  <span>{{item.memberName?item.memberName.user:''}}&nbsp;&nbsp;&nbsp;</span>
+                
+                  <span>创建时间：</span>
+                  <span>{{item.CreateTime}}</span>
+              </div>
           </div>
         </div>
       </div>

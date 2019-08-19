@@ -11,21 +11,17 @@
                 <el-button plain size="mini" v-if="showModify[index].show" @click="saveRemark(index,item)">保存</el-button>
                 <el-button plain size="mini" >删除</el-button>
               </div>
-              <table >
-                <tr>
-                  <td>内容：</td>
-                  <td v-if="!modifyContent[index].show">{{item.content}}</td>
-                  <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input></td>
-                </tr>
-                <tr>
-                  <td>增加会员：</td>
-                  <td>{{item.memberName?item.memberName.user:''}}</td>
-                </tr>
-                <tr>
-                  <td>创建时间:：</td>
-                  <td>{{item.CreateTime}}</td>
-                </tr>
-              </table>
+              <div>
+                  <span>案件进展：</span>
+                  <span v-if="!modifyContent[index].show">{{item.content}}</span>
+                  <span v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input></span>
+              </div>
+                <div>
+                  <span>增加会员：{{item.memberName?item.memberName.user:''}}&nbsp;&nbsp;&nbsp;</span>
+                  <span>创建时间：{{item.CreateTime}}</span>
+                </div>
+           
+
             </div>
           </div>
           <div v-if="showAll&&index==remarkList.length-1" @click="showAll=false" class="all-remark">收起</div>
@@ -37,21 +33,15 @@
                 <el-button plain size="mini" v-if="showModify[index].show" @click="saveRemark(index,item)">保存</el-button>
                 <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
           </div>
-            <table>
-              <tr>
-                <td>内容：</td>
-                <td v-if="!modifyContent[index].show">{{item.content}}</td>
-                <td v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input></td>
-              </tr>
-              <tr>
-                <td>增加会员：</td>
-                <td>{{item.memberName?item.memberName.user:''}}</td>
-              </tr>
-              <tr>
-                  <td>创建时间:：</td>
-                  <td>{{item.CreateTime}}</td>
-                </tr>
-            </table>
+            <div>
+                  <span>案件进展：</span>
+                  <span v-if="!modifyContent[index].show">{{item.content}}</span>
+                  <span v-if="modifyContent[index].show"><el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input></span>
+              </div>
+                <div>
+                  <span>增加会员：{{item.memberName?item.memberName.user:''}}&nbsp;&nbsp;&nbsp;</span>
+                  <span>创建时间：{{item.CreateTime}}</span>
+                </div>
           </div>
         </div>
       </div>

@@ -9,6 +9,8 @@
         <div class="subfield">案件基本信息</div>
         <el-row>
           <el-col :span="22" class="case-box-left">
+            <el-row>
+              <el-col :span="10">
             <table>
               <tr v-for="(item,index) in caseMsgLeft" :key="index">
                 <td>{{item.text}}</td>
@@ -19,11 +21,26 @@
                 </td>
               </tr>
             </table>
-            <div class="H20"></div>
+           
+            </el-col>
+            <el-col :span="14">
+              <table>
+              <tr v-for="(item,index) in caseMsgRight" :key="index">
+                <td>{{item.text}}</td>
+                <td v-if="!item.company">{{caseMsg[item.index]?caseMsg[item.index]:"无"}}</td>
+                <td v-if="item.company">
+                  <span>{{item.company}}{{caseMsg[item.index]?caseMsg[item.index].company:"无"}}</span>
+                  <span>{{item.contact}}{{caseMsg[item.index]?caseMsg[item.index].contact:"无"}}</span>
+                </td>
+              </tr>
+            </table>
+             <div class="H20"></div>
+              </el-col>
+            </el-row>
           </el-col>
         </el-row>
         <div class="subfield">案件流程信息</div>
-        <el-row v-for="(item,index) in caseMsgRight" :key="index">
+        <el-row v-for="(item,index) in caseMsgFlow" :key="index">
           <el-col :span="3" class="case-box-right">{{item.text}}</el-col>
           <el-col :span="20">
             <div class="case-box-right">
@@ -259,7 +276,9 @@ export default {
         { text: "案号：", index: "caseId" },
         { text: "案件状态：", index: "status" },
         { text: "案件描述：", index: "description" },
-        { text: "诉讼费：", index: "litigationFee" },
+        
+      ],
+      caseMsgRight:[{ text: "诉讼费：", index: "litigationFee" },
         { text: "担保费：", index: "guaranteeFee" },
         { text: "保全费：", index: "insuranceFee" },
         {
@@ -273,10 +292,9 @@ export default {
           index: "defendantInfo",
           company: "被告单位：",
           contact: "被告联系人："
-        }
-      ],
+        }],
       // 案件流程信息配置
-      caseMsgRight: [
+      caseMsgFlow: [
         {
           text: "一审信息：",
           index: "firstInstanceInfo",
@@ -360,8 +378,8 @@ export default {
   margin-left: -30px;
   margin-bottom: 10px;
   padding-left: 20px;
-  height: 50px;
-  line-height: 50px;
+  height: 40px;
+  line-height: 40px;
   background-color: rgb(220, 220, 220);
   color: black;
   font-weight: 700;

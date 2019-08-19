@@ -61,7 +61,7 @@ export default {
                 case 2:
                   return data.memberName.user+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
                 case 3:
-                  return data.memberName.user+"在"+data.caseName.name+"案件上传了新的附件，"+"备注的id是"+data.change[0].fileId
+                  return data.memberName.user+"在"+data.caseName.name+"案件上传了新的附件，"+"附件的id是"+data.change[0].fileId
                 default:
                   return "无"
                   break;
