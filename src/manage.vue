@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style>
+  <div id="app" style="min-width:1200px">
     <el-container>
       <el-header class="MB10">
         <el-row>
