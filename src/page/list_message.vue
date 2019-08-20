@@ -1,16 +1,13 @@
 <template>
   <div class>
-    <listData :cf="cfList">
-    </listData>
+    <dm_list_data :cf="cfList">
+    </dm_list_data>
   </div>
 </template>
 <script>
-import listData from "@/components/list-data/list-data.vue";
-
 
 export default {
-  
-  components: { listData },
+
   data() {
     return {
       cfList: {
@@ -76,7 +73,7 @@ export default {
           },
           {
             label: "发送会员",
-            prop: "memberName",
+            prop: "memberId",
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
@@ -86,7 +83,7 @@ export default {
           },
           {
             label: "接收会员",
-            prop: "receiveName",
+            prop: "receiveMemberId",
             width: 100,
             formatter:(data)=>{
               if (data.receiveName) {
@@ -96,7 +93,7 @@ export default {
           },
           {
             label: "案件名称",
-            prop: "caseName",
+            prop: "caseId",
             width: 100,
             formatter:(data)=>{
               if (data.caseName) {

@@ -102,11 +102,10 @@
 </template>
 
 <script>
-import listData from "@/components/list-data/list-data.vue";
 import remarkDetail from "@/components/remark_detail";
 import accessory_detail from '@/components/accessory_detail'
 export default {
-  components: { listData, remarkDetail,accessory_detail},
+  components: {  remarkDetail,accessory_detail},
   props: {
     caseMsg: Object//父组件传过来的案件信息
   },

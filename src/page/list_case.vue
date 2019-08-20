@@ -44,7 +44,6 @@
   </div>
 </template>
 <script>
-import listData from "@/components/list-data/list-data.vue";
 import case_detail_dialogs from "@/components/case_detail_dialogs";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
@@ -53,7 +52,6 @@ import id_to_name from "../components/id_to_name";
 
 export default {
   components: {
-    listData,
     case_detail_dialogs,
     msgTransfer,
     select_ajax,
@@ -493,13 +491,12 @@ export default {
     if (localStorage.superAdmin ==1) {
       this.superAdmin = true;
     }
-    // if (localStorage.commonMerber==1) {
-    //   this.cfList.search = true,
-    //   this.cfList.searchTerm = {type:'$or',value:[
-    //       { createPerson: localStorage.userId },
-    //       { collaborator: localStorage.userId - 0 }
-    //     ]}
-    // }
+    if (localStorage.commonMerber==1) {
+      this.cfList.findJson= {type:'$or',value:[
+          { createPerson: localStorage.userId },
+          { collaborator: localStorage.userId - 0 }
+        ]}
+    }
   }
 };
 </script>

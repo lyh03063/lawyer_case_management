@@ -1,15 +1,11 @@
 <template>
   <div class>
-    <listData :cf="cfList" @after-add='addMsg'>
-    </listData>
+    <dm_list_data :cf="cfList" @after-add='addMsg'>
+    </dm_list_data>
   </div>
 </template>
 <script>
-import listData from "@/components/list-data/list-data.vue";
-
 export default {
-  
-  components: { listData},
   methods:{
     // 如果新增附件就新增对应的消息，需要注意的是需要先通过案件id先获取案件负责人及协作者
       addMsg(data){
@@ -95,7 +91,7 @@ export default {
           },
           {
             label: "会员",
-            prop: "memberName",
+            prop: "memberId",
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
@@ -105,7 +101,7 @@ export default {
           },
           {
             label: "案件名称",
-            prop: "caseName",
+            prop: "caseId",
             width: 100,
             formatter:(data)=>{
               if (data.caseName) {
@@ -207,6 +203,11 @@ export default {
         ]
       }
     };
+  },
+  created(){
+    if (localStorage.commonMerber==1) {
+      this.cfList.findJson= {type:'memberId',value:localStorage.userId}
+    }
   },
 };
 </script>
