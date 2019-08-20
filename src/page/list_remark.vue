@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <listData :cf="cfList" @afterAdd='addMsg'>
+    <listData :cf="cfList" @after-add='addMsg'>
     </listData>
   </div>
 </template>
@@ -63,6 +63,8 @@ export default {
         addMsgData:{read:0,change:[{type:2,remarkId:''}],memberId:'',caseId:'',receiveMemberId:''},
         addMsglist:[],//保存所有新消息对象的数组
       cfList: {
+        search:true,
+        searchTerm:{type:'memberId',value:localStorage.userId},
         listIndex: "list_remark", //vuex对应的字段
         focusMenu:true,//进行菜单聚焦
         twoTitle: "案件",

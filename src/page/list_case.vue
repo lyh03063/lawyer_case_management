@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <listData :cf="cfList" @afterModify="modify">
+    <dm_list_data :cf="cfList" @after-modify="modify">
       <template v-slot:customDetail="{detailData}">
         <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
@@ -40,7 +40,7 @@
           ></id_to_name>
         </div>
       </template> -->
-    </listData>
+    </dm_list_data>
   </div>
 </template>
 <script>
@@ -488,11 +488,18 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
-    if ((localStorage.superAdmin = 1)) {
+    if (localStorage.superAdmin ==1) {
       this.superAdmin = true;
     }
+    // if (localStorage.commonMerber==1) {
+    //   this.cfList.search = true,
+    //   this.cfList.searchTerm = {type:'$or',value:[
+    //       { createPerson: localStorage.userId },
+    //       { collaborator: localStorage.userId - 0 }
+    //     ]}
+    // }
   }
 };
 </script>
