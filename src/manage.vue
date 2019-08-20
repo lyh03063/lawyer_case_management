@@ -27,7 +27,7 @@
 <script>
 import Vue from "vue";
 import NavMenu from "./components/NavMenu/NavMenu";
-import { clearInterval } from 'timers';
+import { clearInterval, setInterval } from 'timers';
 export default {
   components: { NavMenu }, //注册组件
   methods: {
@@ -147,7 +147,8 @@ export default {
         
       })
     }
-    this.getUnRead();
+    setInterval(()=>{this.getUnRead();},20000)
+    
     },
      beforeCreate(){
     // 如果用户未登录，跳转登录页面
