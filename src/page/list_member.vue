@@ -42,11 +42,11 @@ export default {
           //   prop: "password",
           //   width: 120
           // },
-          {
-            label: "案件数",
-            prop: "caseCount",
-            width: 100
-          },
+          // {
+          //   label: "案件数",
+          //   prop: "caseCount",
+          //   width: 100
+          // },
           // {
           //   label: "附件数",
           //   prop: "fileCount",
