@@ -50,7 +50,7 @@ export default {
     },
     logout() {
       //退出登录函数
-      localStorage.isLogin = "0";//登录状态设置为0
+      localStorage.caseManageIsLogin = "0";//登录状态设置为0
       localStorage.superAdmin = 0;//超级管理员登录状态为0
       localStorage.commonMerber=0;//普通会员登录状态为0
       localStorage.userId="",//登录会员的id状态为空
@@ -151,10 +151,7 @@ export default {
     
     },
      beforeCreate(){
-    // 如果用户未登录，跳转登录页面
-    if (localStorage.isLogin != 1) {
-        this.$router.push({ path: "/login" });
-    }
+    
   },
 };
 </script>

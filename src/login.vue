@@ -116,7 +116,7 @@ export default {
             localStorage.commonMerber=1
           }
           // 用户登录
-          localStorage.isLogin = 1;
+          localStorage.caseManageIsLogin = 1;
           localStorage.loginUserName=arr[0].user//存储用户名
           this.$router.push({ path: "/listhome" });
         }else{
@@ -141,7 +141,7 @@ export default {
   },
   beforeCreate(){
     // 页面渲染钱判断用户是否已经登录,已登录跳回home界面
-    if (localStorage.isLogin == 1) {
+    if (localStorage.caseManageIsLogin == 1) {
       this.$message({
           message: '登录成功',
           type: 'success'

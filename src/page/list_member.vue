@@ -17,6 +17,7 @@ export default {
           list: "/crossList?page=lawyer_member", //列表接口
           add: "/crossAdd?page=lawyer_member", //新增接口
           modify: "/crossModify?page=lawyer_member", //修改接口
+          detail: "/crossDetail?page=lawyer_member",
           delete: "/crossDelete?page=lawyer_member" //删除接口
         },
         //-------列配置数组-------

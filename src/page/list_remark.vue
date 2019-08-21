@@ -75,7 +75,8 @@ export default {
           list: "/crossList?page=lawyer_remark", //列表接口
           add: "/crossAdd?page=lawyer_remark", //新增接口
           modify: "/crossModify?page=lawyer_remark", //修改接口
-          delete: "/crossDelete?page=lawyer_remark" //删除接口
+          delete: "/crossDelete?page=lawyer_remark" ,//删除接口
+          detail: "/crossDetail?page=lawyer_remark",
         },
         //-------列配置数组-------
         columns: [

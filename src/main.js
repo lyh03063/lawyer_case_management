@@ -108,6 +108,19 @@ const router = new VueRouter({
   ]
 })
 
+router.beforeEach((to,from,next)=>{
+  // 如果用户未登录，跳转登录页面
+  if (localStorage.caseManageIsLogin != 1) {
+    if (to.path=='/login') {
+      next();
+    }else{
+    next('/login');
+  }
+  }else{
+    next();
+  }
+})
+
 
 
 
