@@ -191,6 +191,12 @@ export default {
           {
             label: "文件地址",
             prop: "url",
+           type: "upload",
+            uploadConfig: {
+              limit: 1,
+              listType: "text"
+            },
+            rules: [{ required: true, message: "还未上传文件" }]
           },
           {
             label: "上传会员",

@@ -34,7 +34,7 @@
       </div>
 
       <div class v-if="remarkList.length>2">
-        <div v-if="!showAll" @click="showAll=true" class="all-remark">查看所有进展</div>
+        <div v-if="!showAll" @click="showAll=true" class="all-remark">查看所有（{{remarkList.length}}条记录）</div>
         <div v-else @click="showAll=false" class="all-remark">收起</div>
       </div>
     </div>
@@ -175,8 +175,7 @@ export default {
   text-decoration: underline;
 }
 .remarkDetail-box {
-  width: 98%;
-  border: 1px solid gray;
+  border: 1px solid #ddd;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;

@@ -149,6 +149,18 @@ async function ajaxPopulate(populateConfig) {
 
 }
 
+
+function getFileName(url) 
+{ 
+
+var tmp= new Array();//临时变量，保存分割字符串 
+tmp=url.split("/");//按照"/"分割 
+var pp = tmp[tmp.length-1];//获取最后一部分，即文件名和参数 
+tmp=pp.split("?");//把参数和文件名分割开 
+return tmp[0]; 
+}
+
+
 export default {
-  deepCopy, type, timeout, getTimeStatus, ajaxPopulate
+  deepCopy, type, timeout, getTimeStatus, ajaxPopulate,getFileName
 }
