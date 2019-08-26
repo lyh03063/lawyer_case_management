@@ -186,11 +186,7 @@ export default {
             prop: "name",
             width:250
           },
-          // {
-          //   label: "案件描述",
-          //   prop: "description",
-          //   width: 150
-          // },
+         
           {
             label: "案号",
             prop: "caseId",
@@ -231,6 +227,11 @@ export default {
                   break;
               }
             }
+          },
+           {
+            label: "开庭时间",
+            prop: "trialDate",
+            width: 130
           },
           {
             label: "创建人",
@@ -306,7 +307,11 @@ export default {
             // type: "jsonEditor",
             slot: "slot_form_item_memberIdList"
           },
-          
+          {
+            label: "开庭时间",
+            prop: "trialDate",
+             type: "date",
+          },
           {
             label: "案号",
             prop: "caseId"

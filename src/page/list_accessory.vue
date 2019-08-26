@@ -92,6 +92,11 @@ export default {
             width: 100
           },
           {
+            label: "分类",
+            prop: "category",
+            width: 65
+          },
+          {
             label: "上传会员",
             prop: "memberId",
             width: 100,
@@ -178,12 +183,10 @@ export default {
          {
             label: "文件说明",
             prop: "name",
-            width: 100
           },
           {
-            label: "文件类型",
-            prop: "suffix",
-            width: 100
+            label: "分类",
+            prop: "category",
           },
           {
             label: "文件地址",
