@@ -25,13 +25,14 @@
       <el-card class="box-card">
         <div class="alert-case-title">
           <span  >案件提醒</span>
-          <el-button style="float: right; padding: 3px 0;" type="text" @click="showAlertCase=false">关闭</el-button>
+          <el-button style="float: right; padding: 3px 0;" type="text" @click="showAlertCase=false">收起</el-button>
         </div>
         <div v-for="(item,index) in alertCaseList" :key='index'  class="alert-case-text">
-          {{item.name}}案件将于<font color='red'>{{item.trialDate}}</font>开庭,请及时处理
+          {{item.name}}案件将于<font color='red'>{{item.trialDate}}</font>开庭
         </div>
       </el-card>
     </div>
+    <div v-if="!showAlertCase" class="hidden-alert el-icon-bell" @click="showAlertCase=true"></div>
   </div>
 </template>
 
@@ -199,20 +200,31 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
 }
 .hint-dialogs {
   position: fixed;
-  bottom: 0;
-  right: 10px;;
+  bottom: 20px;
+  right: 10px;
   /* height: 300px; */
 }
 .alert-case-title{
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .box-card {
-     width: 300px;
-    /* height: 300px;  */
+    height: 200px; 
+   overflow: auto;
   }
-.alert-case-text{
+.alert-case-text{  
 padding-left: 10px;
   line-height: 23px;
+}
+.hidden-alert{
+  position: fixed;
+  bottom: 180px;
+  right: 0px;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+  cursor: pointer;
+  color: rgb(64,158, 255);
 }
 </style>
 
