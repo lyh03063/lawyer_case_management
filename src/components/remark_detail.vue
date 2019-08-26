@@ -47,6 +47,7 @@ export default {
     caseMsg: Object //父组件传过来的案件数据
   },
   computed: {
+    //用于显示的进展列表
     remarkListShow: function() {
       if (this.remarkList.length < 3) {
         return this.remarkList;

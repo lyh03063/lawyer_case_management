@@ -13,8 +13,7 @@
           keyValue="name"
           v-if="superAdmin||userId==formData.createPerson"
           :showName="true"
-        >
-        </msgTransfer>
+        ></msgTransfer>
         <div v-else>
           <id_to_name
             url="/crossList?page=lawyer_member"
@@ -39,7 +38,7 @@
             keyValue="user"
           ></id_to_name>
         </div>
-      </template> -->
+      </template>-->
     </dm_list_data>
   </div>
 </template>
@@ -155,7 +154,8 @@ export default {
         twoTitle: "案件",
         threeTitle: "案件列表",
         flag: true,
-        formDataAddInit:{//新增表单的初始数据
+        formDataAddInit: {
+          //新增表单的初始数据
           createPerson: Number(localStorage.userId)
         },
         dynamicDict: [
@@ -184,9 +184,9 @@ export default {
           {
             label: "案件名称",
             prop: "name",
-            width:250
+            width: 250
           },
-         
+
           {
             label: "案号",
             prop: "caseId",
@@ -228,10 +228,18 @@ export default {
               }
             }
           },
-           {
+          {
             label: "开庭时间",
             prop: "trialDate",
-            width: 130
+            width: 130,
+            formatter: function(row) {
+              if (row.trialDate) {
+                return moment(row.trialDate).format("YYYY-MM-DD");
+              }else{
+                return "";
+              }
+              
+            }
           },
           {
             label: "创建人",
@@ -310,7 +318,7 @@ export default {
           {
             label: "开庭时间",
             prop: "trialDate",
-             type: "date",
+            type: "date"
           },
           {
             label: "案号",
@@ -493,14 +501,17 @@ export default {
 
   created() {
     // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
-    if (localStorage.superAdmin ==1) {
+    if (localStorage.superAdmin == 1) {
       this.superAdmin = true;
     }
-    if (localStorage.commonMerber==1) {
-      this.cfList.findJson= {type:'$or',value:[
+    if (localStorage.commonMerber == 1) {
+      this.cfList.findJson = {
+        type: "$or",
+        value: [
           { createPerson: localStorage.userId },
           { collaborator: localStorage.userId - 0 }
-        ]}
+        ]
+      };
     }
   }
 };
