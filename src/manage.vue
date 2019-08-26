@@ -3,6 +3,7 @@
     <el-container>
       <el-header class="MB10">
         <el-row>
+          
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
             <el-badge :value="unReadCount" class="item">
@@ -30,9 +31,12 @@
         <div v-for="(item,index) in alertCaseList" :key='index'  class="alert-case-text">
           {{item.name}}案件将于<font color='red'>{{item.trialDate}}</font>开庭
         </div>
+        <div v-if="alertCaseList.length<=0">
+          您暂时没有需要提醒的案件
+        </div>
       </el-card>
     </div>
-    <div v-if="!showAlertCase" class="hidden-alert el-icon-bell" @click="showAlertCase=true"></div>
+      <div v-if="!showAlertCase" class="hidden-alert el-icon-bell" @click="showAlertCase=true"></div>
   </div>
 </template>
 
@@ -219,11 +223,15 @@ padding-left: 10px;
   position: fixed;
   bottom: 180px;
   right: 0px;
-  background-color: white;
-  width: 30px;
-  height: 30px;
+  border-radius: 50%;
+  background-color: black;
+  opacity:0.7;
+  width: 40px;
+  height: 40px;
   font-size: 25px;
   cursor: pointer;
+  padding-top:7px;
+  padding-left:7px;
   color: rgb(64,158, 255);
 }
 </style>
