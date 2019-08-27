@@ -8,22 +8,12 @@
               <el-button
                 plain
                 size="mini"
-                v-if="!showModify[index].show"
-                @click="modifyRemark(index)"
+                @click="$emit('show-modify-dialog',item)"
               >修改</el-button>
-              <el-button
-                plain
-                size="mini"
-                v-if="showModify[index].show"
-                @click="saveRemark(index,item)"
-              >保存</el-button>
               <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
             </div>
             <div>
-              <span v-if="!modifyContent[index].show">{{item.content}}</span>
-              <span v-if="modifyContent[index].show">
-                <el-input v-model="item.content" placeholder="请输入进展" size="mini" type="textarea"></el-input>
-              </span>
+              <span >{{item.content}}</span>
             </div>
             <div class="C_999">
               <span>创建人：{{item.memberName?item.memberName.user:''}}&nbsp;&nbsp;&nbsp;</span>
@@ -67,8 +57,6 @@ export default {
     return {
       userID: localStorage.userId,
       showAll: false, //显示所有数据的index
-      showModify: [], //保存每个修改保存按钮是否显示的index数组
-      modifyContent: [], //保存每个修改内容文本域是否显示的index数组
       remarkList: [] //进展列表,
     };
   },
@@ -106,32 +94,6 @@ export default {
       }
       this.getRemark();
     },
-    // 点击修改按钮触发的方法
-    modifyRemark(index) {
-      this.modifyContent[index].show = true; //显示修改文本域
-      this.showModify[index].show = true; //显示保存按钮
-    },
-    // 请求接口保存修改后的数据
-    async saveRemark(index, modifyData) {
-      this.modifyContent[index].show = false; //显示修改按钮
-      this.showModify[index].show = false; //关闭修改文本域
-      // 请求接口保存数据
-      let { data } = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + "/crossModify?page=lawyer_remark",
-        data: {
-          findJson: {
-            P1: modifyData.P1
-          },
-          modifyJson: { content: modifyData.content }
-        }
-      });
-      this.$message({
-        message: "保存成功",
-        type: "success"
-      });
-    },
     // 获取进展列表的方法
     async getRemark() {
       let { data } = await axios({
@@ -143,12 +105,6 @@ export default {
         }
       });
       this.remarkList = data.list;
-      // 根据进展列表的长度为每个进展框设置初始index
-      this.remarkList.forEach(doc => {
-        let obj = { show: false };
-        this.showModify.push(obj);
-        this.modifyContent.push(obj);
-      });
       // 根据所有会员id请求一次接口获取所有会员用户名
       this.remarkList = await util.ajaxPopulate({
         listData: this.remarkList,

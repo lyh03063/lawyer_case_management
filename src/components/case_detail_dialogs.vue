@@ -67,7 +67,7 @@
         </div>
       </div>
       <div>
-        <remarkDetail :caseMsg="caseMsg" ref="remarkDetail"></remarkDetail>
+        <remarkDetail :caseMsg="caseMsg" ref="remarkDetail" @show-modify-dialog="showModifyRemarkDialog"></remarkDetail>
       </div>
       <div class="subfield">
         <div style="float:left">诉讼附件</div>
@@ -148,6 +148,21 @@
         @cancel="showModifyAccessory=false"
       ></dm_dynamic_form>
     </el-dialog>
+    <!-- 修改进展弹窗 -->
+    <el-dialog
+      title="修改附件"
+      :visible.sync="showModifyRemark"
+      v-if="showModifyRemark"
+      width="60%"
+      append-to-body
+    >
+      <dm_dynamic_form
+        v-model="remarkModify"
+        :cf="cfRemarkAdd"
+        @submit="modifyRemark"
+        @cancel="showModifyRemark=false"
+      ></dm_dynamic_form>
+    </el-dialog>
   </div>
 </template>
 
@@ -171,7 +186,9 @@ export default {
       },
       addMsglist: [], //保存新增消息对象的列表
       showAddRemark: false, //新增进展弹窗index
+      showModifyRemark:false,//修改进展弹窗index
       remarkAdd: { caseId: this.caseMsg.P1, memberId: localStorage.userId }, //新增进展数据对象
+      remarkModify:{},//修改进展数据对象
       showAddAccessory: false, //新增附件弹窗index
       showModifyAccessory: false, //是否显示修改附件弹窗的标识
 
@@ -337,6 +354,30 @@ export default {
       this.showModifyAccessory = false;
       //对应的文件列表更新数据
       this.$refs[`accessoryDetail${this.accessoryModify.category}`].getAccessory();
+    },
+    showModifyRemarkDialog(item) {
+      this.showModifyRemark = true;
+      this.remarkModify = item;
+    },
+    async modifyRemark() {
+      // alert("modifyAccessory");
+
+      let { data } = await axios({
+        //请求接口
+        method: "post",
+        url: PUB.domain + "/crossModify?page=lawyer_remark",
+        data: {
+          findJson: {
+            P1: this.remarkModify.P1
+          },
+          modifyJson: this.remarkModify
+        }
+      });
+
+      this.$message.success("修改成功");
+      this.showModifyRemark = false;
+      //对应的文件列表更新数据
+      this.$refs.remarkDetail.getRemark();
     },
     cancelAddAccessory() {
       this.showAddAccessory = false;
