@@ -233,6 +233,7 @@ padding-left: 10px;
   padding-top:7px;
   padding-left:7px;
   color: rgb(64,158, 255);
+  z-index: 100;
 }
 </style>
 
