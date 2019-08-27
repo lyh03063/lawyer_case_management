@@ -6,7 +6,8 @@
           <div class="remarkContent">
             <div class="button-box" v-if="userID==item.memberId">
               <!-- <el-button plain size="mini" >详情</el-button> -->
-              <el-button plain size="mini">删除</el-button>
+              <el-button plain size="mini" @click="$emit('show-modify-dialog',item)">修改</el-button>
+              <el-button plain size="mini" @click="deleteRemark(item)">删除</el-button>
             </div>
             <div>
               <!-- <span>附件说明：</span> -->
@@ -93,7 +94,9 @@ export default {
         type: "warning"
       }).catch(() => {});
 
-      if (clickStatus == "confirm") {
+      if (clickStatus != "confirm") return;
+
+
         //用户点击了确认
         await axios({
           //请求接口
@@ -114,7 +117,7 @@ export default {
           duration: 1500,
           type: "success"
         });
-      }
+      
       this.getAccessory();
     },
     // 获取附件列表的方法

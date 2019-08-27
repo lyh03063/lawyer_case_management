@@ -80,7 +80,12 @@
         </div>
       </div>
       <div>
-        <accessory_detail :category="1" :caseMsg="caseMsg" ref="accessoryDetail1"></accessory_detail>
+        <accessory_detail
+          :category="1"
+          :caseMsg="caseMsg"
+          ref="accessoryDetail1"
+          @show-modify-dialog="showModifyDialog"
+        ></accessory_detail>
       </div>
       <div class="subfield">
         <div style="float:left">市场附件</div>
@@ -109,16 +114,11 @@
         :cf="cfRemarkAdd"
         @submit="addRemark"
         @cancel="showAddRemark=false"
-      >
-        <template v-slot:[item.slot]="{formData}" v-for="item in cfRemarkAdd.formItems">
-          <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
-          <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
-        </template>
-      </dm_dynamic_form>
+      ></dm_dynamic_form>
     </el-dialog>
     <!-- 新增附件弹窗 -->
     <el-dialog
-      title="新增"
+      title="新增附件"
       :visible.sync="showAddAccessory"
       v-if="showAddAccessory"
       width="60%"
@@ -130,19 +130,28 @@
         :cf="cfAccessoryAdd"
         @submit="addAccessory"
         @cancel="cancelAddAccessory"
-      >
-        <template v-slot:[item.slot]="{formData}" v-for="item in cfAccessoryAdd.formItems">
-          <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
-          <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
-        </template>
-      </dm_dynamic_form>
+      ></dm_dynamic_form>
+    </el-dialog>
+
+    <!-- 修改附件弹窗 -->
+    <el-dialog
+      title="修改附件"
+      :visible.sync="showModifyAccessory"
+      v-if="showModifyAccessory"
+      width="60%"
+      append-to-body
+    >
+      <dm_dynamic_form
+        v-model="accessoryModify"
+        :cf="cfAccessoryAdd"
+        @submit="modifyAccessory"
+        @cancel="showModifyAccessory=false"
+      ></dm_dynamic_form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-
-
 import remarkDetail from "@/components/remark_detail";
 import accessory_detail from "@/components/accessory_detail";
 export default {
@@ -164,7 +173,11 @@ export default {
       showAddRemark: false, //新增进展弹窗index
       remarkAdd: { caseId: this.caseMsg.P1, memberId: localStorage.userId }, //新增进展数据对象
       showAddAccessory: false, //新增附件弹窗index
+      showModifyAccessory: false, //是否显示修改附件弹窗的标识
+
       accessoryAdd: { caseId: this.caseMsg.P1, memberId: localStorage.userId }, //新增附件数据对象
+      accessoryModify: {}, //修改附件数据对象
+
       cfAccessoryAdd: {
         //给动态表单组件传过去的新增附件配置
         formItems: [
@@ -178,21 +191,22 @@ export default {
             },
             rules: [{ required: true, message: "还未上传文件" }]
           },
-          {
-            label: "文件名",
-            prop: "name",
-          },
+          // {
+          //   label: "文件名",
+          //   prop: "name",
+
+          // },
           {
             label: "说明",
-            prop: "remark",
-          },
+            prop: "remark"
+          }
           // {
           //   label: "文件地址",
           //   prop: "url",
           // },
         ],
         btns: [
-          { text: "新增", event: "submit", type: "primary", validate: true },
+          { text: "保存", event: "submit", type: "primary", validate: true },
           { text: "取消", event: "cancel" }
         ]
       },
@@ -283,18 +297,53 @@ export default {
         if (!name) return;
 
         //如果已有的文件名为空，填充
-        if (!this.accessoryAdd.name) {
+        // if (!this.accessoryAdd.name) {
           this.accessoryAdd.name = name;
-        }
+        // }
       },
       immediate: true,
       deep: true
     }
   },
   methods: {
+    /**
+     * @name 修改附件函数
+     */
+
+    showModifyDialog(item) {
+      this.showModifyAccessory = true;
+      this.accessoryModify = item;
+    },
+    /**
+     * @name 修改附件函数
+     */
+
+    async modifyAccessory() {
+      // alert("modifyAccessory");
+
+      let { data } = await axios({
+        //请求接口
+        method: "post",
+        url: PUB.domain + "/crossModify?page=lawyer_file",
+        data: {
+          findJson: {
+            P1: this.accessoryModify.P1
+          },
+          modifyJson: this.accessoryModify
+        }
+      });
+
+      this.$message.success("修改成功");
+      this.showModifyAccessory = false;
+      //对应的文件列表更新数据
+      this.$refs[`accessoryDetail${this.accessoryModify.category}`].getAccessory();
+    },
     cancelAddAccessory() {
       this.showAddAccessory = false;
-      this.accessoryAdd={ caseId: this.caseMsg.P1, memberId: localStorage.userId }
+      this.accessoryAdd = {
+        caseId: this.caseMsg.P1,
+        memberId: localStorage.userId
+      };
     },
     // 新增附件的方法
     async addAccessory() {
@@ -311,7 +360,6 @@ export default {
       });
 
       //对应的文件列表更新数据
-
       this.$refs[`accessoryDetail${this.accessoryAdd.category}`].getAccessory();
 
       // 重定义新增附件数据，其中案件id以及会员id固定
