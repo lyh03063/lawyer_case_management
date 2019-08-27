@@ -239,7 +239,7 @@ export default {
           }
         ],
         btns: [
-          { text: "新增", event: "submit", type: "primary", validate: true },
+          { text: "保存", event: "submit", type: "primary", validate: true },
           { text: "取消", event: "cancel" }
         ]
       },
