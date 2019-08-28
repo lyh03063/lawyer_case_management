@@ -206,7 +206,7 @@ export default {
     };
   },
   created(){
-    if (localStorage.commonMerber==1) {
+    if (localStorage.superAdmin != 1) {
       this.cfList.findJson= {type:'memberId',value:localStorage.userId}
     }
   },

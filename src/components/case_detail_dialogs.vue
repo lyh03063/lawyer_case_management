@@ -98,7 +98,7 @@
         </div>
       </div>
       <div>
-        <accessory_detail :category="2" :caseMsg="caseMsg" ref="accessoryDetail2"></accessory_detail>
+        <accessory_detail :category="2" :caseMsg="caseMsg" ref="accessoryDetail2"  @show-modify-dialog="showModifyDialog"></accessory_detail>
       </div>
     </div>
     <!-- 新增进展弹窗 -->

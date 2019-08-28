@@ -504,7 +504,7 @@ export default {
     if (localStorage.superAdmin == 1) {
       this.superAdmin = true;
     }
-    if (localStorage.commonMerber == 1) {
+    if (localStorage.superAdmin != 1) {
       this.cfList.findJson = {
         type: "$or",
         value: [

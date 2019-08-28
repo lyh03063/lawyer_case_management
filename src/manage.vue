@@ -171,7 +171,7 @@ export default {
   mounted() {
     this.getCaseList()
     // 如果是普通会员登录,隐藏会员导航栏
-    if (localStorage.commonMerber == 1) {
+    if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
         if (doc.index == "list_member" || doc.index == "list_message") {
           doc.show = false;
