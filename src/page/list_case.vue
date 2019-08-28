@@ -318,7 +318,8 @@ export default {
           {
             label: "开庭时间",
             prop: "trialDate",
-            type: "date"
+            type: "date",
+            rules: [{ required: true, message: "开庭时间不能为空" }]
           },
           {
             label: "案号",

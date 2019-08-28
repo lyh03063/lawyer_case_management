@@ -81,6 +81,7 @@ export default {
         method: "post",
         url: PUB.domain + "/crossList?page=lawyer_msg",
         data: {
+          pageSize: 1000,
           findJson: {
             receiveMemberId: localStorage.userId,
             read: "0"
@@ -178,6 +179,7 @@ export default {
         }
       });
     }
+    this.getUnRead();
     setInterval(() => {
       this.getUnRead();
     }, 20000);

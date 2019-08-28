@@ -55,11 +55,11 @@ export default {
                if (data.memberName&&data.caseName) {
               switch (data.change[0].type) {
                 case 1:
-                  return data.memberName.user+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
+                  return data.memberName.name+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
                 case 2:
-                  return data.memberName.user+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
+                  return data.memberName.name+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
                 case 3:
-                  return data.memberName.user+"在"+data.caseName.name+"案件上传了新的附件，"+"附件的id是"+data.change[0].fileId
+                  return data.memberName.name+"在"+data.caseName.name+"案件上传了新的附件，"+"附件的id是"+data.change[0].fileId
                 default:
                   return "无"
                   break;
@@ -78,7 +78,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
-                return data.memberName.user
+                return data.memberName.name
               }
             }
           },
@@ -88,7 +88,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.receiveName) {
-                return data.receiveName.user
+                return data.receiveName.name
               }
             }
           },
@@ -137,11 +137,11 @@ export default {
               if (data.memberName&&data.caseName) {
                 switch (data.change[0].type) {
                 case 1:
-                  return data.memberName.user+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
+                  return data.memberName.name+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
                 case 2:
-                  return data.memberName.user+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
+                  return data.memberName.name+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
                 case 3:
-                  return data.memberName.user+"在"+data.caseName.name+"案件上传了新的附件，"+"备注的id是"+data.change[0].fileId
+                  return data.memberName.name+"在"+data.caseName.name+"案件上传了新的附件，"+"备注的id是"+data.change[0].fileId
                 default:
                   return "无"
                   break;
@@ -160,7 +160,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
-                return data.memberName.user
+                return data.memberName.name
               }
             }
           },
@@ -170,7 +170,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.receiveName) {
-                return data.receiveName.user
+                return data.receiveName.name
               }
             }
           },

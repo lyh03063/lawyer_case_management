@@ -96,7 +96,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
-                return data.memberName.user
+                return data.memberName.name
               }
             }
           },

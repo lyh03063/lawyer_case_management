@@ -102,7 +102,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
-                return data.memberName.user
+                return data.memberName.name
               }
             }
           },      
@@ -125,7 +125,7 @@ export default {
             type: "input"
           },
           {
-            label: "文件说明",
+            label: "文件名",
             prop: "name",
             type: "input_find_vague"
           },
@@ -148,7 +148,7 @@ export default {
             width: 80
           },
           {
-            label: "文件说明",
+            label: "文件名",
             prop: "name",
             width: 100
           },
@@ -163,7 +163,7 @@ export default {
             width: 100,
             formatter:(data)=>{
               if (data.memberName) {
-                return data.memberName.user
+                return data.memberName.name
               }
             }
           },       
