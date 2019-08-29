@@ -190,7 +190,7 @@ export default {
           {
             label: "案号",
             prop: "caseId",
-            width: 70
+            width: 250
           },
           {
             label: "案件状态",
@@ -318,8 +318,7 @@ export default {
           {
             label: "开庭时间",
             prop: "trialDate",
-            type: "date",
-            rules: [{ required: true, message: "开庭时间不能为空" }]
+            type: "date"
           },
           {
             label: "案号",
