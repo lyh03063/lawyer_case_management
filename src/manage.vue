@@ -1,4 +1,4 @@
-<template>
+<template >
   <div id="app" style="min-width:1200px">
     <el-container>
       <el-header class="MB10">
@@ -59,20 +59,26 @@ export default {
           method: "post",
           url: PUB.domain + "/crossList?page=lawyer_case",
           data: {
-            findJson: {
-              '$or':[{ createPerson: localStorage.userId },
-                { collaborator: localStorage.userId - 0 }]
-            }
+            findJson: this.caseFindJson
           }
         }).catch(() => {});
+        this.alertCaseList = []
         data.list.forEach(doc => {
-          let day =  this.getDaysBetween(doc.trialDate)
-          if (day<=14&&day>0) {
-            this.alertCaseList.push(doc)
+          if (doc.trialDate) {
+            let day =  this.getDaysBetween(doc.trialDate)
+              if (day<=14&&day>0) {
+              this.alertCaseList.push(doc)
+            }
           }
         });
         if (this.alertCaseList.length<=0) {
           this.showAlertCase = false
+        }else{
+          // console.log('this.$store.state.caseAlertCount',this.$store.state.caseAlertCount);
+          if (this.alertCaseList.length != this.$store.state.caseAlertCount) {
+            this.showAlertCase = true
+          this.$store.commit("setCaseAlertCount", this.alertCaseList.length);
+          }
         }
     },
     async getUnRead() {
@@ -120,6 +126,10 @@ export default {
   },
   data() {
     return {
+      caseFindJson:{
+              '$or':[{ createPerson: localStorage.userId },
+                { collaborator: localStorage.userId - 0 }]
+            },
       showAlertCase:true,
       alertCaseList:[],
       // 导航菜单列表
@@ -170,7 +180,6 @@ export default {
     this.currentUserName = localStorage.loginUserName;
   },
   mounted() {
-    this.getCaseList()
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
@@ -178,6 +187,16 @@ export default {
           doc.show = false;
         }
       });
+      this.getCaseList()
+      setInterval(() => {
+      this.getCaseList();
+    }, 2000);
+    }else{
+      this.caseFindJson={}
+      this.getCaseList()
+      setInterval(() => {
+      this.getCaseList();
+    }, 2000);
     }
     this.getUnRead();
     setInterval(() => {

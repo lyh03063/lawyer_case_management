@@ -129,6 +129,7 @@ Vue.use(Vuex)//应用组件
 
 const store = new Vuex.Store({//定义Vuex的存储对象
   state: {
+    caseAlertCount:0,
     unReadCount:undefined,
     debug:false,
     activeMenuIndex: "",//当前激活的菜单index
@@ -144,6 +145,9 @@ const store = new Vuex.Store({//定义Vuex的存储对象
   mutations: {//变更事件
     setDebug(state, param) {//设置debug模式
       state.debug= param;
+    },
+    setCaseAlertCount(state,count){
+      state.caseAlertCount = count
     },
     setUnReadCount(state,count){
       state.unReadCount = count

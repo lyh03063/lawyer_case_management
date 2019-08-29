@@ -28,8 +28,12 @@
                   <td>{{item.text}}</td>
                   <td v-if="!item.company">{{caseMsg[item.index]?caseMsg[item.index]:"无"}}</td>
                   <td v-if="item.company">
-                    <span>{{item.company}}{{caseMsg[item.index]?caseMsg[item.index].company:"无"}}</span>
-                    <span>{{item.contact}}{{caseMsg[item.index]?caseMsg[item.index].contact:"无"}}</span>
+                    <span>{{caseMsg[item.index]?caseMsg[item.index].company?caseMsg[item.index].contact?caseMsg[item.index].company+'，':caseMsg[item.index].company+'；':'':"无"}}</span>
+                    <span>{{caseMsg[item.index]?caseMsg[item.index].contact?caseMsg[item.index].contact+'；':'':"无"}}</span>
+                    <span>{{caseMsg[item.index+2]?caseMsg[item.index+2].company?caseMsg[item.index+2].contact?caseMsg[item.index+2].company+'，':caseMsg[item.index+2].company+'；':'':""}}</span>
+                    <span>{{caseMsg[item.index+2]?caseMsg[item.index+2].contact?caseMsg[item.index+2].contact+'；':'':""}}</span>
+                    <span>{{caseMsg[item.index+3]?caseMsg[item.index+3].company?caseMsg[item.index+3].contact?caseMsg[item.index+3].company+'，':caseMsg[item.index+3].company+'；':'':""}}</span>
+                    <span>{{caseMsg[item.index+3]?caseMsg[item.index+3].contact?caseMsg[item.index+3].contact+'；':'':""}}</span>
                   </td>
                 </tr>
               </table>
@@ -530,6 +534,12 @@ export default {
       case 8:
         this.caseMsg.status = "已结案";
         break;
+      case 9:
+        this.caseMsg.status = "执行中";
+        break;
+      case 10:
+        this.caseMsg.status = "执行终本";
+        break;
       default:
         this.caseMsg.status = "无";
         break;
@@ -542,7 +552,7 @@ export default {
   font-size: 14px;
 }
 
-.case-box div span {
+.case-box-right span {
   margin-right: 20px;
 }
 .subfield {
