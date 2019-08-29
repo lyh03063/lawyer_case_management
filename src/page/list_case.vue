@@ -196,7 +196,7 @@ export default {
           {
             label: "案号",
             prop: "caseId",
-            width: 250
+            width: 220
           },
           {
             label: "案件状态",
@@ -243,7 +243,7 @@ export default {
           {
             label: "开庭时间",
             prop: "trialDate",
-            width: 130,
+            width: 120,
             formatter: function(row) {
               if (row.trialDate) {
                 return moment(row.trialDate).format("YYYY-MM-DD");
@@ -256,7 +256,7 @@ export default {
           {
             label: "创建人",
             prop: "createPerson",
-            width: 100,
+            width: 80,
             formatter: data => {
               if (data.createUser) {
                 return data.createUser.name;
@@ -266,7 +266,7 @@ export default {
           {
             label: "协作者",
             prop: "collaborator",
-            width: 150,
+            width: 140,
             formatter: data => {
               if (data.collaboratorName) {
                 let collaboratorList = [];
