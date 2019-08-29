@@ -223,6 +223,7 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   position: fixed;
   bottom: 20px;
   right: 10px;
+  z-index: 100;
   /* height: 300px; */
 }
 .alert-case-title{
