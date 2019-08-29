@@ -84,6 +84,12 @@ export default {
         case 8:
           return "已结案";
           break;
+        case 9:
+          return "执行中";
+          break;
+        case 10:
+          return "执行终本";
+          break;
         default:
           return "无";
           break;
@@ -222,6 +228,12 @@ export default {
                 case 8:
                   return "已结案";
                   break;
+                case 9:
+                  return "执行中";
+                  break;
+                case 10:
+                  return "执行终本";
+                  break;
                 default:
                   return "无";
                   break;
@@ -342,7 +354,9 @@ export default {
               { value: 5, label: "待二审开庭" },
               { value: 6, label: "调解中" },
               { value: 7, label: "收款监督" },
-              { value: 8, label: "已结案" }
+              { value: 8, label: "已结案" },
+              { value: 9, label: "执行中" },
+              { value: 10, label: "执行终本" }
             ]
           },
           {
@@ -376,8 +390,80 @@ export default {
             }
           },
           {
+            label: "原告信息2",
+            prop: "plaintiffInfo2",
+            default: {}, //默认值必须要有，否则新增的时候会出问题
+            cfForm: {
+              col_span: 12,
+              formItems: [
+                {
+                  label: "单位名称",
+                  prop: "company"
+                },
+                {
+                  label: "联系人信息",
+                  prop: "contact"
+                }
+              ]
+            }
+          },
+          {
+            label: "原告信息3",
+            prop: "plaintiffInfo3",
+            default: {}, //默认值必须要有，否则新增的时候会出问题
+            cfForm: {
+              col_span: 12,
+              formItems: [
+                {
+                  label: "单位名称",
+                  prop: "company"
+                },
+                {
+                  label: "联系人信息",
+                  prop: "contact"
+                }
+              ]
+            }
+          },
+          {
             label: "被告信息",
             prop: "defendantInfo",
+            default: {}, //默认值必须要有，否则新增的时候会出问题
+            cfForm: {
+              col_span: 12,
+              formItems: [
+                {
+                  label: "单位名称",
+                  prop: "company"
+                },
+                {
+                  label: "联系人信息",
+                  prop: "contact"
+                }
+              ]
+            }
+          },
+          {
+            label: "被告信息2",
+            prop: "defendantInfo2",
+            default: {}, //默认值必须要有，否则新增的时候会出问题
+            cfForm: {
+              col_span: 12,
+              formItems: [
+                {
+                  label: "单位名称",
+                  prop: "company"
+                },
+                {
+                  label: "联系人信息",
+                  prop: "contact"
+                }
+              ]
+            }
+          },
+          {
+            label: "被告信息3",
+            prop: "defendantInfo3",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
               col_span: 12,
