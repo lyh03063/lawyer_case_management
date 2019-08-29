@@ -47,30 +47,17 @@ import { clearInterval, setInterval } from "timers";
 export default {
   components: { NavMenu }, //注册组件
   methods: {
-    getDaysBetween(dateString){
-      var data = new Date()
-       var  startDate = data.valueOf();
-        var  endDate = Date.parse(dateString);
-        var days=Math.floor((endDate - startDate)/(1*24*60*60*1000));
-        return  days;
-      },
     async getCaseList() {
 	    let { data } = await axios({
           method: "post",
           url: PUB.domain + "/crossList?page=lawyer_case",
           data: {
+            sortJson: { trialDate: 1 },
             findJson: this.caseFindJson
           }
         }).catch(() => {});
         this.alertCaseList = []
-        data.list.forEach(doc => {
-          if (doc.trialDate) {
-            let day =  this.getDaysBetween(doc.trialDate)
-              if (day<=14&&day>0) {
-              this.alertCaseList.push(doc)
-            }
-          }
-        });
+        this.alertCaseList = data.list
         if (this.alertCaseList.length<=0) {
           this.showAlertCase = false
         }else{
@@ -127,8 +114,7 @@ export default {
   data() {
     return {
       caseFindJson:{
-              '$or':[{ createPerson: localStorage.userId },
-                { collaborator: localStorage.userId - 0 }]
+              
             },
       showAlertCase:true,
       alertCaseList:[],
@@ -180,6 +166,9 @@ export default {
     this.currentUserName = localStorage.loginUserName;
   },
   mounted() {
+    let DataStart = new Date();
+    let DataEnd = DataStart.valueOf()+14*24*60*60*1000;
+    DataEnd = new Date(DataEnd)
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
@@ -187,16 +176,23 @@ export default {
           doc.show = false;
         }
       });
+      this.caseFindJson={
+        '$or':[{ createPerson: localStorage.userId },
+              { collaborator: localStorage.userId - 0 }],
+         trialDate:{ $gte: DataStart,$lte: DataEnd }
+      }
       this.getCaseList()
       setInterval(() => {
       this.getCaseList();
-    }, 2000);
+    }, 20000);
     }else{
-      this.caseFindJson={}
+      this.caseFindJson={
+        trialDate:{ $gte: DataStart,$lte: DataEnd }
+      }
       this.getCaseList()
       setInterval(() => {
       this.getCaseList();
-    }, 2000);
+    }, 20000);
     }
     this.getUnRead();
     setInterval(() => {
