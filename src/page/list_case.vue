@@ -277,6 +277,11 @@ export default {
                 return collaboratorList.join();
               }
             }
+          },
+          {
+            label: "收款监督",
+            prop: "collectionControl",
+            width: 150
           }
           // {
           //   label: "诉讼费",
@@ -390,80 +395,8 @@ export default {
             }
           },
           {
-            label: "原告信息2",
-            prop: "plaintiffInfo2",
-            default: {}, //默认值必须要有，否则新增的时候会出问题
-            cfForm: {
-              col_span: 12,
-              formItems: [
-                {
-                  label: "单位名称",
-                  prop: "company"
-                },
-                {
-                  label: "联系人信息",
-                  prop: "contact"
-                }
-              ]
-            }
-          },
-          {
-            label: "原告信息3",
-            prop: "plaintiffInfo3",
-            default: {}, //默认值必须要有，否则新增的时候会出问题
-            cfForm: {
-              col_span: 12,
-              formItems: [
-                {
-                  label: "单位名称",
-                  prop: "company"
-                },
-                {
-                  label: "联系人信息",
-                  prop: "contact"
-                }
-              ]
-            }
-          },
-          {
             label: "被告信息",
             prop: "defendantInfo",
-            default: {}, //默认值必须要有，否则新增的时候会出问题
-            cfForm: {
-              col_span: 12,
-              formItems: [
-                {
-                  label: "单位名称",
-                  prop: "company"
-                },
-                {
-                  label: "联系人信息",
-                  prop: "contact"
-                }
-              ]
-            }
-          },
-          {
-            label: "被告信息2",
-            prop: "defendantInfo2",
-            default: {}, //默认值必须要有，否则新增的时候会出问题
-            cfForm: {
-              col_span: 12,
-              formItems: [
-                {
-                  label: "单位名称",
-                  prop: "company"
-                },
-                {
-                  label: "联系人信息",
-                  prop: "contact"
-                }
-              ]
-            }
-          },
-          {
-            label: "被告信息3",
-            prop: "defendantInfo3",
             default: {}, //默认值必须要有，否则新增的时候会出问题
             cfForm: {
               col_span: 12,

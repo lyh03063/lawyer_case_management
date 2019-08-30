@@ -30,10 +30,10 @@
                   <td v-if="item.company">
                     <span>{{caseMsg[item.index]?caseMsg[item.index].company?caseMsg[item.index].contact?caseMsg[item.index].company+'，':caseMsg[item.index].company+'；':'':"无"}}</span>
                     <span>{{caseMsg[item.index]?caseMsg[item.index].contact?caseMsg[item.index].contact+'；':'':"无"}}</span>
-                    <span>{{caseMsg[item.index+2]?caseMsg[item.index+2].company?caseMsg[item.index+2].contact?caseMsg[item.index+2].company+'，':caseMsg[item.index+2].company+'；':'':""}}</span>
+                    <!-- <span>{{caseMsg[item.index+2]?caseMsg[item.index+2].company?caseMsg[item.index+2].contact?caseMsg[item.index+2].company+'，':caseMsg[item.index+2].company+'；':'':""}}</span>
                     <span>{{caseMsg[item.index+2]?caseMsg[item.index+2].contact?caseMsg[item.index+2].contact+'；':'':""}}</span>
                     <span>{{caseMsg[item.index+3]?caseMsg[item.index+3].company?caseMsg[item.index+3].contact?caseMsg[item.index+3].company+'，':caseMsg[item.index+3].company+'；':'':""}}</span>
-                    <span>{{caseMsg[item.index+3]?caseMsg[item.index+3].contact?caseMsg[item.index+3].contact+'；':'':""}}</span>
+                    <span>{{caseMsg[item.index+3]?caseMsg[item.index+3].contact?caseMsg[item.index+3].contact+'；':'':""}}</span> -->
                   </td>
                 </tr>
               </table>
