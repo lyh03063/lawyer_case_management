@@ -3,7 +3,6 @@
     <el-container>
       <el-header class="MB10">
         <el-row>
-          
           <div class="FL MT13 FS24 C_fff">案件管理系统</div>
           <div class="FR MT30 C_fff">
             <el-badge :value="unReadCount" class="item">
@@ -25,18 +24,31 @@
     <div class="hint-dialogs" v-if="showAlertCase">
       <el-card class="box-card">
         <div class="alert-case-title">
-          <span  >案件提醒</span>
-          <el-button style="float: right; padding: 3px 0;" type="text" @click="showAlertCase=false">收起</el-button>
+          <span>案件提醒</span>
+          <el-button
+            style="float: right; padding: 3px 0;"
+            type="text"
+            @click="showAlertCase=false"
+          >收起</el-button>
         </div>
-        <div v-for="(item,index) in alertCaseList" :key='index'  class="alert-case-text">
-          {{item.name}}案件将于<font color='red'>{{item.trialDate}}</font>开庭
-        </div>
-        <div v-if="alertCaseList.length<=0">
-          您暂时没有需要提醒的案件
+        <div class="alert-case-box">
+          <div v-for="(item,index) in alertCaseList" :key="index" class="alert-case-text">
+            <div v-if="item.alertType=='alertCase'">
+            {{item.name}}案件将于
+            <font color="red">{{item.trialDate}}</font>开庭
+            </div>
+            <div v-if="item.alertType=='collectionControl'">
+                {{item.name}}案件将于
+                <font color="red">{{item.collectionControl.time}}</font>收款
+                <font color="red">{{item.collectionControl.money}}</font>元
+            </div>
+          </div>
+          <div v-if="alertCaseList.length<=0">您暂时没有需要提醒的案件</div>
         </div>
       </el-card>
     </div>
-      <div v-if="!showAlertCase" class="hidden-alert el-icon-bell" @click="showAlertCase=true"></div>
+    <div v-if="!showAlertCase" class="hidden-alert el-icon-bell" @click="showAlertCase=true"></div>
+    <div style="height:1px;width:100%"></div>
   </div>
 </template>
 
@@ -47,27 +59,86 @@ import { clearInterval, setInterval } from "timers";
 export default {
   components: { NavMenu }, //注册组件
   methods: {
-    async getCaseList() {
-	    let { data } = await axios({
-          method: "post",
-          url: PUB.domain + "/crossList?page=lawyer_case",
-          data: {
-            sortJson: { trialDate: 1 },
-            findJson: this.caseFindJson
+    // 合并收款监督以及案件时间提醒的方法
+    mergeData(){
+      this.alertCaseList.forEach((item)=>item.alertType='alertCase') //每个需要提醒案件增加提醒类型为开庭时间
+      this.collectionControlList.forEach((item)=>{
+        item.alertType = 'collectionControl'//每个案件对象增加提醒类型为收款监督
+        let minDate = ''
+        let collectionControl = {}//保存得到的最近的收款监督对象
+        // 遍历数组得到最近的收款监督对象并赋值
+        item.collectionControl.forEach((item2,index)=>{
+          if (index==0) {
+            minDate=new Date(item2.time).valueOf();
+            collectionControl = item2;
+          }else{
+            let itemDate = new Date(item2.time).valueOf();
+            if (itemDate<minDate) {
+              minDate = itemDate
+              collectionControl = item2;
+            }
           }
-        }).catch(() => {});
-        this.alertCaseList = []
-        this.alertCaseList = data.list
-        if (this.alertCaseList.length<=0) {
-          this.showAlertCase = false
-        }else{
-          // console.log('this.$store.state.caseAlertCount',this.$store.state.caseAlertCount);
-          if (this.alertCaseList.length != this.$store.state.caseAlertCount) {
-            this.showAlertCase = true
+        })
+        item.collectionControl = collectionControl   
+      })
+      // 合并收款监督数组和案件开庭时间提醒数组，并用自定义排序方法排序
+      this.alertCaseList = this.alertCaseList.concat(this.collectionControlList)
+      this.alertCaseList.sort(this.alertSort)
+      // 如果需要提醒的案件数量改变了,显示案件提醒
+      if (this.alertCaseList.length <= 0) {
+        this.showAlertCase = false;
+      } else {
+        if (this.alertCaseList.length != this.$store.state.caseAlertCount) {
+          this.showAlertCase = true;
           this.$store.commit("setCaseAlertCount", this.alertCaseList.length);
-          }
         }
+      }
     },
+    // 数据合并之后对数组进行排序的方法
+    alertSort(obj1,obj2){
+      let time1 = obj1.alertType=='alertCase'?obj1.trialDate:obj1.collectionControl.time
+      let time2 = obj2.alertType=='alertCase'?obj2.trialDate:obj2.collectionControl.time
+      let timeDate1 = new Date(time1).valueOf()
+      let timeDate2 = new Date(time2).valueOf()
+      if (timeDate1<timeDate2) {
+        return -1
+      }else if (timeDate1>timeDate2) {
+        return 1
+      }else{
+        // 如果时间相同的时候，开庭时间提醒在前面
+        if (obj1.alertType == 'alertCase') {
+          return -1
+        }
+        return 1
+      }
+    },
+    // 请求接口获取案件收款监督数据
+    async getCollectionControl() {
+      let { data } = await axios({
+        method: "post",
+        url: PUB.domain +"/crossList?page=lawyer_case",
+        data: {
+          findJson: this.caseReceiptFindJson//请求接口并向数组传值
+        }
+      }).catch(() => {});
+      this.collectionControlList = data.list;//请求数据完成之后保存数据
+      this.mergeData()//两个请求完毕之后开始合并数组
+    },
+    // 请求接口获取案件开庭时间提醒数据
+    async getCaseList() {
+      let { data } = await axios({
+        method: "post",
+        url: PUB.domain + "/crossList?page=lawyer_case",
+        data: {
+          sortJson: { trialDate: 1 },
+          findJson: this.caseAlertFindJson//向接口传过滤的数据
+        }
+      }).catch(() => {});
+      this.alertCaseList = [];//由于设置了定时器，所以需要先清空已保存的数据
+      this.alertCaseList = data.list;//请求完毕之后将数据保存
+      this.getCollectionControl();//请求接口获取案件收款监督数据
+    },
+    // 请求接口获取未读消息数据
     async getUnRead() {
       let { data } = await axios({
         //请求接口
@@ -76,11 +147,12 @@ export default {
         data: {
           pageSize: 1000,
           findJson: {
-            receiveMemberId: localStorage.userId,
+            receiveMemberId: localStorage.userId,//未读消息数据根据登录的用户过来
             read: "0"
           }
         }
       });
+      // 将数据保存到vuex保证实时响应
       if (data.list.length > 0) {
         this.$store.commit("setUnReadCount", data.list.length);
       } else {
@@ -96,14 +168,15 @@ export default {
         (localStorage.loginUserName = null); //登录会员的用户名为空
       this.$router.push({ path: "/login" }); //跳转到manage
     },
+    // 点击消息跳转消息也买你
     checkMsg() {
-      this.$router.push({ path: "/message_datail" });
+      this.$router.push({ path: "/message_datail" });//
     }
   },
   computed: {
     //计算属性
     unReadCount() {
-      return this.$store.state.unReadCount;
+      return this.$store.state.unReadCount;//vuex保存的未读消息数据
     },
     activeMenuIndex() {
       //
@@ -113,11 +186,11 @@ export default {
   },
   data() {
     return {
-      caseFindJson:{
-              
-            },
-      showAlertCase:true,
-      alertCaseList:[],
+      caseReceiptFindJson:{},//请求收款监督接口所传数据
+      caseAlertFindJson: {},//请求开庭时间提醒所传数据
+      showAlertCase: true,//显示案件提醒key
+      collectionControlList : [],//保存收款监督数据数组
+      alertCaseList: [],//保存开庭时间提醒数据数组
       // 导航菜单列表
       navMenuList: [
         {
@@ -166,9 +239,12 @@ export default {
     this.currentUserName = localStorage.loginUserName;
   },
   mounted() {
+    // 获取当前时间
     let DataStart = new Date();
-    let DataEnd = DataStart.valueOf()+14*24*60*60*1000;
-    DataEnd = new Date(DataEnd)
+    let DataReceipEnd = DataStart.valueOf() + 7 * 24 * 60 * 60 * 1000;//获取7天后的时间
+    let DataEnd = DataStart.valueOf() + 14 * 24 * 60 * 60 * 1000;//获取14天后的时间
+    DataReceipEnd = new Date(DataReceipEnd)
+    DataEnd = new Date(DataEnd);
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
@@ -176,24 +252,47 @@ export default {
           doc.show = false;
         }
       });
-      this.caseFindJson={
-        '$or':[{ createPerson: localStorage.userId },
-              { collaborator: localStorage.userId - 0 }],
-         trialDate:{ $gte: DataStart,$lte: DataEnd }
+      // 普通会员登录请求接口需要过滤与其过关的案件数据
+      this.caseAlertFindJson = {
+        $or: [
+          { createPerson: localStorage.userId },
+          { collaborator: localStorage.userId - 0 }
+        ],
+        trialDate: { $gte: DataStart, $lte: DataEnd }
+      };
+      this.caseReceiptFindJson = {
+        $or: [
+          { createPerson: localStorage.userId },
+          { collaborator: localStorage.userId - 0 }
+        ],
+        "collectionControl.time": {
+             "$gte": DataStart,
+            "$lte": DataReceipEnd
+          }
       }
-      this.getCaseList()
-      setInterval(() => {
+      // 设置案件提醒定时器
       this.getCaseList();
-    }, 20000);
-    }else{
-      this.caseFindJson={
-        trialDate:{ $gte: DataStart,$lte: DataEnd }
+      setInterval(() => {
+        this.getCaseList();
+      }, 20000);
+    } else {
+      // 超级会员登录可以直接提醒所有数据
+      this.caseAlertFindJson = {
+        trialDate: { $gte: DataStart, $lte: DataEnd }
+      };
+      this.caseReceiptFindJson = {
+         "collectionControl.time": {
+             "$gte": DataStart,
+            "$lte": DataReceipEnd
+          }
       }
-      this.getCaseList()
-      setInterval(() => {
+      // 设置案件提醒定时器
       this.getCaseList();
-    }, 20000);
+      setInterval(() => {
+        this.getCaseList();
+      }, 20000);
     }
+    // 设置消息提醒定时器
     this.getUnRead();
     setInterval(() => {
       this.getUnRead();
@@ -226,31 +325,37 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   z-index: 100;
   /* height: 300px; */
 }
-.alert-case-title{
+.alert-case-title {
   margin-bottom: 15px;
 }
-.box-card {
-    height: 200px; 
-   overflow: auto;
-  }
-.alert-case-text{  
-padding-left: 10px;
-  line-height: 23px;
+.alert-case-box {
+   height: 140px;
+  overflow: auto;
 }
-.hidden-alert{
+.box-card {
+  width: 450px;
+  height: 200px;
+}
+.alert-case-text {
+  padding-top:5px;
+  padding-left: 10px;
+  line-height: 23px;
+  border-bottom:1px solid rgb(230, 230, 230)
+}
+.hidden-alert {
   position: fixed;
   bottom: 180px;
   right: 0px;
   border-radius: 50%;
   background-color: black;
-  opacity:0.7;
+  opacity: 0.7;
   width: 40px;
   height: 40px;
   font-size: 25px;
   cursor: pointer;
-  padding-top:7px;
-  padding-left:7px;
-  color: rgb(64,158, 255);
+  padding-top: 7px;
+  padding-left: 7px;
+  color: rgb(64, 158, 255);
   z-index: 100;
 }
 </style>
