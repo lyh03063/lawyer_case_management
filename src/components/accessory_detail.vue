@@ -12,16 +12,11 @@
             <div>
               <!-- <span>附件说明：</span> -->
               <a class="link-blue" v-if="getFileUrl(item)" target="_blank" :href="getFileUrl(item)"> <span>{{getFileName(item)}}</span></a>
-              
-
                 <span v-if="item.remark" class="ML10">({{item.remark}})</span>
-
-              
             </div>
             <div class="C_999">
               <span>上传人：</span>
               <span>{{item.memberName?item.memberName.user:''}}&nbsp;&nbsp;&nbsp;</span>
-
               <span>时间：</span>
               <span>{{item.CreateTime}}</span>
             </div>
@@ -34,7 +29,7 @@
         <div v-else @click="showAll=false" class="all-remark">收起</div>
       </div>
     </div>
-    <div v-else>没有附件</div>
+    <div v-else style="padding-left:20px;margin-bottom:10px;">没有附件</div>
   </div>
 </template>
 <script>

@@ -28,7 +28,7 @@
         <div v-else @click="showAll=false" class="all-remark">收起</div>
       </div>
     </div>
-    <div v-else>该案件还没有进展</div>
+    <div v-else style="padding-left:20px;margin-bottom:10px;">该案件还没有进展</div>
   </div>
 </template>
 <script>

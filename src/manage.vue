@@ -32,7 +32,7 @@
           >收起</el-button>
         </div>
         <div class="alert-case-box">
-          <div v-for="(item,index) in alertCaseList" :key="index" class="alert-case-text">
+          <div v-for="(item,index) in caseAlertAllList" :key="index" class="alert-case-text">
             <div v-if="item.alertType=='alertCase'">
             {{item.name}}案件将于
             <font color="red">{{item.trialDate}}</font>开庭
@@ -43,7 +43,7 @@
                 <font color="red">{{item.collectionControl.money}}</font>元
             </div>
           </div>
-          <div v-if="alertCaseList.length<=0">您暂时没有需要提醒的案件</div>
+          <div v-if="caseAlertAllList.length<=0">您暂时没有需要提醒的案件</div>
         </div>
       </el-card>
     </div>
@@ -82,15 +82,15 @@ export default {
         item.collectionControl = collectionControl   
       })
       // 合并收款监督数组和案件开庭时间提醒数组，并用自定义排序方法排序
-      this.alertCaseList = this.alertCaseList.concat(this.collectionControlList)
-      this.alertCaseList.sort(this.alertSort)
+      this.caseAlertAllList = this.alertCaseList.concat(this.collectionControlList)
+      this.caseAlertAllList.sort(this.alertSort)
       // 如果需要提醒的案件数量改变了,显示案件提醒
-      if (this.alertCaseList.length <= 0) {
+      if (this.caseAlertAllList.length <= 0) {
         this.showAlertCase = false;
       } else {
-        if (this.alertCaseList.length != this.$store.state.caseAlertCount) {
+        if (this.caseAlertAllList.length != this.$store.state.caseAlertCount) {
           this.showAlertCase = true;
-          this.$store.commit("setCaseAlertCount", this.alertCaseList.length);
+          this.$store.commit("setCaseAlertCount", this.caseAlertAllList.length);
         }
       }
     },
@@ -121,6 +121,7 @@ export default {
           findJson: this.caseReceiptFindJson//请求接口并向数组传值
         }
       }).catch(() => {});
+      this.collectionControlList = [];
       this.collectionControlList = data.list;//请求数据完成之后保存数据
       this.mergeData()//两个请求完毕之后开始合并数组
     },
@@ -189,6 +190,7 @@ export default {
       caseReceiptFindJson:{},//请求收款监督接口所传数据
       caseAlertFindJson: {},//请求开庭时间提醒所传数据
       showAlertCase: true,//显示案件提醒key
+      caseAlertAllList:[],//需要提醒的所有数据
       collectionControlList : [],//保存收款监督数据数组
       alertCaseList: [],//保存开庭时间提醒数据数组
       // 导航菜单列表

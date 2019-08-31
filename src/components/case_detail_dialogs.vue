@@ -16,11 +16,23 @@
                   <td>{{item.text}}</td>
                   <td v-if="!item.company">{{caseMsg[item.index]?caseMsg[item.index]:"无"}}</td>
                   <td v-if="item.company">
-                    <span>{{item.company}}{{caseMsg[item.index]?caseMsg[item.index].company:"无"}}</span>
-                    <span>{{item.contact}}{{caseMsg[item.index]?caseMsg[item.index].contact:"无"}}</span>
+                    <span>{{caseMsg[item.index]?caseMsg[item.index].company?caseMsg[item.index].contact?caseMsg[item.index].company+'，':caseMsg[item.index].company+'；':'':"无"}}</span>
+                    <span>{{caseMsg[item.index]?caseMsg[item.index].contact?caseMsg[item.index].contact+'；':'':"无"}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>收款监督：</td>
+                  <td>
+                    <div v-if="caseMsg.collectionControl">
+                      <div v-for="(item,index) in caseMsg.collectionControl" :key="index">
+                        <div>收款时间：{{item.time}},金额：{{item.money}}</div>
+                      </div>
+                    </div>
+                    <div v-else>暂无收款监督</div>
                   </td>
                 </tr>
               </table>
+              <div class="H20"></div>
             </el-col>
             <el-col :span="14">
               <table>
@@ -567,6 +579,7 @@ export default {
 .case-box-left table tr td {
   padding-left: 10px;
   padding-top: 5px;
+   vertical-align:text-top;
 }
 .case-box-left table tr td:first-child {
   width: 25%;
