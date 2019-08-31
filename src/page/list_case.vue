@@ -225,7 +225,7 @@ export default {
           {
             label: "开庭时间",
             prop: "trialDate",
-            width: 120,
+            width: 100,
             formatter: function(row) {
               if (row.trialDate) {
                 return moment(row.trialDate).format("YYYY-MM-DD");
