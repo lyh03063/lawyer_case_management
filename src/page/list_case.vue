@@ -259,11 +259,7 @@ export default {
               }
             }
           },
-          {
-            label: "收款监督",
-            prop: "collectionControl",
-            width: 150
-          }
+    
           // {
           //   label: "诉讼费",
           //   prop: "litigationFee",
@@ -296,14 +292,7 @@ export default {
 
         //-------新增、修改表单字段数组-------
         formItems: [
-       
-          // {
-          //   label: "创建人",
-          //   prop: "createPerson",
-          //   type: "select",
-          //   slot: "slot_form_item_createPerson"
-          // },
-          {
+             {
             label: "案件名称",
             prop: "name",
             rules: [{ required: true, message: "案件名称不能为空" }]
@@ -315,18 +304,34 @@ export default {
             slot: "slot_form_item_memberIdList"
           },
           {
-            label: "开庭时间",
-            prop: "trialDate",
-            type: "date"
+            label: "描述",
+            prop: "description",
+            type: "textarea"
           },
+       
+          // {
+          //   label: "创建人",
+          //   prop: "createPerson",
+          //   type: "select",
+          //   slot: "slot_form_item_createPerson"
+          // },
+          {
+            label: "基本信息",
+            prop: "",
+            default: {}, //默认值必须要有，否则新增的时候会出问题
+            cfForm: {
+              col_span: 12,
+              formItems: [
+             
+         
           {
             label: "案号",
             prop: "caseId"
           },
+          
           {
-            label: "描述",
-            prop: "description",
-            type: "textarea"
+            label: "诉讼费",
+            prop: "litigationFee"
           },
           {
             label: "状态",
@@ -336,17 +341,24 @@ export default {
             options: arrCaseStatus
           },
           {
-            label: "诉讼费",
-            prop: "litigationFee"
-          },
-          {
             label: "担保费",
             prop: "guaranteeFee"
           },
-          {
+         
+           {
+            label: "开庭时间",
+            prop: "trialDate",
+            type: "date"
+          },
+           {
             label: "保全费",
             prop: "insuranceFee"
           },
+          
+              ]
+            }
+          },
+          
           {
             label: "原告信息",
             prop: "plaintiffInfo",

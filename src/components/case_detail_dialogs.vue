@@ -20,17 +20,7 @@
                     <span>{{caseMsg[item.index]?caseMsg[item.index].contact?caseMsg[item.index].contact+'；':'':"无"}}</span>
                   </td>
                 </tr>
-                <tr>
-                  <td>收款监督：</td>
-                  <td>
-                    <div v-if="caseMsg.collectionControl">
-                      <div v-for="(item,index) in caseMsg.collectionControl" :key="index">
-                        <div>收款时间：{{item.time}},金额：{{item.money}}</div>
-                      </div>
-                    </div>
-                    <div v-else>暂无收款监督</div>
-                  </td>
-                </tr>
+                
               </table>
               <div class="H20"></div>
             </el-col>
@@ -73,8 +63,17 @@
               v-if="item.person"
             >{{item.phone}}{{caseMsg[item.index]?caseMsg[item.index].phone:"无"}}</span>
           </div>
+          
         </el-col>
       </el-row>
+      <div style="padding-left:10px;line-height:30px;"><span style="padding-right:25px;">收款监督：</span>
+                    <span v-if="caseMsg.collectionControl">
+                      <span v-for="(item,index) in caseMsg.collectionControl" :key="index">
+                        <span>{{'收款时间'+'('+(index+1)+')：'}}{{item.time}},{{'金额'+'('+(index+1)+')：'}}{{item.money}}元；&nbsp;&nbsp;&nbsp;</span>
+                      </span>
+                    </span>
+                    <span v-else>暂无收款监督</span>
+          </div>
       <div class="H20"></div>
       <div class="subfield">
         <div style="float:left">进展</div>
