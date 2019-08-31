@@ -43,6 +43,21 @@
   </div>
 </template>
 <script>
+let arrCaseStatus = [
+  { value: 1, label: "待立案" },
+  { value: 2, label: "已立案待保全" },
+  { value: 3, label: "已保全" },
+  { value: 4, label: "待一审开庭" },
+  { value: 5, label: "待二审开庭" },
+  { value: 6, label: "调解中" },
+  { value: 7, label: "收款监督" },
+  { value: 8, label: "已结案" },
+  { value: 9, label: "执行中" },
+  { value: 10, label: "执行终本" }
+];
+
+var dictCaseStatus = lodash.keyBy(arrCaseStatus, "value");
+
 import case_detail_dialogs from "@/components/case_detail_dialogs";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
@@ -59,41 +74,42 @@ export default {
   methods: {
     //  将案件状态转换成文字状态的方法
     caseStatusToname(status) {
-      switch (status) {
-        case 1:
-          return "待立案";
-          break;
-        case 2:
-          return "已立案待保全";
-          break;
-        case 3:
-          return "已保全";
-          break;
-        case 4:
-          return "待一审开庭";
-          break;
-        case 5:
-          return "待二审开庭";
-          break;
-        case 6:
-          return "调解中";
-          break;
-        case 7:
-          return "收款监督";
-          break;
-        case 8:
-          return "已结案";
-          break;
-        case 9:
-          return "执行中";
-          break;
-        case 10:
-          return "执行终本";
-          break;
-        default:
-          return "无";
-          break;
-      }
+      return dictCaseStatus[status].label;
+      // switch (status) {
+      //   case 1:
+      //     return "待立案";
+      //     break;
+      //   case 2:
+      //     return "已立案待保全";
+      //     break;
+      //   case 3:
+      //     return "已保全";
+      //     break;
+      //   case 4:
+      //     return "待一审开庭";
+      //     break;
+      //   case 5:
+      //     return "待二审开庭";
+      //     break;
+      //   case 6:
+      //     return "调解中";
+      //     break;
+      //   case 7:
+      //     return "收款监督";
+      //     break;
+      //   case 8:
+      //     return "已结案";
+      //     break;
+      //   case 9:
+      //     return "执行中";
+      //     break;
+      //   case 10:
+      //     return "执行终本";
+      //     break;
+      //   default:
+      //     return "无";
+      //     break;
+      // }
     },
     // 修改案件之后触发的回调方法
     modify(newdata, olddata) {
@@ -203,41 +219,7 @@ export default {
             prop: "status",
             width: 120,
             formatter: function(rowData) {
-              switch (rowData.status) {
-                case 1:
-                  return "待立案";
-                  break;
-                case 2:
-                  return "已立案待保全";
-                  break;
-                case 3:
-                  return "已保全";
-                  break;
-                case 4:
-                  return "待一审开庭";
-                  break;
-                case 5:
-                  return "待二审开庭";
-                  break;
-                case 6:
-                  return "调解中";
-                  break;
-                case 7:
-                  return "收款监督";
-                  break;
-                case 8:
-                  return "已结案";
-                  break;
-                case 9:
-                  return "执行中";
-                  break;
-                case 10:
-                  return "执行终本";
-                  break;
-                default:
-                  return "无";
-                  break;
-              }
+              return lodash.get(dictCaseStatus, `[${rowData.status}].label`,"无");
             }
           },
           {
@@ -247,10 +229,9 @@ export default {
             formatter: function(row) {
               if (row.trialDate) {
                 return moment(row.trialDate).format("YYYY-MM-DD");
-              }else{
+              } else {
                 return "";
               }
-              
             }
           },
           {
@@ -315,6 +296,7 @@ export default {
 
         //-------新增、修改表单字段数组-------
         formItems: [
+       
           // {
           //   label: "创建人",
           //   prop: "createPerson",
@@ -351,18 +333,7 @@ export default {
             prop: "status",
             type: "select",
             default: 1,
-            options: [
-              { value: 1, label: "待立案" },
-              { value: 2, label: "已立案待保全" },
-              { value: 3, label: "已保全" },
-              { value: 4, label: "待一审开庭" },
-              { value: 5, label: "待二审开庭" },
-              { value: 6, label: "调解中" },
-              { value: 7, label: "收款监督" },
-              { value: 8, label: "已结案" },
-              { value: 9, label: "执行中" },
-              { value: 10, label: "执行终本" }
-            ]
+            options: arrCaseStatus
           },
           {
             label: "诉讼费",
@@ -512,7 +483,28 @@ export default {
                 }
               ]
             }
-          }
+          },
+             {
+            label: "收款监督",
+            prop: "collectionControl",
+            default: [{ money: 1 }],
+            type: "collection",
+            collectionlistType: "form",
+            collectionCfForm: {
+              col_span: 12,
+              formItems: [
+                {
+                  label: "时间",
+                  prop: "time",
+                  type: "date"
+                },
+                {
+                  label: "金额",
+                  prop: "money"
+                }
+              ]
+            }
+          },
         ]
       }
     };

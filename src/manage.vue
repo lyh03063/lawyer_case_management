@@ -270,11 +270,7 @@ export default {
             "$lte": DataReceipEnd
           }
       }
-      // 设置案件提醒定时器
-      this.getCaseList();
-      setInterval(() => {
-        this.getCaseList();
-      }, 20000);
+     
     } else {
       // 超级会员登录可以直接提醒所有数据
       this.caseAlertFindJson = {
@@ -286,12 +282,16 @@ export default {
             "$lte": DataReceipEnd
           }
       }
-      // 设置案件提醒定时器
+      
+    }
+// 设置案件提醒定时器
       this.getCaseList();
       setInterval(() => {
         this.getCaseList();
       }, 20000);
-    }
+
+
+
     // 设置消息提醒定时器
     this.getUnRead();
     setInterval(() => {
