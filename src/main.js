@@ -46,7 +46,7 @@ Vue.use(loading);   //作为全局组件，必须有install
 
 // import VueRouter from 'vue-router'
 Vue.use(VueRouter)
-import "./mock.js";
+
 
 
 
