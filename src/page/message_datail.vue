@@ -95,10 +95,10 @@ export default {
         url: PUB.domain + "/crossList?page=lawyer_msg",
         data: {
           pageSize: 100,
-          // findJson: {
-          //   receiveMemberId: localStorage.userId,
-          //   read: "0"//未读
-          // }
+          findJson: {
+            receiveMemberId: localStorage.userId,
+            read: "0"//未读
+          }
         }
       });
       this.newMsgList = data.list;
