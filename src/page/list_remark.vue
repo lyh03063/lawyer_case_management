@@ -66,7 +66,7 @@ export default {
         twoTitle: "案件",
         threeTitle: "进展",
         flag:true,
-        isShowToolBar:true,
+        isShowToolBar:false,
         isShowModify:false,
         isShowDelete:false,
         dynamicDict: [{ page: "lawyer_member",populateColumn: "memberName", idColumn: "memberId", idColumn2: "P1" },
