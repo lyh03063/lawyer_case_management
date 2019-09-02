@@ -5,7 +5,9 @@
           {{this.changeContent}}案件上传了新的附件：&nbsp;&nbsp;
           <span><a class="link-blue" target="_blank" :href="this.msgAccessory.url[0].url">{{this.msgAccessory.name}} </a></span>
       </div>
-    
+      <div v-else>
+          {{this.changeContent}}案件上传了新的附件：该附件已经被删除
+      </div>
   </div>
 </template>
 
