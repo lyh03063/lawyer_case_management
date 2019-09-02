@@ -499,7 +499,6 @@ export default {
              {
             label: "收款监督",
             prop: "collectionControl",
-            default: [{ money: 1 }],
             type: "collection",
             collectionlistType: "form",
             collectionCfForm: {

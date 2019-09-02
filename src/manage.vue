@@ -64,20 +64,24 @@ export default {
       this.alertCaseList.forEach((item)=>item.alertType='alertCase') //每个需要提醒案件增加提醒类型为开庭时间
       this.collectionControlList.forEach((item)=>{
         item.alertType = 'collectionControl'//每个案件对象增加提醒类型为收款监督
-        let minDate = ''
         let collectionControl = {}//保存得到的最近的收款监督对象
         // 遍历数组得到最近的收款监督对象并赋值
+        let nowDate = new Date().toLocaleDateString()
+        nowDate = new Date(nowDate).valueOf()
+        let minDate = ''
         item.collectionControl.forEach((item2,index)=>{
-          if (index==0) {
-            minDate=new Date(item2.time).valueOf();
-            collectionControl = item2;
-          }else{
             let itemDate = new Date(item2.time).valueOf();
-            if (itemDate<minDate) {
-              minDate = itemDate
-              collectionControl = item2;
+            if (itemDate>=nowDate) {
+              if (minDate == '') {
+                 minDate = itemDate
+               collectionControl = item2;
+             }
+               if (itemDate<minDate) {
+              
+                 minDate = itemDate
+                collectionControl = item2;
+              }
             }
-          }
         })
         item.collectionControl = collectionControl   
       })
@@ -242,7 +246,8 @@ export default {
   },
   mounted() {
     // 获取当前时间
-    let DataStart = new Date();
+    let DataStart = new Date().toLocaleDateString();
+    DataStart = new Date(DataStart)
     let DataReceipEnd = DataStart.valueOf() + 7 * 24 * 60 * 60 * 1000;//获取7天后的时间
     let DataEnd = DataStart.valueOf() + 14 * 24 * 60 * 60 * 1000;//获取14天后的时间
     DataReceipEnd = new Date(DataReceipEnd)

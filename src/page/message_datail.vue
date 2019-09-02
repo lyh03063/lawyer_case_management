@@ -18,18 +18,19 @@
           >修改了状态,&nbsp;&nbsp;状态从{{item.before}},&nbsp;&nbsp;变成{{item.after}}</template>
           <template
             v-if="item.type==2"
-          >添加了新的备注,&nbsp;&nbsp;
-          <!-- 备注的id是：{{item.remarkId}} -->
+          >添加了新的进展,&nbsp;&nbsp;进展的内容：{{msg.remark?msg.remark.content:'该进展已经被删除'}}
           </template>
           <template
             v-if="item.type==3"
-          >上传了新的附件,&nbsp;&nbsp;
+          >上传了新的附件：&nbsp;&nbsp;
+          <span v-if="msg.file"><a class="link-blue" target="_blank" :href="msg.file.url[0].url">{{msg.file.name}} </a></span>
+          <span v-else>该附件已经被删除</span>
           <!-- 附件的id是：{{item.fileId}} -->
           </template>
         </div>
         <div
           class=" C_999"
-        >操作人：{{msg.memberUser?msg.memberUser.user:''}},&nbsp;&nbsp;时间：{{msg.CreateTime}}</div>
+        >操作人：{{msg.memberUser?msg.memberUser.user:''}},&nbsp;&nbsp;时间：{{msg.CreateTime?msg.CreateTime:''}}</div>
       </div>
     </div>
     <div v-else>您没有新消息</div>
@@ -93,14 +94,18 @@ export default {
         method: "post",
         url: PUB.domain + "/crossList?page=lawyer_msg",
         data: {
-          pageSize: 1000,
-          findJson: {
-            receiveMemberId: localStorage.userId,
-            read: "0"//未读
-          }
+          pageSize: 100,
+          // findJson: {
+          //   receiveMemberId: localStorage.userId,
+          //   read: "0"//未读
+          // }
         }
       });
       this.newMsgList = data.list;
+      this.newMsgList.forEach((item)=>{
+        item.remarkId = item.change[0].remarkId==''? 0:item.change[0].remarkId
+        item.fileId  = item.change[0].fileId==''?0:item.change[0].fileId
+      })
       // 根据会员id以及 案件id获取 会员用户名以及案件名称
       this.toName({
         page: "lawyer_member",
@@ -114,13 +119,25 @@ export default {
         idColumn: "caseId",
         idColumn2: "P1"
       });
+      this.toName({
+        page: "lawyer_remark",
+        populateColumn: 'remark',
+        idColumn: 'remarkId',
+        idColumn2: "P1"
+      });
+      this.toName({
+        page: "lawyer_file",
+        populateColumn: 'file',
+        idColumn: 'fileId',
+        idColumn2: "P1"
+      });
       // 如果有新消息，保存所有新消息id
       if (this.newMsgList.length > 0) {
         this.newMsgList.forEach(msg => {
           this.msgIdList.push(msg.P1);
         });
         // 将所有新消息设置为已读
-        this.modifyMsg();
+        // this.modifyMsg();
       }
     },
     // 将新消息设置为已读的方法

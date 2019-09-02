@@ -1,13 +1,28 @@
 <template>
   <div class>
     <dm_list_data :cf="cfList">
+      <template v-slot:slot_form_item_change="{row}">
+        <msg_change_detail :msg='row'></msg_change_detail>
+      </template>
+      <template v-slot:slot_form_item_memberId="{row}">
+        <dm_ajax_populate :id="row.memberId" populateKey="name" page="lawyer_member">
+        </dm_ajax_populate>
+      </template>
+      <template v-slot:slot_form_item_receiveMemberId="{row}">
+        <dm_ajax_populate :id="row.receiveMemberId" populateKey="name" page="lawyer_member">
+        </dm_ajax_populate>
+      </template>
+      <template v-slot:slot_form_item_caseId="{row}">
+        <dm_ajax_populate :id="row.caseId" populateKey="name" page="lawyer_case">
+        </dm_ajax_populate>
+      </template>
     </dm_list_data>
   </div>
 </template>
 <script>
-
+import msg_change_detail from "@/components/msg_change_detail";
 export default {
-
+components:{msg_change_detail},
   data() {
     return {
       cfList: {
@@ -133,21 +148,7 @@ export default {
             label: "变更内容",
             prop: "change",
             width: 300,
-            formatter:(data)=>{
-              if (data.memberName&&data.caseName) {
-                switch (data.change[0].type) {
-                case 1:
-                  return data.memberName.name+"修改了"+data.caseName.name+"案件的状态,从"+data.change[0].before+"改变为"+data.change[0].after
-                case 2:
-                  return data.memberName.name+"在"+data.caseName.name+"案件上添加了新的备注，"+"备注的id是"+data.change[0].remarkId
-                case 3:
-                  return data.memberName.name+"在"+data.caseName.name+"案件上传了新的附件，"+"备注的id是"+data.change[0].fileId
-                default:
-                  return "无"
-                  break;
-              }
-              }
-            }
+            slot:'slot_form_item_change'
           },
           {
             label: "创建时间",
@@ -155,34 +156,22 @@ export default {
             width: 150
           },
           {
-            label: "会员",
-            prop: "memberName",
+            label: "发送会员",
+            prop: "memberId",
             width: 100,
-            formatter:(data)=>{
-              if (data.memberName) {
-                return data.memberName.name
-              }
-            }
+            slot:'slot_form_item_memberId'
           },
           {
             label: "接收会员",
-            prop: "receiveName",
+            prop: "receiveMemberId",
             width: 100,
-            formatter:(data)=>{
-              if (data.receiveName) {
-                return data.receiveName.name
-              }
-            }
+            slot:'slot_form_item_receiveMemberId'
           },
           {
             label: "案件名称",
-            prop: "caseName",
+            prop: "caseId",
             width: 100,
-            formatter:(data)=>{
-              if (data.caseName) {
-                return data.caseName.name
-              }
-            }
+            slot:'slot_form_item_caseId'
           }  
         ],
         //-------新增、修改表单字段数组-------
