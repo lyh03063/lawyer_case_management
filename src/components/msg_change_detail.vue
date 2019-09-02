@@ -25,7 +25,7 @@ export default {
           url: PUB.domain + "/crossList?page=lawyer_case",
           data: {
             findJson: {
-              P1:this.msg.memberId
+              P1:this.msg.caseId
             }
           }
         }).catch(() => {});
