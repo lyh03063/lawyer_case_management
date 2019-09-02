@@ -137,7 +137,7 @@ export default {
           this.msgIdList.push(msg.P1);
         });
         // 将所有新消息设置为已读
-        // this.modifyMsg();
+        this.modifyMsg();
       }
     },
     // 将新消息设置为已读的方法
