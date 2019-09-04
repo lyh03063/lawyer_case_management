@@ -301,7 +301,7 @@ export default {
         },
         {
           text: "二审信息：",
-          index: "secondInstanceInfo ",
+          index: "secondInstanceInfo",
           company: "二审单位：",
           caseId: "二审案号：",
           person: "二审承办人：",
