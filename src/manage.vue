@@ -34,13 +34,13 @@
         <div class="alert-case-box">
           <div v-for="(item,index) in caseAlertAllList" :key="index" class="alert-case-text">
             <div v-if="item.alertType=='alertCase'">
-            {{item.name}}案件将于
-            <font color="red">{{item.trialDate}}</font>开庭
+              {{item.name}}案件将于
+              <font color="red">{{item.trialDate}}</font>开庭
             </div>
             <div v-if="item.alertType=='collectionControl'">
-                {{item.name}}案件将于
-                <font color="red">{{item.collectionControl.time}}</font>收款
-                <font color="red">{{item.collectionControl.money}}</font>元
+              {{item.name}}案件将于
+              <font color="red">{{item.collectionControl.time}}</font>收款
+              <font color="red">{{item.collectionControl.money}}</font>元
             </div>
           </div>
           <div v-if="caseAlertAllList.length<=0">您暂时没有需要提醒的案件</div>
@@ -60,34 +60,35 @@ export default {
   components: { NavMenu }, //注册组件
   methods: {
     // 合并收款监督以及案件时间提醒的方法
-    mergeData(){
-      this.alertCaseList.forEach((item)=>item.alertType='alertCase') //每个需要提醒案件增加提醒类型为开庭时间
-      this.collectionControlList.forEach((item)=>{
-        item.alertType = 'collectionControl'//每个案件对象增加提醒类型为收款监督
-        let collectionControl = {}//保存得到的最近的收款监督对象
+    mergeData() {
+      this.alertCaseList.forEach(item => (item.alertType = "alertCase")); //每个需要提醒案件增加提醒类型为开庭时间
+      this.collectionControlList.forEach(item => {
+        item.alertType = "collectionControl"; //每个案件对象增加提醒类型为收款监督
+        let collectionControl = {}; //保存得到的最近的收款监督对象
         // 遍历数组得到最近的收款监督对象并赋值
-        let nowDate = new Date().toLocaleDateString()
-        nowDate = new Date(nowDate).valueOf()
-        let minDate = ''
-        item.collectionControl.forEach((item2,index)=>{
-            let itemDate = new Date(item2.time).valueOf();
-            if (itemDate>=nowDate) {
-              if (minDate == '') {
-                 minDate = itemDate
-               collectionControl = item2;
-             }
-               if (itemDate<minDate) {
-              
-                 minDate = itemDate
-                collectionControl = item2;
-              }
+        let nowDate = new Date().toLocaleDateString();
+        nowDate = new Date(nowDate).valueOf();
+        let minDate = "";
+        item.collectionControl.forEach((item2, index) => {
+          let itemDate = new Date(item2.time).valueOf();
+          if (itemDate >= nowDate) {
+            if (minDate == "") {
+              minDate = itemDate;
+              collectionControl = item2;
             }
-        })
-        item.collectionControl = collectionControl   
-      })
+            if (itemDate < minDate) {
+              minDate = itemDate;
+              collectionControl = item2;
+            }
+          }
+        });
+        item.collectionControl = collectionControl;
+      });
       // 合并收款监督数组和案件开庭时间提醒数组，并用自定义排序方法排序
-      this.caseAlertAllList = this.alertCaseList.concat(this.collectionControlList)
-      this.caseAlertAllList.sort(this.alertSort)
+      this.caseAlertAllList = this.alertCaseList.concat(
+        this.collectionControlList
+      );
+      this.caseAlertAllList.sort(this.alertSort);
       // 如果需要提醒的案件数量改变了,显示案件提醒
       if (this.caseAlertAllList.length <= 0) {
         this.showAlertCase = false;
@@ -99,35 +100,41 @@ export default {
       }
     },
     // 数据合并之后对数组进行排序的方法
-    alertSort(obj1,obj2){
-      let time1 = obj1.alertType=='alertCase'?obj1.trialDate:obj1.collectionControl.time
-      let time2 = obj2.alertType=='alertCase'?obj2.trialDate:obj2.collectionControl.time
-      let timeDate1 = new Date(time1).valueOf()
-      let timeDate2 = new Date(time2).valueOf()
-      if (timeDate1<timeDate2) {
-        return -1
-      }else if (timeDate1>timeDate2) {
-        return 1
-      }else{
+    alertSort(obj1, obj2) {
+      let time1 =
+        obj1.alertType == "alertCase"
+          ? obj1.trialDate
+          : obj1.collectionControl.time;
+      let time2 =
+        obj2.alertType == "alertCase"
+          ? obj2.trialDate
+          : obj2.collectionControl.time;
+      let timeDate1 = new Date(time1).valueOf();
+      let timeDate2 = new Date(time2).valueOf();
+      if (timeDate1 < timeDate2) {
+        return -1;
+      } else if (timeDate1 > timeDate2) {
+        return 1;
+      } else {
         // 如果时间相同的时候，开庭时间提醒在前面
-        if (obj1.alertType == 'alertCase') {
-          return -1
+        if (obj1.alertType == "alertCase") {
+          return -1;
         }
-        return 1
+        return 1;
       }
     },
     // 请求接口获取案件收款监督数据
     async getCollectionControl() {
       let { data } = await axios({
         method: "post",
-        url: PUB.domain +"/crossList?page=lawyer_case",
+        url: PUB.domain + "/crossList?page=lawyer_case",
         data: {
-          findJson: this.caseReceiptFindJson//请求接口并向数组传值
+          findJson: this.caseReceiptFindJson //请求接口并向数组传值
         }
       }).catch(() => {});
       this.collectionControlList = [];
-      this.collectionControlList = data.list;//请求数据完成之后保存数据
-      this.mergeData()//两个请求完毕之后开始合并数组
+      this.collectionControlList = data.list; //请求数据完成之后保存数据
+      this.mergeData(); //两个请求完毕之后开始合并数组
     },
     // 请求接口获取案件开庭时间提醒数据
     async getCaseList() {
@@ -136,12 +143,12 @@ export default {
         url: PUB.domain + "/crossList?page=lawyer_case",
         data: {
           sortJson: { trialDate: 1 },
-          findJson: this.caseAlertFindJson//向接口传过滤的数据
+          findJson: this.caseAlertFindJson //向接口传过滤的数据
         }
       }).catch(() => {});
-      this.alertCaseList = [];//由于设置了定时器，所以需要先清空已保存的数据
-      this.alertCaseList = data.list;//请求完毕之后将数据保存
-      this.getCollectionControl();//请求接口获取案件收款监督数据
+      this.alertCaseList = []; //由于设置了定时器，所以需要先清空已保存的数据
+      this.alertCaseList = data.list; //请求完毕之后将数据保存
+      this.getCollectionControl(); //请求接口获取案件收款监督数据
     },
     // 请求接口获取未读消息数据
     async getUnRead() {
@@ -152,7 +159,7 @@ export default {
         data: {
           pageSize: 1000,
           findJson: {
-            receiveMemberId: localStorage.userId,//未读消息数据根据登录的用户过来
+            receiveMemberId: localStorage.userId, //未读消息数据根据登录的用户过来
             read: "0"
           }
         }
@@ -175,13 +182,13 @@ export default {
     },
     // 点击消息跳转消息也买你
     checkMsg() {
-      this.$router.push({ path: "/message_datail" });//
+      this.$router.push({ path: "/message_datail" }); //
     }
   },
   computed: {
     //计算属性
     unReadCount() {
-      return this.$store.state.unReadCount;//vuex保存的未读消息数据
+      return this.$store.state.unReadCount; //vuex保存的未读消息数据
     },
     activeMenuIndex() {
       //
@@ -191,12 +198,12 @@ export default {
   },
   data() {
     return {
-      caseReceiptFindJson:{},//请求收款监督接口所传数据
-      caseAlertFindJson: {},//请求开庭时间提醒所传数据
-      showAlertCase: true,//显示案件提醒key
-      caseAlertAllList:[],//需要提醒的所有数据
-      collectionControlList : [],//保存收款监督数据数组
-      alertCaseList: [],//保存开庭时间提醒数据数组
+      caseReceiptFindJson: {}, //请求收款监督接口所传数据
+      caseAlertFindJson: {}, //请求开庭时间提醒所传数据
+      showAlertCase: true, //显示案件提醒key
+      caseAlertAllList: [], //需要提醒的所有数据
+      collectionControlList: [], //保存收款监督数据数组
+      alertCaseList: [], //保存开庭时间提醒数据数组
       // 导航菜单列表
       navMenuList: [
         {
@@ -247,10 +254,10 @@ export default {
   mounted() {
     // 获取当前时间
     let DataStart = new Date().toLocaleDateString();
-    DataStart = new Date(DataStart)
-    let DataReceipEnd = DataStart.valueOf() + 7 * 24 * 60 * 60 * 1000;//获取7天后的时间
-    let DataEnd = DataStart.valueOf() + 14 * 24 * 60 * 60 * 1000;//获取14天后的时间
-    DataReceipEnd = new Date(DataReceipEnd)
+    DataStart = new Date(DataStart);
+    let DataReceipEnd = DataStart.valueOf() + 7 * 24 * 60 * 60 * 1000; //获取7天后的时间
+    let DataEnd = DataStart.valueOf() + 14 * 24 * 60 * 60 * 1000; //获取14天后的时间
+    DataReceipEnd = new Date(DataReceipEnd);
     DataEnd = new Date(DataEnd);
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.superAdmin != 1) {
@@ -272,32 +279,47 @@ export default {
           { createPerson: localStorage.userId },
           { collaborator: localStorage.userId - 0 }
         ],
-        "collectionControl.time": {
-             "$gte": DataStart,
-            "$lte": DataReceipEnd
+        collectionControl: {
+          //数组元素匹配
+          $elemMatch: {
+            time: {
+              $gte: DataStart,
+              $lte: DataReceipEnd
+            }
           }
-      }
-     
+        }
+        // "collectionControl.time": {
+        //   $gte: DataStart,
+        //   $lte: DataReceipEnd
+        // }
+      };
     } else {
       // 超级会员登录可以直接提醒所有数据
       this.caseAlertFindJson = {
         trialDate: { $gte: DataStart, $lte: DataEnd }
       };
       this.caseReceiptFindJson = {
-         "collectionControl.time": {
-             "$gte": DataStart,
-            "$lte": DataReceipEnd
+        // "collectionControl.time": {
+        //   $gte: DataStart,
+        //   $lte: DataReceipEnd
+        // },
+        //刘咏辉1019-10-17修改，之前的查询条件在多个时间存在时会出现边界判断异常问题
+        collectionControl: {
+          //数组元素匹配
+          $elemMatch: {
+            time: {
+              $gte: DataStart,
+              $lte: DataReceipEnd
+            }
           }
-      }
-      
+        }
+      };
     }
-// 设置案件提醒定时器
+    // 设置案件提醒定时器
+    this.getCaseList();
+    setInterval(() => {
       this.getCaseList();
-      setInterval(() => {
-        this.getCaseList();
-      }, 20000);
-
-
+    }, 20000);
 
     // 设置消息提醒定时器
     this.getUnRead();
@@ -336,7 +358,7 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   margin-bottom: 15px;
 }
 .alert-case-box {
-   height: 140px;
+  height: 140px;
   overflow: auto;
 }
 .box-card {
@@ -344,10 +366,10 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   height: 200px;
 }
 .alert-case-text {
-  padding-top:5px;
+  padding-top: 5px;
   padding-left: 10px;
   line-height: 23px;
-  border-bottom:1px solid rgb(230, 230, 230)
+  border-bottom: 1px solid rgb(230, 230, 230);
 }
 .hidden-alert {
   position: fixed;
