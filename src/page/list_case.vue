@@ -252,10 +252,14 @@ export default {
               if (data.collaboratorName) {
                 let collaboratorList = [];
                 data.collaboratorName.forEach(element => {
-                  collaboratorList.push(element.name);
+                  if (element) {
+                    collaboratorList.push(element.name);
+                  }
+                  
                 });
 
                 return collaboratorList.join();
+                // return data.collaboratorName
               }
             }
           },
