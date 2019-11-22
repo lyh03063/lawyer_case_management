@@ -1,32 +1,41 @@
 
 
-
-
-import Vue from 'vue'
 Vue.config.productionTip = false
-
 import lodash from 'lodash'//导入lodash方法库
-window.lodash=lodash
-Vue.prototype.$lodash = lodash//让vue实例中可访问$store
-
+window.lodash = lodash
+Vue.prototype.$lodash = lodash//让vue实例中可访问$lodash
 import axios from "axios";
 window.axios = axios;
-
 import ajax from "@/assets/js/ajax.js";
 window.ajax = ajax;
-import util from "@/assets/js/util.js";
-window.util=util;
-
-
-
 import moment from "moment";
-window.moment = moment; 
-import  "./assets/js/mix.js";//注意位置要提前
+window.moment = moment;
+
+// import Vue from 'vue'
+// Vue.config.productionTip = false
+
+// import lodash from 'lodash'//导入lodash方法库
+// window.lodash=lodash
+// Vue.prototype.$lodash = lodash//让vue实例中可访问$store
+
+// import axios from "axios";
+// window.axios = axios;
+
+// import ajax from "@/assets/js/ajax.js";
+// window.ajax = ajax;
+// import util from "@/assets/js/util.js";
+// window.util=util;
 
 
 
-import dm_components from "dmagic-components";
-Vue.use(dm_components);
+// import moment from "moment";
+// window.moment = moment; 
+// import  "./assets/js/mix.js";//注意位置要提前
+
+
+
+// import dm_components from "dmagic-components";
+// Vue.use(dm_components);
 
 
 
@@ -124,8 +133,8 @@ router.beforeEach((to,from,next)=>{
 
 
 
-import Vuex from 'vuex'//导入vuex模块
-Vue.use(Vuex)//应用组件
+// import Vuex from 'vuex'//导入vuex模块
+// Vue.use(Vuex)//应用组件
 
 const store = new Vuex.Store({//定义Vuex的存储对象
   state: {
@@ -189,10 +198,10 @@ const store = new Vuex.Store({//定义Vuex的存储对象
 })
 
 Vue.prototype.$store = store//让vue实例中可访问$store
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+// import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.use(ElementUI);
+// Vue.use(ElementUI);
 
 
 import Main from './main.vue'
