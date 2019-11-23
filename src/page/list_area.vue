@@ -6,18 +6,14 @@
 <script>
 
 export default {
+  components: {  },
   data() {
     return {
-      cfList: PUB.listCF.list_member
+      cfList:PUB.listCF.list_area 
     };
-  },
-
-  methods: {
-    
-  },
-  mounted(){
-    // window.console.log('aaaa',PUB);
+  },created(){
   }
+
 };
 </script>
 

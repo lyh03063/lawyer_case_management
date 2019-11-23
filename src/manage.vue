@@ -220,8 +220,8 @@ export default {
           icon: "el-icon-document",
           title: "案件",
           menuItem: [
-            { index: "list_case", route: "/list_case", title: "案件列表" },
-            { index: "list_remark", route: "/list_remark", title: "进展" },
+            { index: "list_case_unprocess", route: "/list_case_unprocess", title: "在办案件列表" },
+            { index: "list_case_end", route: "/list_case_end", title: "归档案件列表" },
             {
               index: "list_accessory",
               route: "/list_accessory",
@@ -231,17 +231,20 @@ export default {
           show: true
         },
         {
-          index: "list_member",
-          route: "/list_member",
-          icon: "el-icon-user-solid",
-          title: "会员",
-          show: true //通过控制来show来设置改导航是否显示
-        },
-        {
-          index: "list_message",
-          route: "/list_message",
-          icon: "el-icon-s-comment",
-          title: "消息",
+          index: "3",
+          icon: "el-icon-setting",
+          title: "系统设置",
+          menuItem: [
+            { index: "list_member", route: "/list_member", title: "会员" },
+            { index: "list_message", route: "/list_message", title: "消息" },
+            
+            {
+              index: "list_remark",
+              route: "/list_remark",
+              title: "进展"
+            },
+            { index: "list_area", route: "/list_area", title: "地区管理" },
+          ],
           show: true
         }
       ]
@@ -262,7 +265,7 @@ export default {
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
-        if (doc.index == "list_member" || doc.index == "list_message") {
+        if (doc.index == "3") {
           doc.show = false;
         }
       });

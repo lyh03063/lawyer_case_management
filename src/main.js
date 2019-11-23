@@ -10,6 +10,7 @@ import ajax from "@/assets/js/ajax.js";
 window.ajax = ajax;
 import moment from "moment";
 window.moment = moment;
+import config from '@/assets/js/config.js'
 
 // import Vue from 'vue'
 // Vue.config.productionTip = false
@@ -92,8 +93,16 @@ const router = new VueRouter({
           component:resolve => require(['@/demo/common.vue'],resolve),
         },
         {
-          path: '/list_case',
-          component:resolve => require(['@/page/list_case'],resolve),
+          path: '/list_area',
+          component:resolve => require(['@/page/list_area.vue'],resolve),
+        },
+        {
+          path: '/list_case_unprocess',
+          component:resolve => require(['@/page/list_case_unprocess'],resolve),
+        },
+        {
+          path: '/list_case_end',
+          component:resolve => require(['@/page/list_case_end'],resolve),
         },
         {
           path: '/list_remark',

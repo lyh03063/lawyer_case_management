@@ -72,7 +72,7 @@
                         <span>{{'收款时间'+'('+(index+1)+')：'}}{{item.time}},{{'金额'+'('+(index+1)+')：'}}{{item.money}}元；&nbsp;&nbsp;&nbsp;</span>
                       </span>
                     </span>
-                    <span v-else>暂无收款监督</span>
+                    <span v-else style="margin-left:55px">暂无收款监督</span>
           </div>
       <div class="H20"></div>
       <div class="subfield">
@@ -263,7 +263,8 @@ export default {
         { text: "案件名称：", index: "name" },
         { text: "案号：", index: "caseId" },
         { text: "案件状态：", index: "status" },
-        { text: "案件描述：", index: "description" }
+        { text: "案件备注：", index: "description2" },
+        { text: "收费标准：", index: "description" }
       ],
       caseMsgRight: [
         { text: "诉讼费：", index: "litigationFee" },
@@ -520,41 +521,7 @@ export default {
 
   mounted() {
     //  页面初始化时修改案件状态为中文
-    switch (this.caseMsg.status) {
-      case 1:
-        this.caseMsg.status = "待立案";
-        break;
-      case 2:
-        this.caseMsg.status = "已立案待保全";
-        break;
-      case 3:
-        this.caseMsg.status = "已保全";
-        break;
-      case 4:
-        this.caseMsg.status = "待一审开庭";
-        break;
-      case 5:
-        this.caseMsg.status = "待二审开庭";
-        break;
-      case 6:
-        this.caseMsg.status = "调解中";
-        break;
-      case 7:
-        this.caseMsg.status = "收款监督";
-        break;
-      case 8:
-        this.caseMsg.status = "已结案";
-        break;
-      case 9:
-        this.caseMsg.status = "执行中";
-        break;
-      case 10:
-        this.caseMsg.status = "执行终本";
-        break;
-      default:
-        this.caseMsg.status = "无";
-        break;
-    }
+    this.caseMsg.status = dictCaseStatus[this.caseMsg.status].label
   }
 };
 </script>
