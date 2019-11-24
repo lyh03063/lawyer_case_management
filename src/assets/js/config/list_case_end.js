@@ -58,12 +58,11 @@ export default {
       {
         label: "案件状态",
         prop: "status",
-        width: 120,
+        width: 150,
+        slot:"slot_columns_item_status",
+        requireProp: ["collaborator",'createPerson'],
         filters:arrCaseStatusFilter,
         columnKey:'status',
-        formatter: function(rowData) {
-          return lodash.get(dictCaseStatus, `[${rowData.status}].label`,"无");
-        }
       },
       {
         label: "开庭时间",

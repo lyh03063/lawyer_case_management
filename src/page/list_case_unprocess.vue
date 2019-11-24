@@ -1,9 +1,13 @@
 <template>
   <div class>
-    <dm_list_data :cf="cfList" @after-modify="modify">
+    <dm_list_data :cf="cfList" @after-modify="modify" ref="caseUnprocess">
       <template v-slot:customDetail="{detailData}">
         <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
+      </template>
+        <!-- 列表状态修改插槽 -->
+      <template v-slot:slot_columns_item_status="{row}">
+        <modify_case_status :status="row.status" :case="row" @getDataList="getDataList"></modify_case_status>
       </template>
       <template v-slot:slot_form_item_memberIdList="{formData}">
         <!-- 引入穿梭框组件，注意权限问题 如果是超级管理员，则可以修改,如果是案件负责人，可以修改  不是就只能读取-->
@@ -62,6 +66,7 @@ import case_detail_dialogs from "@/components/case_detail_dialogs";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
 import id_to_name from "../components/id_to_name";
+import modify_case_status from "@/components/modify_case_status";
 // import { async } from "q";
 
 export default {
@@ -69,9 +74,16 @@ export default {
     case_detail_dialogs,
     msgTransfer,
     select_ajax,
-    id_to_name
+    id_to_name,
+    modify_case_status
   },
   methods: {
+    getDataList(nowData,oldData){
+      this.$refs.caseUnprocess.getDataList()
+      this.modify(nowData,oldData)
+      // console.log(nowData,oldData);
+      
+    },
     //  将案件状态转换成文字状态的方法
     caseStatusToname(status) {
       return dictCaseStatus[status].label;
@@ -113,8 +125,11 @@ export default {
     },
     // 修改案件之后触发的回调方法
     modify(newdata, olddata) {
+      
+      
       // 如果案件状态改变的话，修改新消息数据，新消息变更类型,变更前后状态，发送消息的会员id，以及案件id
       if (newdata.status != olddata.status) {
+        // console.log(newdata, olddata);
         this.addMsgData.change[0].type = 1;
         this.addMsgData.change[0].before = this.caseStatusToname(
           olddata.status
