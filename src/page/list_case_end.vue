@@ -1,6 +1,6 @@
 <template>
-  <div class >
-    <dm_list_data :cf="cfList" @after-modify="modify" ref="caseEnd">
+  <div class>
+    <dm_list_data :cf="cfList" @after-modify="modify" ref="caseEnd" v-if="initialize">
       <template v-slot:customDetail="{detailData}">
         <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
@@ -67,7 +67,7 @@ import modify_case_status from "@/components/modify_case_status";
 import msgTransfer from "../components/form_item/msg_transfer";
 import select_ajax from "@/components/form_item/select_ajax.vue";
 import id_to_name from "../components/id_to_name";
-import { log } from 'util';
+import { log } from "util";
 // import { async } from "q";
 
 export default {
@@ -79,9 +79,27 @@ export default {
     modify_case_status
   },
   methods: {
-    getDataList(nowData,oldData){
-      this.$refs.caseEnd.getDataList()
-      this.modify(nowData,oldData)
+    // 获取地区数据的方法
+    async getAreaList() {
+      let { data } = await axios({
+        method: "post",
+        url: PUB.domain + "/crossList?page=lawyer_area",
+        data: {
+          findJson: {}
+        }
+      }).catch(() => {});
+      let areaList = data.list.map(item=>{
+        let obj = {value:item.P1,text:item.name}
+        return obj
+      })
+      console.log('areaList',areaList);
+      
+      return areaList
+    },
+    // 刷新列表的方法
+    getDataList(nowData, oldData) {
+      this.$refs.caseEnd.getDataList();
+      this.modify(nowData, oldData);
     },
     //  将案件状态转换成文字状态的方法
     caseStatusToname(status) {
@@ -172,8 +190,10 @@ export default {
     // cfList.findJsonDefault = {
     //   $or:[{status:8},{status:15}]
     // }
+    
     return {
-      // 新消息对象的默认状态 
+      initialize:false,//是否开始初始化key
+      // 新消息对象的默认状态
       addMsgData: {
         read: 0,
         change: [{ type: "", before: "", after: "" }],
@@ -184,16 +204,18 @@ export default {
       addMsglist: [], //保存每个新消息对象的数组
       userId: localStorage.userId, //保存当前用户登录的id
       superAdmin: false, //是否是超级超级员登录
-      cfList:PUB.listCF.list_case_end
+      cfList: PUB.listCF.list_case_end
     };
   },
 
-  created() {
-    this.cfList.listIndex = 'list_case_end'
-    this.cfList.threeTitle = '归档案件列表'
-    this.cfList.findJsonDefault = {
-      $or:[{status:8},{status:15}]
-    }
+  async created() {
+    let areaList = await this.getAreaList()
+    this.cfList.columns.forEach(item=>{
+      if (item.prop =="areaId" ) {
+        item.filters = areaList 
+        this.initialize = true
+      }
+    })
     // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
     if (localStorage.superAdmin == 1) {
       this.superAdmin = true;
@@ -207,8 +229,7 @@ export default {
         ]
       };
     }
-  },
-
+  }
 };
 </script>
 

@@ -8,8 +8,12 @@
 export default {
   components: {  },
   data() {
+    let cfList = PUB.listCF.list_area 
+    cfList.formDataAddInit = {
+      CreateUser:localStorage.userId
+    }
     return {
-      cfList:PUB.listCF.list_area 
+      cfList
     };
   },created(){
   }

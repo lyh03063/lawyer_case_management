@@ -1,6 +1,5 @@
 
-import case_status_config from '@/assets/js/config/case.status.config'
-  
+import case_config from '@/assets/js/config/case.config'
   let arrCaseStatusFilter = [
     { value: 8, text: "已结案" },
     { value: 15, text: "已退案" },
@@ -29,11 +28,17 @@ export default {
         idColumn2: "P1"
       },
       {
+        page: "lawyer_area",
+        populateColumn: "areaName",
+        idColumn: "areaId",
+        idColumn2: "P1"
+      },
+      {
         page: "lawyer_member",
         populateColumn: "collaboratorName",
         idColumn: "collaborator",
         idColumn2: "P1"
-      }
+      },
     ],
     url: {
       list: "/crossList?page=lawyer_case", //列表接口
@@ -76,6 +81,19 @@ export default {
           }
         }
       },
+      {
+        label: "所属地区",
+        prop: "areaId",
+        width: 100,
+        filters:[],
+        requireProp: ["areaId"],
+        columnKey:'areaId',
+        formatter: function(row) {
+          if (row.areaName) {
+            return row.areaName.name
+          }
+        }
+    }
       // {
       //   label: "创建人",
       //   prop: "createPerson",
@@ -205,6 +223,16 @@ export default {
         label: "保全费",
         prop: "insuranceFee"
       },
+      {
+        label: "所属地区",
+        prop: "areaId",
+        type: "select",
+        ajax: {
+          url: "/crossList?page=lawyer_area",
+          keyLabel: "name",
+          keyValue: "P1"
+        }
+      },
       
           ]
         }
@@ -291,7 +319,21 @@ export default {
             {
               label: "联系电话",
               prop: "phone"
-            }
+            },
+            {
+              label: "保到期时间",
+              prop: "time",
+              type: "date"
+            },
+            {
+              label: "保全费用",
+              prop: "money"
+            },
+            {
+              label: "保全结果",
+              prop: "result",
+              type: "textarea"
+            },
           ]
         }
       },

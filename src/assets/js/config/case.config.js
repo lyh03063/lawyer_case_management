@@ -1,5 +1,23 @@
 import lodash from 'lodash'//导入lodash方法库
 
+
+
+// let areaList;
+// axios({
+//   method: "post",
+//         url: PUB.domain + "/crossList?page=lawyer_area",
+//         data: {
+//           findJson: {}
+//         }
+// }).then((res)=>{
+//   let {data} = res
+//   areaList = data.list.map(item=>{
+//     let obj = {value:item.P1,text:item.name}
+//     return obj
+//   })
+  
+// })
+
 let arrCaseStatus = [
     { value: 11, label: "委托移交" },
     { value: 1, label: "待立案" },
@@ -23,4 +41,4 @@ let arrCaseStatus = [
   window.arrCaseStatus = arrCaseStatus
   window.dictCaseStatus = dictCaseStatus
 
-  export default {}
+  export default {  }

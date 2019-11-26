@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="initialize">
     <debug_list level-up="0">
       <debug_item v-model="caseMsg" text="案件信息" />
       <debug_item v-model="caseMsg.P1" text="测试的对象" />
@@ -49,19 +49,28 @@
         <el-col :span="2" class="case-box-right">{{item.text}}</el-col>
         <el-col :span="22">
           <div class="case-box-right">
-            <span>{{item.company}}{{caseMsg[item.index]?caseMsg[item.index].company:"无"}}</span>
+            <span>{{item.company}}{{caseMsg[item.index]?caseMsg[item.index].company?caseMsg[item.index].company:"无":"无"}}</span>
             <span
               v-if="item.contact"
-            >{{item.contact}}{{caseMsg[item.index]?caseMsg[item.index].contact:"无"}}</span>
+            >{{item.contact}}{{caseMsg[item.index]?caseMsg[item.index].contact?caseMsg[item.index].contact:"无":"无"}}</span>
             <span
               v-if="item.caseId"
-            >{{item.caseId}}{{caseMsg[item.index]?caseMsg[item.index].caseId:"无"}}</span>
+            >{{item.caseId}}{{caseMsg[item.index]?caseMsg[item.index].caseId?caseMsg[item.index].caseId:"无":"无"}}</span>
             <span
               v-if="item.person"
-            >{{item.person}}{{caseMsg[item.index]?caseMsg[item.index].person:"无"}}</span>
+            >{{item.person}}{{caseMsg[item.index]?caseMsg[item.index].person?caseMsg[item.index].person:"无":"无"}}</span>
             <span
-              v-if="item.person"
-            >{{item.phone}}{{caseMsg[item.index]?caseMsg[item.index].phone:"无"}}</span>
+              v-if="item.phone"
+            >{{item.phone}}{{caseMsg[item.index]?caseMsg[item.index].phone?caseMsg[item.index].phone:"无":"无"}}</span>
+            <span
+              v-if="item.time"
+            >{{item.time}}{{caseMsg[item.index]?caseMsg[item.index].time?caseMsg[item.index].time:"无":"无"}}</span>
+            <span
+              v-if="item.money"
+            >{{item.money}}{{caseMsg[item.index]?caseMsg[item.index].money?caseMsg[item.index].money:"无":"无"}}</span>
+            <span
+              v-if="item.result"
+            >{{item.result}}{{caseMsg[item.index]?caseMsg[item.index].result?caseMsg[item.index].result:"无":"无"}}</span>
           </div>
           
         </el-col>
@@ -191,6 +200,7 @@ export default {
   },
   data() {
     return {
+      initialize:false,//是否开始初始化key
       // 每条新增消息数据
       addMsgData: {
         read: 0,
@@ -267,6 +277,7 @@ export default {
         { text: "收费标准：", index: "description" }
       ],
       caseMsgRight: [
+        { text: "所属地区：", index: "areaName" },
         { text: "诉讼费：", index: "litigationFee" },
         { text: "担保费：", index: "guaranteeFee" },
         { text: "保全费：", index: "insuranceFee" },
@@ -298,7 +309,10 @@ export default {
           index: "guaranteeInfo",
           company: "诉保单位：",
           person: "诉保承办人：",
-          phone: "诉保电话："
+          phone: "诉保电话：",
+          time:"保全到期时间：",
+          money:"保全费用：",
+          result:"保全结果："
         },
         {
           text: "二审信息：",
@@ -519,10 +533,24 @@ export default {
     }
   },
 
-  mounted() {
+ async mounted() {
     //  页面初始化时修改案件状态为中文
     this.caseMsg.status = dictCaseStatus[this.caseMsg.status].label
+    if (this.caseMsg.areaId) {
+      let { data } = await axios({
+          method: "post",
+          url: PUB.domain + "/crossList?page=lawyer_area",
+          data: {
+            findJson: {
+              P1:this.caseMsg.areaId
+            }
+          }
+        }).catch(() => {});
+        this.caseMsg.areaName = data.list[0].name
+    }
+    this.initialize = true
   }
+  
 };
 </script>
 <style scoped>

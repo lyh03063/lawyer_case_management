@@ -1,4 +1,4 @@
-import case_status_config from '@/assets/js/config/case.status.config'
+import case_config from '@/assets/js/config/case.config'
   
   let arrCaseStatusFilter = arrCaseStatus.map(item=>{
     let obj ={}
@@ -30,6 +30,12 @@ export default {
         page: "lawyer_member",
         populateColumn: "createUser",
         idColumn: "createPerson",
+        idColumn2: "P1"
+      },
+      {
+        page: "lawyer_area",
+        populateColumn: "areaName",
+        idColumn: "areaId",
         idColumn2: "P1"
       },
       {
@@ -80,6 +86,19 @@ export default {
           }
         }
       },
+      {
+        label: "所属地区",
+        prop: "areaId",
+        width: 100,
+        filters:[],
+        requireProp: ["areaId"],
+        columnKey:'areaId',
+        formatter: function(row) {
+          if (row.areaName) {
+            return row.areaName.name
+          }
+        }
+    }
       // {
       //   label: "创建人",
       //   prop: "createPerson",
@@ -208,6 +227,16 @@ export default {
        {
         label: "保全费",
         prop: "insuranceFee"
+      },
+       {
+        label: "所属地区",
+        prop: "areaId",
+        type: "select",
+        ajax: {
+          url: "/crossList?page=lawyer_area",
+          keyLabel: "name",
+          keyValue: "P1"
+        }
       },
       
           ]

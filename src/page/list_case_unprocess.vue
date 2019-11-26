@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <dm_list_data :cf="cfList" @after-modify="modify" ref="caseUnprocess">
+    <dm_list_data :cf="cfList" @after-modify="modify" ref="caseUnprocess" v-if="initialize">
       <template v-slot:customDetail="{detailData}">
         <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
@@ -78,6 +78,24 @@ export default {
     modify_case_status
   },
   methods: {
+    // 获取地区数据的方法
+    async getAreaList() {
+      let { data } = await axios({
+        method: "post",
+        url: PUB.domain + "/crossList?page=lawyer_area",
+        data: {
+          findJson: {}
+        }
+      }).catch(() => {});
+      let areaList = data.list.map(item=>{
+        let obj = {value:item.P1,text:item.name}
+        return obj
+      })
+      console.log('areaList',areaList);
+      
+      return areaList
+    },
+    // 刷新列表的方法
     getDataList(nowData,oldData){
       this.$refs.caseUnprocess.getDataList()
       this.modify(nowData,oldData)
@@ -172,6 +190,7 @@ export default {
   },
   data() {
     return {
+      initialize:false,//是否开始初始化key
       // 新消息对象的默认状态
       addMsgData: {
         read: 0,
@@ -187,7 +206,14 @@ export default {
     };
   },
 
-  created() {
+   async created() {
+    let areaList = await this.getAreaList()
+    this.cfList.columns.forEach(item=>{
+      if (item.prop =="areaId" ) {
+        item.filters = areaList 
+        this.initialize = true
+      }
+    })
     // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
     if (localStorage.superAdmin == 1) {
       this.superAdmin = true;
