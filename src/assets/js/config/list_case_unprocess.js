@@ -295,7 +295,21 @@ export default {
             {
               label: "联系电话",
               prop: "phone"
-            }
+            },
+            {
+              label: "保到期时间",
+              prop: "time",
+              type: "date"
+            },
+            {
+              label: "保全费用",
+              prop: "money"
+            },
+            {
+              label: "保全结果",
+              prop: "result",
+              type: "textarea"
+            },
           ]
         }
       },

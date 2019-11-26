@@ -42,6 +42,11 @@
               <font color="red">{{item.collectionControl.time}}</font>收款
               <font color="red">{{item.collectionControl.money}}</font>元
             </div>
+            <div v-if="item.alertType=='alertGuarantee'">
+              {{item.name}}案件保全将于
+              <font color="red">{{item.guaranteeInfo.time}}</font>到期，保全费：
+              <font color="red">{{item.guaranteeInfo.money}}</font>元
+            </div>
           </div>
           <div v-if="caseAlertAllList.length<=0">您暂时没有需要提醒的案件</div>
         </div>
@@ -84,10 +89,13 @@ export default {
         });
         item.collectionControl = collectionControl;
       });
+      this.guaranteeList.forEach(item=> item.alertType = "alertGuarantee")
       // 合并收款监督数组和案件开庭时间提醒数组，并用自定义排序方法排序
       this.caseAlertAllList = this.alertCaseList.concat(
         this.collectionControlList
       );
+      this.caseAlertAllList = this.caseAlertAllList.concat(this.guaranteeList)
+      // console.log('this.caseAlertAllList',this.caseAlertAllList);
       this.caseAlertAllList.sort(this.alertSort);
       // 如果需要提醒的案件数量改变了,显示案件提醒
       if (this.caseAlertAllList.length <= 0) {
@@ -98,17 +106,19 @@ export default {
           this.$store.commit("setCaseAlertCount", this.caseAlertAllList.length);
         }
       }
+      // console.log('this.caseAlertAllList',this.caseAlertAllList);
+      
     },
     // 数据合并之后对数组进行排序的方法
     alertSort(obj1, obj2) {
       let time1 =
         obj1.alertType == "alertCase"
           ? obj1.trialDate
-          : obj1.collectionControl.time;
+          : obj1.alertType == "alertGuarantee"?obj1.guaranteeInfo.time: obj1.collectionControl.time;
       let time2 =
         obj2.alertType == "alertCase"
           ? obj2.trialDate
-          : obj2.collectionControl.time;
+          : obj2.alertType == "alertGuarantee"?obj2.guaranteeInfo.time: obj2.collectionControl.time;
       let timeDate1 = new Date(time1).valueOf();
       let timeDate2 = new Date(time2).valueOf();
       if (timeDate1 < timeDate2) {
@@ -134,6 +144,22 @@ export default {
       }).catch(() => {});
       this.collectionControlList = [];
       this.collectionControlList = data.list; //请求数据完成之后保存数据
+      this.getGuaranteeInfo()//请求结束后获取保全到期数据
+      // this.mergeData(); //两个请求完毕之后开始合并数组
+    },
+    // 请求接口获取保全到期时间提醒数据
+    async getGuaranteeInfo() {
+      let { data } = await axios({
+        method: "post",
+        url: PUB.domain + "/crossList?page=lawyer_case",
+        data: {
+          findJson: this.guaranteeFindJson, //请求接口并向数组传值
+          selectJson: {P1: 1, name: 1, caseId: 1, status: 1, collaborator: 1, createPerson: 1, trialDate: 1,guaranteeInfo:1}
+        }
+      }).catch(() => {});
+      // console.log('data',data);
+      this.guaranteeList = [];
+      this.guaranteeList = data.list;
       this.mergeData(); //两个请求完毕之后开始合并数组
     },
     // 请求接口获取案件开庭时间提醒数据
@@ -198,12 +224,14 @@ export default {
   },
   data() {
     return {
+      guaranteeFindJson:{},//请求保全到期提醒所传数据
       caseReceiptFindJson: {}, //请求收款监督接口所传数据
       caseAlertFindJson: {}, //请求开庭时间提醒所传数据
       showAlertCase: true, //显示案件提醒key
       caseAlertAllList: [], //需要提醒的所有数据
       collectionControlList: [], //保存收款监督数据数组
       alertCaseList: [], //保存开庭时间提醒数据数组
+      guaranteeList:[],//保存保全时间提醒的数据数组
       // 导航菜单列表
       navMenuList: [
         {
@@ -256,12 +284,14 @@ export default {
   },
   mounted() {
     // 获取当前时间
-    let DataStart = new Date().toLocaleDateString();
-    DataStart = new Date(DataStart);
-    let DataReceipEnd = DataStart.valueOf() + 7 * 24 * 60 * 60 * 1000; //获取7天后的时间
-    let DataEnd = DataStart.valueOf() + 14 * 24 * 60 * 60 * 1000; //获取14天后的时间
-    DataReceipEnd = new Date(DataReceipEnd);
-    DataEnd = new Date(DataEnd);
+    let dateStart = new Date().toLocaleDateString();
+    dateStart = new Date(dateStart);
+    let dateReceipEnd = dateStart.valueOf() + 7 * 24 * 60 * 60 * 1000; //获取7天后的时间
+    let dateEnd = dateStart.valueOf() + 14 * 24 * 60 * 60 * 1000; //获取14天后的时间
+    let dateGuarantee = dateStart.valueOf() + 30 * 24 * 60 * 60 * 1000; //获取30天后的时间
+    dateReceipEnd = new Date(dateReceipEnd);
+    dateEnd = new Date(dateEnd);
+    dateGuarantee = new Date(dateGuarantee);
     // 如果是普通会员登录,隐藏会员导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
@@ -269,13 +299,23 @@ export default {
           doc.show = false;
         }
       });
+      this.guaranteeFindJson = {
+        $or: [
+          { createPerson: localStorage.userId },
+          { collaborator: localStorage.userId - 0 }
+        ],
+        "guaranteeInfo.time":{
+          $gte: dateStart,
+          $lte: dateGuarantee
+        }
+      }
       // 普通会员登录请求接口需要过滤与其过关的案件数据
       this.caseAlertFindJson = {
         $or: [
           { createPerson: localStorage.userId },
           { collaborator: localStorage.userId - 0 }
         ],
-        trialDate: { $gte: DataStart, $lte: DataEnd }
+        trialDate: { $gte: dateStart, $lte: dateEnd }
       };
       this.caseReceiptFindJson = {
         $or: [
@@ -286,33 +326,39 @@ export default {
           //数组元素匹配
           $elemMatch: {
             time: {
-              $gte: DataStart,
-              $lte: DataReceipEnd
+              $gte: dateStart,
+              $lte: dateReceipEnd
             }
           }
         }
         // "collectionControl.time": {
-        //   $gte: DataStart,
-        //   $lte: DataReceipEnd
+        //   $gte: dateStart,
+        //   $lte: dateReceipEnd
         // }
       };
     } else {
       // 超级会员登录可以直接提醒所有数据
       this.caseAlertFindJson = {
-        trialDate: { $gte: DataStart, $lte: DataEnd }
+        trialDate: { $gte: dateStart, $lte: dateEnd }
       };
+      this.guaranteeFindJson = {
+        "guaranteeInfo.time":{
+          $gte: dateStart,
+          $lte: dateGuarantee
+        }
+      }
       this.caseReceiptFindJson = {
         // "collectionControl.time": {
-        //   $gte: DataStart,
-        //   $lte: DataReceipEnd
+        //   $gte: dateStart,
+        //   $lte: dateReceipEnd
         // },
         //刘咏辉1019-10-17修改，之前的查询条件在多个时间存在时会出现边界判断异常问题
         collectionControl: {
           //数组元素匹配
           $elemMatch: {
             time: {
-              $gte: DataStart,
-              $lte: DataReceipEnd
+              $gte: dateStart,
+              $lte: dateReceipEnd
             }
           }
         }

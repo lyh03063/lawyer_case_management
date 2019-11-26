@@ -119,7 +119,11 @@ const router = new VueRouter({
         {
           path: '/message_datail',
           component:resolve => require(['@/page/message_datail'],resolve),
-        }
+        },
+        {
+          path: '/message_record',
+          component:resolve => require(['@/page/message_record'],resolve),
+        },
         
       ]
     },

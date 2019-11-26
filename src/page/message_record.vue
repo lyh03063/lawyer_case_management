@@ -1,14 +1,13 @@
 <template>
   <div class>
 
-    <h2 class="TAC MT20">消息详情</h2>
+    <h2 class="TAC MT20">消息记录</h2>
     <dm_debug_list>
       <dm_debug_item v-model="newMsgList" text="newMsgList"/>
    
     </dm_debug_list>
     <div v-if="newMsgList.length>0">
-      <div>您有{{newMsgList.length}}条新消息：<div class="record-box" @click="gotoRecord()">历史记录&nbsp;&nbsp;>></div>
-      <div style="clear:both"></div></div>
+      <!-- <div>您有{{newMsgList.length}}条新消息：<span style="margin-left:88%">历史记录&nbsp;&nbsp;>></span></div> -->
       <div v-for="(msg,index) in newMsgList" :key="index" class="new-msg-box">
         <div v-for="(item,index) in msg.change" :key="index" class="">
 
@@ -34,8 +33,17 @@
         >操作人：{{msg.memberUser?msg.memberUser.user:''}},&nbsp;&nbsp;时间：{{msg.CreateTime?msg.CreateTime:''}}</div>
       </div>
     </div>
-    <div v-else>您没有新消息<div class="record-box" @click="gotoRecord()">历史记录&nbsp;&nbsp;>></div>
-      <div style="clear:both"></div></div>
+    <el-pagination
+    @size-change="modifyPageSize"
+    :page-size="pageSize"
+    :current-page="pageIndex"
+    @current-change="getUnReadMsg"
+    :page-sizes="[5, 10, 20, 50,100]"
+  background
+  layout="prev, pager, next,sizes"
+  :total="pageCount*10">
+</el-pagination>
+    <!-- <div v-else>您没有新消息</div> -->
 
 
 <!--xxx弹窗-->
@@ -58,15 +66,20 @@ export default {
       msgIdList: [], //保存新消息id列表
       detailData:{//案件详情
         aaa:1
-      }
+      },
+      pageCount:1,
+      pageIndex:1,
+      pageSize:10
     };
   },
 
   methods: {
+    //   修改每页条数
+      modifyPageSize(val){
+          this.pageSize = val
+          this.getUnReadMsg()
+      },
      // 
-     gotoRecord(){
-       this.$router.push({ path: "/message_record" });
-     },
     async showCaseDetail(caseId) {//函数：{显示案件详情弹窗函数}
 
 
@@ -99,14 +112,16 @@ export default {
         method: "post",
         url: PUB.domain + "/crossList?page=lawyer_msg",
         data: {
-          pageSize: 100,
+          pageSize: this.pageSize,
+          pageIndex:this.pageIndex,
           findJson: {
             receiveMemberId: localStorage.userId,
-            read: "0"//未读
+            // read: "0"//未读
           }
         }
       });
       this.newMsgList = data.list;
+      this.pageCount = data.page.pageCount
       this.newMsgList.forEach((item)=>{
         item.remarkId = item.change[0].remarkId==''? 0:item.change[0].remarkId
         item.fileId  = item.change[0].fileId==''?0:item.change[0].fileId
@@ -141,27 +156,8 @@ export default {
         this.newMsgList.forEach(msg => {
           this.msgIdList.push(msg.P1);
         });
-        // 将所有新消息设置为已读
-        this.modifyMsg();
       }
     },
-    // 将新消息设置为已读的方法
-    async modifyMsg() {
-      let { data } = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + "/crossModify?page=lawyer_msg",
-        data: {
-          multi: true,
-          findJson: {
-            P1: { $in: this.msgIdList }
-          },
-          modifyJson: { read: 1 }
-        }
-      });
-      // 将新消息数量保存到vuex中
-      this.$store.commit("setUnReadCount", undefined);
-    }
   },
   mounted() {
     // 页面加载完成之后获取新消息列表
@@ -182,13 +178,6 @@ export default {
 
 a.link-case{
   color: #06c;
-}
-.record-box{
-  float: right;
-  cursor: pointer;
-  margin-right: 10px;
-  color: gray
-
 }
 </style>
 
