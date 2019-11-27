@@ -52,18 +52,18 @@ export default {
       {
         label: "案件名称",
         prop: "name",
-        width: 400
+        width: 320
       },
 
       {
         label: "案号",
         prop: "caseId",
-        width: 230
+        width: 200
       },
       {
         label: "案件状态",
         prop: "status",
-        width: 150,
+        width: 130,
         slot:"slot_columns_item_status",
         requireProp: ["collaborator",'createPerson'],
         filters:arrCaseStatusFilter,
@@ -72,7 +72,7 @@ export default {
       {
         label: "开庭时间",
         prop: "trialDate",
-        width: 100,
+        width: 90,
         formatter: function(row) {
           if (row.trialDate) {
             return moment(row.trialDate).format("YYYY-MM-DD");
@@ -84,7 +84,7 @@ export default {
       {
         label: "所属地区",
         prop: "areaId",
-        width: 100,
+        width: 90,
         filters:[],
         requireProp: ["areaId"],
         columnKey:'areaId',
