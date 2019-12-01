@@ -212,7 +212,7 @@ export default {
     this.cfList.columns.forEach(item=>{
       if (item.prop =="areaId" ) {
         item.filters = areaList 
-        this.initialize = true
+        
       }
     })
     // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
@@ -220,14 +220,16 @@ export default {
       this.superAdmin = true;
     }
     if (localStorage.superAdmin != 1) {
-      this.cfList.findJson = {
-        type: "$or",
-        value: [
+      this.cfList.findJsonDefault = {
+        $and:[{"$or":[
           { createPerson: localStorage.userId },
-          { collaborator: localStorage.userId - 0 }
+          { collaborator: localStorage.userId - 0 },
+        ]},
+        {$nor:[{status:8},{status:15}]},
         ]
       };
     }
+    this.initialize = true
   },
   mounted(){
     console.log('aaa',this.cfList);

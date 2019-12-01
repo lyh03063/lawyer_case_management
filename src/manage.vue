@@ -249,12 +249,7 @@ export default {
           title: "案件",
           menuItem: [
             { index: "list_case_unprocess", route: "/list_case_unprocess", title: "在办案件列表" },
-            { index: "list_case_end", route: "/list_case_end", title: "归档案件列表" },
-            {
-              index: "list_accessory",
-              route: "/list_accessory",
-              title: "附件列表"
-            }
+            { index: "list_case_end", route: "/list_case_end", title: "归档案件列表" }
           ],
           show: true
         },
@@ -270,6 +265,11 @@ export default {
               index: "list_remark",
               route: "/list_remark",
               title: "进展"
+            },
+            {
+              index: "list_accessory",
+              route: "/list_accessory",
+              title: "附件列表"
             },
             { index: "list_area", route: "/list_area", title: "地区管理" },
           ],
@@ -292,7 +292,7 @@ export default {
     dateReceipEnd = new Date(dateReceipEnd);
     dateEnd = new Date(dateEnd);
     dateGuarantee = new Date(dateGuarantee);
-    // 如果是普通会员登录,隐藏会员导航栏
+    // 如果是普通会员登录,隐藏系统设置导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
         if (doc.index == "3") {

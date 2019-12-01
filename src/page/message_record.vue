@@ -43,6 +43,7 @@
   layout="prev, pager, next,sizes"
   :total="pageCount*10">
 </el-pagination>
+  <div style="height:20px;"></div>
     <!-- <div v-else>您没有新消息</div> -->
 
 
@@ -52,7 +53,7 @@
   <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
   </el-dialog>
   
-
+  
   </div>
 </template>
 <script>
@@ -106,7 +107,12 @@ export default {
       });
     },
     // 获取新消息数据列表  请求接口
-    async getUnReadMsg() {
+    async getUnReadMsg(val) {
+    
+      this.pageIndex = val
+      console.log(this.pageIndex);
+      
+      
       let { data } = await axios({
         //请求接口
         method: "post",
