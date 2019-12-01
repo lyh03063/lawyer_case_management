@@ -7,7 +7,7 @@
    
     </dm_debug_list>
     <div v-if="newMsgList.length>0">
-      <div>您有{{newMsgList.length}}条新消息：<div class="record-box" @click="gotoRecord()">历史记录&nbsp;&nbsp;>></div>
+      <div>您有{{newMsgList.length}}条新消息：<div class="record-box" @click="gotoRecord()">历史消息&nbsp;&nbsp;>></div>
       <div style="clear:both"></div></div>
       <div v-for="(msg,index) in newMsgList" :key="index" class="new-msg-box">
         <div v-for="(item,index) in msg.change" :key="index" class="">
@@ -34,7 +34,7 @@
         >操作人：{{msg.memberUser?msg.memberUser.user:''}},&nbsp;&nbsp;时间：{{msg.CreateTime?msg.CreateTime:''}}</div>
       </div>
     </div>
-    <div v-else>您没有新消息<div class="record-box" @click="gotoRecord()">历史记录&nbsp;&nbsp;>></div>
+    <div v-else>您没有新消息<div class="record-box" @click="gotoRecord()">历史消息&nbsp;&nbsp;>></div>
       <div style="clear:both"></div></div>
 
 

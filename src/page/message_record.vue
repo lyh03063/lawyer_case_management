@@ -7,7 +7,7 @@
    
     </dm_debug_list>
     <div v-if="newMsgList.length>0">
-      <!-- <div>您有{{newMsgList.length}}条新消息：<span style="margin-left:88%">历史记录&nbsp;&nbsp;>></span></div> -->
+      <!-- <div>您有{{newMsgList.length}}条新消息：<span style="margin-left:88%">历史消息&nbsp;&nbsp;>></span></div> -->
       <div v-for="(msg,index) in newMsgList" :key="index" class="new-msg-box">
         <div v-for="(item,index) in msg.change" :key="index" class="">
 

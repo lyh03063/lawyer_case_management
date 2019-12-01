@@ -202,7 +202,8 @@ export default {
       addMsglist: [], //保存每个新消息对象的数组
       userId: localStorage.userId, //保存当前用户登录的id
       superAdmin: false, //是否是超级超级员登录
-      cfList: PUB.listCF.list_case_unprocess
+      
+      cfList: lodash.cloneDeep(PUB.listCF.list_case_unprocess)//深拷贝
     };
   },
 
