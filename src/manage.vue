@@ -95,6 +95,7 @@ export default {
         this.collectionControlList
       );
       this.caseAlertAllList = this.caseAlertAllList.concat(this.guaranteeList)
+      
       // console.log('this.caseAlertAllList',this.caseAlertAllList);
       this.caseAlertAllList.sort(this.alertSort);
       // 如果需要提醒的案件数量改变了,显示案件提醒
@@ -106,11 +107,13 @@ export default {
           this.$store.commit("setCaseAlertCount", this.caseAlertAllList.length);
         }
       }
+       
       // console.log('this.caseAlertAllList',this.caseAlertAllList);
       
     },
     // 数据合并之后对数组进行排序的方法
     alertSort(obj1, obj2) {
+
       let time1 =
         obj1.alertType == "alertCase"
           ? obj1.trialDate
@@ -119,6 +122,7 @@ export default {
         obj2.alertType == "alertCase"
           ? obj2.trialDate
           : obj2.alertType == "alertGuarantee"?obj2.guaranteeInfo.time: obj2.collectionControl.time;
+        
       let timeDate1 = new Date(time1).valueOf();
       let timeDate2 = new Date(time2).valueOf();
       if (timeDate1 < timeDate2) {
@@ -284,14 +288,19 @@ export default {
   },
   mounted() {
     // 获取当前时间
-    let dateStart = new Date().toLocaleDateString();
-    dateStart = new Date(dateStart);
+    let dateStart = new Date().valueOf();
+     console.log('dateReceipEnd',dateStart);
+    dateStart = new Date(dateStart.valueOf());
+   
     let dateReceipEnd = dateStart.valueOf() + 7 * 24 * 60 * 60 * 1000; //获取7天后的时间
     let dateEnd = dateStart.valueOf() + 14 * 24 * 60 * 60 * 1000; //获取14天后的时间
     let dateGuarantee = dateStart.valueOf() + 30 * 24 * 60 * 60 * 1000; //获取30天后的时间
+    
     dateReceipEnd = new Date(dateReceipEnd);
     dateEnd = new Date(dateEnd);
     dateGuarantee = new Date(dateGuarantee);
+    
+    
     // 如果是普通会员登录,隐藏系统设置导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
@@ -325,7 +334,7 @@ export default {
         collectionControl: {
           //数组元素匹配
           $elemMatch: {
-            time: {
+            "time": {
               $gte: dateStart,
               $lte: dateReceipEnd
             }
@@ -367,7 +376,7 @@ export default {
     // 设置案件提醒定时器
     this.getCaseList();
     setInterval(() => {
-      this.getCaseList();
+      // this.getCaseList();
     }, 20000);
 
     // 设置消息提醒定时器
