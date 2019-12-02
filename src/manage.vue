@@ -57,10 +57,11 @@
   </div>
 </template>
 
+
 <script>
 import Vue from "vue";
 import NavMenu from "./components/NavMenu/NavMenu";
-import { clearInterval, setInterval } from "timers";
+// import { clearInterval, setInterval } from "timers";
 export default {
   components: { NavMenu }, //注册组件
   methods: {
@@ -74,7 +75,7 @@ export default {
         let nowDate = new Date().toLocaleDateString();
         nowDate = new Date(nowDate).valueOf();
         let minDate = "";
-        item.collectionControl.forEach((item2, index) => {
+        item.collectionControl.forEach((item2) => {
           let itemDate = new Date(item2.time).valueOf();
           if (itemDate >= nowDate) {
             if (minDate == "") {
@@ -289,7 +290,7 @@ export default {
   mounted() {
     // 获取当前时间
     let dateStart = new Date().valueOf();
-     console.log('dateReceipEnd',dateStart);
+    //  console.log('dateReceipEnd',dateStart);
     dateStart = new Date(dateStart.valueOf());
    
     let dateReceipEnd = dateStart.valueOf() + 7 * 24 * 60 * 60 * 1000; //获取7天后的时间
