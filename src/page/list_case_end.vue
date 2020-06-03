@@ -10,6 +10,7 @@
         <modify_case_status :status="row.status" :case="row" @getDataList="getDataList"></modify_case_status>
       </template>
       <template v-slot:slot_form_item_memberIdList="{formData}">
+     
         <!-- 引入穿梭框组件，注意权限问题 如果是超级管理员，则可以修改,如果是案件负责人，可以修改  不是就只能读取-->
         <msgTransfer
           v-model="formData.collaborator"
@@ -182,6 +183,7 @@ export default {
         url: PUB.domain + "/crossAdd?page=lawyer_msg",
         data: { data: this.addMsglist } //所有新消息对象传递给接口
       });
+      this.addMsglist = []//发送完清空数组，避免切换状态时消息一直堆叠-刘咏辉20200603修改
     }
   },
   data() {

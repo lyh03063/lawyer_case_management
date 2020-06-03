@@ -3,7 +3,18 @@
     <el-container>
       <el-header class="MB10">
         <el-row>
-          <div class="FL MT13 FS24 C_fff">案件管理系统</div>
+          <div class="FL FS24">
+            <div class="DPF" style="align-items:center">
+              <div class="n-img-box W45 W45 MR6 MT7">
+                <img
+                  class
+                  src="http://qn-dmagic.dmagic.cn/202006031443493232_61906_%E8%B0%A8%E5%BA%A6%E5%BE%8B%E5%B8%88%E4%BA%8B%E5%8A%A1%E6%89%80-logo-134-134.jpg"
+                  alt
+                />
+              </div>
+              <div class style="color:#CEAB71;margin-top:-2px">谨度律师事务所-案件管理系统</div>
+            </div>
+          </div>
           <div class="FR MT30 C_fff">
             <el-badge :value="unReadCount" class="item">
               <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg"></span>
@@ -90,15 +101,23 @@ export default {
         });
         item.collectionControl = collectionControl;
       });
-      this.guaranteeList.forEach(item=> item.alertType = "alertGuarantee")
+      this.guaranteeList.forEach(item => item.alertType = "alertGuarantee")
       // 合并收款监督数组和案件开庭时间提醒数组，并用自定义排序方法排序
       this.caseAlertAllList = this.alertCaseList.concat(
         this.collectionControlList
       );
       this.caseAlertAllList = this.caseAlertAllList.concat(this.guaranteeList)
-      
+
       // console.log('this.caseAlertAllList',this.caseAlertAllList);
       this.caseAlertAllList.sort(this.alertSort);
+
+
+
+      console.log(`this.caseAlertAllList:`, this.caseAlertAllList);
+
+
+
+
       // 如果需要提醒的案件数量改变了,显示案件提醒
       if (this.caseAlertAllList.length <= 0) {
         this.showAlertCase = false;
@@ -108,9 +127,9 @@ export default {
           this.$store.commit("setCaseAlertCount", this.caseAlertAllList.length);
         }
       }
-       
+
       // console.log('this.caseAlertAllList',this.caseAlertAllList);
-      
+
     },
     // 数据合并之后对数组进行排序的方法
     alertSort(obj1, obj2) {
@@ -118,12 +137,12 @@ export default {
       let time1 =
         obj1.alertType == "alertCase"
           ? obj1.trialDate
-          : obj1.alertType == "alertGuarantee"?obj1.guaranteeInfo.time: obj1.collectionControl.time;
+          : obj1.alertType == "alertGuarantee" ? obj1.guaranteeInfo.time : obj1.collectionControl.time;
       let time2 =
         obj2.alertType == "alertCase"
           ? obj2.trialDate
-          : obj2.alertType == "alertGuarantee"?obj2.guaranteeInfo.time: obj2.collectionControl.time;
-        
+          : obj2.alertType == "alertGuarantee" ? obj2.guaranteeInfo.time : obj2.collectionControl.time;
+
       let timeDate1 = new Date(time1).valueOf();
       let timeDate2 = new Date(time2).valueOf();
       if (timeDate1 < timeDate2) {
@@ -146,7 +165,7 @@ export default {
         data: {
           findJson: this.caseReceiptFindJson //请求接口并向数组传值
         }
-      }).catch(() => {});
+      }).catch(() => { });
       this.collectionControlList = [];
       this.collectionControlList = data.list; //请求数据完成之后保存数据
       this.getGuaranteeInfo()//请求结束后获取保全到期数据
@@ -159,9 +178,9 @@ export default {
         url: PUB.domain + "/crossList?page=lawyer_case",
         data: {
           findJson: this.guaranteeFindJson, //请求接口并向数组传值
-          selectJson: {P1: 1, name: 1, caseId: 1, status: 1, collaborator: 1, createPerson: 1, trialDate: 1,guaranteeInfo:1}
+          selectJson: { P1: 1, name: 1, caseId: 1, status: 1, collaborator: 1, createPerson: 1, trialDate: 1, guaranteeInfo: 1 }
         }
-      }).catch(() => {});
+      }).catch(() => { });
       // console.log('data',data);
       this.guaranteeList = [];
       this.guaranteeList = data.list;
@@ -173,10 +192,11 @@ export default {
         method: "post",
         url: PUB.domain + "/crossList?page=lawyer_case",
         data: {
+          tips: "获取案件开庭时间提醒数据",
           sortJson: { trialDate: 1 },
           findJson: this.caseAlertFindJson //向接口传过滤的数据
         }
-      }).catch(() => {});
+      }).catch(() => { });
       this.alertCaseList = []; //由于设置了定时器，所以需要先清空已保存的数据
       this.alertCaseList = data.list; //请求完毕之后将数据保存
       this.getCollectionControl(); //请求接口获取案件收款监督数据
@@ -229,14 +249,14 @@ export default {
   },
   data() {
     return {
-      guaranteeFindJson:{},//请求保全到期提醒所传数据
+      guaranteeFindJson: {},//请求保全到期提醒所传数据
       caseReceiptFindJson: {}, //请求收款监督接口所传数据
       caseAlertFindJson: {}, //请求开庭时间提醒所传数据
       showAlertCase: true, //显示案件提醒key
       caseAlertAllList: [], //需要提醒的所有数据
       collectionControlList: [], //保存收款监督数据数组
       alertCaseList: [], //保存开庭时间提醒数据数组
-      guaranteeList:[],//保存保全时间提醒的数据数组
+      guaranteeList: [],//保存保全时间提醒的数据数组
       // 导航菜单列表
       navMenuList: [
         {
@@ -265,7 +285,7 @@ export default {
           menuItem: [
             { index: "list_member", route: "/list_member", title: "会员" },
             { index: "list_message", route: "/list_message", title: "消息" },
-            
+
             {
               index: "list_remark",
               route: "/list_remark",
@@ -289,19 +309,28 @@ export default {
   },
   mounted() {
     // 获取当前时间
-    let dateStart = new Date().valueOf();
+    // let dateStart = new Date().valueOf();
     //  console.log('dateReceipEnd',dateStart);
+    // dateStart = new Date(dateStart.valueOf());
+
+    //新的开始时间，20200603-lyh修改
+    //将判断条件的开始时间前移到当天的0分0秒，否则有些当天的案件不提醒
+    let dateStart = moment().format("YYYY-MM-DD 00:00:00");
     dateStart = new Date(dateStart.valueOf());
-   
+
+
+
+
+
     let dateReceipEnd = dateStart.valueOf() + 7 * 24 * 60 * 60 * 1000; //获取7天后的时间
     let dateEnd = dateStart.valueOf() + 14 * 24 * 60 * 60 * 1000; //获取14天后的时间
     let dateGuarantee = dateStart.valueOf() + 30 * 24 * 60 * 60 * 1000; //获取30天后的时间
-    
+
     dateReceipEnd = new Date(dateReceipEnd);
     dateEnd = new Date(dateEnd);
     dateGuarantee = new Date(dateGuarantee);
-    
-    
+
+
     // 如果是普通会员登录,隐藏系统设置导航栏
     if (localStorage.superAdmin != 1) {
       this.navMenuList.forEach(doc => {
@@ -314,7 +343,7 @@ export default {
           { createPerson: localStorage.userId },
           { collaborator: localStorage.userId - 0 }
         ],
-        "guaranteeInfo.time":{
+        "guaranteeInfo.time": {
           $gte: dateStart,
           $lte: dateGuarantee
         }
@@ -352,7 +381,7 @@ export default {
         trialDate: { $gte: dateStart, $lte: dateEnd }
       };
       this.guaranteeFindJson = {
-        "guaranteeInfo.time":{
+        "guaranteeInfo.time": {
           $gte: dateStart,
           $lte: dateGuarantee
         }
@@ -386,7 +415,7 @@ export default {
       this.getUnRead();
     }, 20000);
   },
-  beforeCreate() {}
+  beforeCreate() { }
 };
 </script>
 

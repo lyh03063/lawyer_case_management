@@ -5,7 +5,7 @@
         <!-- 自定义案件详情弹窗 -->
         <case_detail_dialogs :caseMsg="detailData"></case_detail_dialogs>
       </template>
-        <!-- 列表状态修改插槽 -->
+      <!-- 列表状态修改插槽 -->
       <template v-slot:slot_columns_item_status="{row}">
         <modify_case_status :status="row.status" :case="row" @getDataList="getDataList"></modify_case_status>
       </template>
@@ -86,21 +86,21 @@ export default {
         data: {
           findJson: {}
         }
-      }).catch(() => {});
-      let areaList = data.list.map(item=>{
-        let obj = {value:item.P1,text:item.name}
+      }).catch(() => { });
+      let areaList = data.list.map(item => {
+        let obj = { value: item.P1, text: item.name }
         return obj
       })
-      console.log('areaList',areaList);
-      
+      console.log('areaList', areaList);
+
       return areaList
     },
     // 刷新列表的方法
-    getDataList(nowData,oldData){
+    getDataList(nowData, oldData) {
       this.$refs.caseUnprocess.getDataList()
-      this.modify(nowData,oldData)
+      this.modify(nowData, oldData)
       // console.log(nowData,oldData);
-      
+
     },
     //  将案件状态转换成文字状态的方法
     caseStatusToname(status) {
@@ -143,8 +143,8 @@ export default {
     },
     // 修改案件之后触发的回调方法
     modify(newdata, olddata) {
-      
-      
+
+
       // 如果案件状态改变的话，修改新消息数据，新消息变更类型,变更前后状态，发送消息的会员id，以及案件id
       if (newdata.status != olddata.status) {
         // console.log(newdata, olddata);
@@ -180,17 +180,19 @@ export default {
     },
     // 调用接口，新增消息
     async addMsg() {
+  
       let { data } = await axios({
         //请求接口
         method: "post",
         url: PUB.domain + "/crossAdd?page=lawyer_msg",
         data: { data: this.addMsglist } //所有新消息对象传递给接口
       });
+      this.addMsglist = []//发送完清空数组，避免切换状态时消息一直堆叠-刘咏辉20200603修改
     }
   },
   data() {
     return {
-      initialize:false,//是否开始初始化key
+      initialize: false,//是否开始初始化key
       // 新消息对象的默认状态
       addMsgData: {
         read: 0,
@@ -202,17 +204,17 @@ export default {
       addMsglist: [], //保存每个新消息对象的数组
       userId: localStorage.userId, //保存当前用户登录的id
       superAdmin: false, //是否是超级超级员登录
-      
+
       cfList: lodash.cloneDeep(PUB.listCF.list_case_unprocess)//深拷贝
     };
   },
 
-   async created() {
+  async created() {
     let areaList = await this.getAreaList()
-    this.cfList.columns.forEach(item=>{
-      if (item.prop =="areaId" ) {
-        item.filters = areaList 
-        
+    this.cfList.columns.forEach(item => {
+      if (item.prop == "areaId") {
+        item.filters = areaList
+
       }
     })
     // 如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
@@ -221,19 +223,19 @@ export default {
     }
     if (localStorage.superAdmin != 1) {
       this.cfList.findJsonDefault = {
-        $and:[{"$or":[
-          { createPerson: localStorage.userId },
-          { collaborator: localStorage.userId - 0 },
-        ]},
-        {$nor:[{status:8},{status:15}]},
+        $and: [{          "$or": [
+            { createPerson: localStorage.userId },
+            { collaborator: localStorage.userId - 0 },
+          ]        },
+        { $nor: [{ status: 8 }, { status: 15 }] },
         ]
       };
     }
     this.initialize = true
   },
-  mounted(){
-    console.log('aaa',this.cfList);
-    
+  mounted() {
+    console.log('aaa', this.cfList);
+
   }
 };
 </script>

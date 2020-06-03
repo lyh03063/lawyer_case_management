@@ -3,7 +3,7 @@
     <el-aside class="ML10" :style="[isCollapse?open:close]">
       <div
         class="C_fff TAR PR10 bar"
-        style="background:rgb(84, 92, 100);border-bottom:1px solid #999"
+        style="background:#002842;border-bottom:1px solid #999"
         @click="isCollapseFun"
         :style="[isCollapse?open1:close]"
       >
@@ -13,7 +13,7 @@
       <el-menu
         :default-active="activeMenuIndex"
         class="el-menu-vertical-demo"
-        background-color="#545c64"
+        background-color="#002842"
         text-color="#fff"
         active-text-color="#ffd04b"
         :router="true"

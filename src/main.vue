@@ -4,7 +4,7 @@
 
 <style>
 .el-header {
-  background-color: #409eff;
+  background-color: #002842;
 }
 .el-main {
   padding: 0 15px;
