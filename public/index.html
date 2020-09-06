@@ -44,6 +44,9 @@
 
   <script src="//qn-static.dmagic.cn/vue-dm-components.3.0.7.js"></script>
   <script>
+    if (document.URL.startsWith(`http://localhost`)) {//如果是本地网址
+      PUB.domain = "http://localhost:3000"
+    }
     //修改七牛云配置
     WIN.PUB.urlGetQiniuToken = PUB.domain + "/api_third_part/get_qiniu_token?scope=lawyer_case_management";
   </script>
@@ -51,6 +54,11 @@
     a.link-blue:link,
     a.link-blue:visited {
       color: #06c;
+    }
+
+    /* 饿了么穿梭框左列表的高度补丁，避免搜索框挡住内容 */
+    .el-transfer-panel__list {
+      height: 206px
     }
   </style>
 

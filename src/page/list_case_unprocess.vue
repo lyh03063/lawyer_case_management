@@ -26,6 +26,24 @@
           ></id_to_name>
         </div>
       </template>
+      <!--主办律师穿梭框插槽-->
+      <template v-slot:slot_form_item_personInCharge="{formData}">
+        <!-- 引入穿梭框组件，注意权限问题 如果是超级管理员，则可以修改,如果是案件负责人，可以修改  不是就只能读取-->
+        <msgTransfer
+          v-model="formData.personInCharge"
+          url="/crossList?page=lawyer_member"
+          keyValue="name"
+          v-if="superAdmin||userId==formData.createPerson"
+          :showName="true"
+        ></msgTransfer>
+        <div v-else>
+          <id_to_name
+            url="/crossList?page=lawyer_member"
+            v-model="formData.personInCharge"
+            keyValue="user"
+          ></id_to_name>
+        </div>
+      </template>
       <!-- <template v-slot:slot_form_item_createPerson="{formData}">
         <select_ajax
           class
@@ -180,7 +198,7 @@ export default {
     },
     // 调用接口，新增消息
     async addMsg() {
-  
+
       let { data } = await axios({
         //请求接口
         method: "post",
@@ -223,10 +241,12 @@ export default {
     }
     if (localStorage.superAdmin != 1) {
       this.cfList.findJsonDefault = {
-        $and: [{          "$or": [
+        $and: [{
+          "$or": [
             { createPerson: localStorage.userId },
             { collaborator: localStorage.userId - 0 },
-          ]        },
+          ]
+        },
         { $nor: [{ status: 8 }, { status: 15 }] },
         ]
       };

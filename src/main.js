@@ -97,6 +97,10 @@ const router = new VueRouter({
           component:resolve => require(['@/page/list_area.vue'],resolve),
         },
         {
+          path: '/list_case_reason',
+          component:resolve => require(['@/page/list_case_reason.vue'],resolve),
+        },
+        {
           path: '/list_case_unprocess',
           component:resolve => require(['@/page/list_case_unprocess'],resolve),
         },

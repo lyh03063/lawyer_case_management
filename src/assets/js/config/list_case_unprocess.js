@@ -34,8 +34,14 @@ export default {
       },
       {
         page: "lawyer_area",
-        populateColumn: "areaName",
+        populateColumn: "areaDoc",
         idColumn: "areaId",
+        idColumn2: "P1"
+      },
+      {
+        page: "lawyer_case_reason",
+        populateColumn: "reasonDoc",
+        idColumn: "reasonId",
         idColumn2: "P1"
       },
       {
@@ -66,6 +72,14 @@ export default {
         width: 200
       },
       {
+        label: "案由",
+        prop: "reasonId",
+        width: 90,
+        formatter: function(row) {
+          return lodash.get(row, `reasonDoc.name`);
+        }
+    },
+      {
         label: "案件状态",
         prop: "status",
         width: 130,
@@ -94,9 +108,8 @@ export default {
         requireProp: ["areaId"],
         columnKey:'areaId',
         formatter: function(row) {
-          if (row.areaName) {
-            return row.areaName.name
-          }
+          return lodash.get(row, `areaDoc.name`);
+          
         }
     }
       // {
@@ -173,6 +186,12 @@ export default {
         slot: "slot_form_item_memberIdList"
       },
       {
+        label: "主办律师 ",
+        prop: "personInCharge",
+        // type: "jsonEditor",
+        slot: "slot_form_item_personInCharge"
+      },
+      {
         label: "案件备注",
         prop: "description2",
         type: "textarea"
@@ -234,6 +253,16 @@ export default {
         type: "select",
         ajax: {
           url: "/crossList?page=lawyer_area",
+          keyLabel: "name",
+          keyValue: "P1"
+        }
+      },
+      {
+        label: "案由",
+        prop: "reasonId",
+        type: "select",
+        ajax: {
+          url: "/crossList?page=lawyer_case_reason",
           keyLabel: "name",
           keyValue: "P1"
         }

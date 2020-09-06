@@ -297,6 +297,7 @@ export default {
               title: "附件列表"
             },
             { index: "list_area", route: "/list_area", title: "地区管理" },
+            { index: "list_case_reason", route: "/list_case_reason", title: "案由管理" },
           ],
           show: true
         }
