@@ -7,7 +7,12 @@
   <meta name="viewport"
     content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" href="案件.png">
+
+  <!-- <link href="css/public.css" rel="stylesheet" type="text/css" /> -->
+
   <link href="//qn-static.dmagic.cn/public.1.2.0.css" rel="stylesheet" type="text/css" />
+
+  <!-- <script src="./js/cityMessage.js"></script> -->
   <!-- ES6,7垫片库 -->
   <script src="http://qn-static.dmagic.cn/polyfill.min.js"></script>
   <!-- import Vue before Element -->
@@ -25,12 +30,19 @@
   <!-- 引入element组件库 -->
   <script src="http://qn-static.dmagic.cn/element-ui/element-ui.js"></script>
 
-  <script src=//qn-static.dmagic.cn/util.2.1.6.js></script>
-  <script src=//qn-static.dmagic.cn/config_item.1.6.4.js></script>
-  <script src=//qn-static.dmagic.cn/page_config_sys_api.1.4.8.js></script>
 
-  <script src=//qn-static.dmagic.cn/vue_dm_base.1.0.6.js></script>
-  <script src="//qn-static.dmagic.cn/vue-dm-components.4.0.1.js"></script>
+  <!-- 引用mix,util和dm-components -->
+  <!-- <script src="http://qn-static.dmagic.cn/mix_online.js"></script> -->
+  <!-- <script src="http://qn-static.dmagic.cn/util.1.1.0.js"></script> -->
+  <!-- <script src="http://qn-static.dmagic.cn/vue-dm-components.2.0.1.js"></script> -->
+
+
+  <script src=//qn-static.dmagic.cn/util.1.6.8.js></script>
+  <script src=//qn-static.dmagic.cn/config_item.1.5.4.js></script>
+  <script src=//qn-static.dmagic.cn/page_config_sys_api.1.1.0.js></script>
+
+
+  <script src="//qn-static.dmagic.cn/vue-dm-components.3.0.7.js"></script>
   <script>
     if (document.URL.startsWith(`http://localhost`)) {//如果是本地网址
       PUB.domain = "http://localhost:3000"
@@ -50,11 +62,17 @@
     }
   </style>
 
-  <title> 案件管理系统-谨度律师事务所</title>
+  <title>案件管理系统</title>
 </head>
 
 <body>
+  <noscript>
+    <strong>We're sorry but todolist doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
   <div id="app"></div>
+
+  <!-- built files will be auto injected -->
 </body>
 
 </html>

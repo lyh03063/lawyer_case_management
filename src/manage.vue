@@ -29,7 +29,7 @@
       <NavMenu :cf="navMenuList"></NavMenu>
 
       <el-main>
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </el-main>
     </el-container>
     <div class="hint-dialogs" v-if="showAlertCase">
@@ -273,8 +273,11 @@ export default {
           icon: "el-icon-document",
           title: "案件",
           menuItem: [
-            { index: "list_case_unprocess", route: "/list_case_unprocess", title: "在办案件列表" },
-            { index: "list_case_end", route: "/list_case_end", title: "归档案件列表" }
+            { index: "list_case_unprocess", route: "/list_case", title: "在办诉讼案件" },
+            { index: "list_case_executing", route: "/list_case?type=executing", title: "在办执行案件" },
+            { index: "list_case_final_ex", route: "/list_case?type=final_ex", title: "执行终本案件" },
+            { index: "list_case_end", route: "/list_case?type=end", title: "归档案件" },
+          
           ],
           show: true
         },
@@ -475,6 +478,11 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   padding-left: 7px;
   color: rgb(64, 158, 255);
   z-index: 100;
+}
+
+a[title="删除"] {
+ float: right;
+ margin-right: 50px;
 }
 </style>
 
