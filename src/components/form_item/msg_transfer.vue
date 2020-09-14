@@ -7,6 +7,13 @@
       <el-button plain @click="showTransfer = true" v-else>设置</el-button>
     </div>
     <el-dialog title="提示" :visible.sync="showTransfer" width="50%" :append-to-body="true">
+      <dm_debug_list>
+        <dm_debug_item v-model="checkedMemberList" />
+        <dm_debug_item v-model="memberList" />
+        <dm_debug_item v-model="memberNameList" />
+
+        <dm_debug_item v-model="memberIdList" />
+      </dm_debug_list>
       <el-transfer
         v-model="memberIdList"
         :titles="['未指定会员', '已指定会员']"
@@ -38,14 +45,21 @@ export default {
       type: String,
       default: "name"
     },
-    showName:{
-      type:Boolean,
-      default:false
+    showName: {
+      type: Boolean,
+      default: false
+    },
+    //ajax查询参数
+    findJson: {
+      type: Object,
+      default: function(){
+        return {}
+      }
     }
   },
   data() {
     return {
-      memberNameList:[],
+      memberNameList: [],
       showTransfer: false,
       param: {},
       search: "", //搜索框搜索的内容
@@ -55,29 +69,38 @@ export default {
     };
   },
   watch: {
-    // 每当搜索框的值发生变化时，请求axios数据
-    search: function(event) {
-      // 保存用户已选中的数据
-      this.getMenberFromId(this.memberIdList);
-      // 根据用户输入的姓名连接接口请求数据
-      this.getMenber(event);
+    //监听主数组的变动，同步checkedMemberList，用于查询后连接进来：刘咏辉20200914
+    memberIdList: function (newVal) {
+      console.log(`newVal:###`, newVal);
+      this.checkedMemberList = this.memberList.filter(d => {
+        return this.memberIdList.includes(d.key)
+      })
+
     },
-    value: async function() {
+
+    // 每当搜索框的值发生变化时，请求axios数据
+    search: function (event) {
+      // 保存用户已选中的数据
+
+      // 根据用户输入的姓名连接接口请求数据 
+      this.getMember(event);
+    },
+    value: async function () {
       if (this.showName) {
         let { data } = await axios({
           //请求接口
           method: "post",
           url: PUB.domain + "/crossList?page=lawyer_member",
           data: {
-            findJson:{P1:this.memberIdList}
+            findJson: { P1: this.memberIdList }
           }
         })
-        this.memberNameList=[],
-        data.list.forEach((member)=>{
-          this.memberNameList.push(member.name)
-        })
-        this.memberNameList=this.memberNameList.join();
-        
+        this.memberNameList = [],
+          data.list.forEach((member) => {
+            this.memberNameList.push(member.name)
+          })
+        this.memberNameList = this.memberNameList.join();
+
       }
     }
   },
@@ -88,14 +111,19 @@ export default {
      *       如果name不存在就是一开始调用，就直接获取全部数据
      * @param name 用户输入要搜索的关键字
      */
-    async getMenber(name) {
-      if (name) {
+    async getMember(name) {
+      let ajaxParamAddon
+      let findJson = this.findJson
+
+      // let findJson = { P1: { "$ne": localStorage.userId } }
+      if (name) {//Q1：{查询关键词}存在
         let { data } = await axios({
           //请求接口
           method: "post",
           url: PUB.domain + this.url,
           data: {
             findJson: {
+              ...findJson,
               [this.keyValue]: {
                 $options: "i",
                 $regex: name
@@ -106,40 +134,27 @@ export default {
         this.memberList = this.transferData(data.list).concat(
           this.checkedMemberList
         );
+        // 为什么这里要连接this.checkedMemberList
+
+
+
+
+        console.logs(`this.memberList:`, this.memberList);
         // 防止同时出现两个相同的会员，对象数组去重
         var obj = {};
         this.memberList = this.memberList.reduce((item, next) => {
           obj[next.key] ? "" : (obj[next.key] = true && item.push(next));
           return item;
         }, []);
+        console.logs(`this.memberList:`, this.memberList);
       } else {
-        let { data } = await axios({
-          //请求接口
-          method: "post",
-          url: PUB.domain + this.url,
-          data: {findJson:{P1 : { "$ne" : localStorage.userId}}}
+        let { data } = await axios({//请求接口
+          method: "post", url: PUB.domain + this.url, data: { findJson }
         });
         this.memberList = this.transferData(data.list);
       }
     },
-    /**
-     * @name 根据P1获取数据的方法
-     * @desc 根据已保存选中的P1获取数据
-     * @param id 已指定的数组
-     */
-    async getMenberFromId(id) {
-      let { data } = await axios({
-        //请求接口
-        method: "post",
-        url: PUB.domain + this.url,
-        data: {
-          findJson: {
-            P1: id
-          }
-        }
-      });
-      this.checkedMemberList = this.transferData(data.list);
-    },
+
     /**
      * @name 改变数据格式的方法
      * @desc 由于要使用element穿梭框组件，所以需要将数据改变成element支持的格式
@@ -163,7 +178,7 @@ export default {
   },
   async mounted() {
     // 页面加载就调用此方法，参数才不会为空
-    this.getMenber();
+    this.getMember();
     if (this.showName) {
       if (this.memberIdList) {
         let { data } = await axios({
@@ -171,21 +186,20 @@ export default {
           method: "post",
           url: PUB.domain + "/crossList?page=lawyer_member",
           data: {
-            findJson:{P1:this.memberIdList}
+            findJson: { P1: this.memberIdList }
           }
         });
-        this.memberNameList=[],
-        data.list.forEach((member)=>{
-          this.memberNameList.push(member.name)
-        })
-        this.memberNameList=this.memberNameList.join();
+        this.memberNameList = [],
+          data.list.forEach((member) => {
+            this.memberNameList.push(member.name)
+          })
+        this.memberNameList = this.memberNameList.join();
       }
-        
-      }
+
+    }
   }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

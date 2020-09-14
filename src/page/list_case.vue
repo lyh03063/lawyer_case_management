@@ -16,6 +16,7 @@
           url="/crossList?page=lawyer_member"
           keyValue="name"
           v-if="superAdmin||userId==formData.createPerson"
+          :findJson="{ P1: { '$ne': localStorage.userId }}"
           :showName="true"
         ></msgTransfer>
         <div v-else>
@@ -72,6 +73,7 @@ export default {
     let { type = "unprocess" } = this.$route.query;//类型参数
 
     return {
+      localStorage:window.localStorage,
       initialize: false,//是否开始初始化key
       // 新消息对象的默认状态
       addMsgData: {
@@ -182,17 +184,17 @@ export default {
     if (localStorage.superAdmin == 1) {// Q1：如果是超级管理员登录，那么可以修改所有案件负责人以及协作者
       this.superAdmin = true;
     } else {// Q2：非超级管理员,加入特殊过滤条件
-    //去掉删除按钮
+      //去掉删除按钮
       this.cfList.singleBtns = {
         addon: [
           util.cfList.sBtns.detail, util.cfList.sBtns.modify,
         ]
       }
-       //去掉批量删除按钮
+      //去掉批量删除按钮
       this.cfList.batchBtns = {
         addon: [
           util.cfList.bBtns.add,
-      
+
         ]
       }
 

@@ -18,6 +18,7 @@
         active-text-color="#ffd04b"
         :router="true"
         :collapse="isCollapse"
+        :default-openeds="['2']"
       >
         <template v-for="(menuEach,index) in cf">
           <template v-if="menuEach.show">
