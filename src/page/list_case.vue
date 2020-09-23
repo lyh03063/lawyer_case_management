@@ -1,5 +1,5 @@
 <template>
-  <div class>
+  <div class="out hide_slect_all">
     <dm_list_data :cf="cfList" @after-modify="modify" ref="caseUnprocess" v-if="initialize">
       <template v-slot:customDetail="{detailData}">
         <!-- 自定义案件详情弹窗 -->
@@ -155,8 +155,21 @@ export default {
           });
         }
         // 新增消息的方法
-        this.addMsg();
+        this.addMsg();//调用：{新增消息函数}
+          this.addProgress({caseId:newdata.P1,content:`将案件进展设置为${this.caseStatusToname(newdata.status)}`});//调用：{新增消息函数}
+
       }
+    },
+    // TODO://函数：{新增进展函数}
+    async addProgress({caseId,content}) {
+
+      let { data } = await axios({
+        //请求接口
+        method: "post",
+        url: PUB.domain + "/crossAdd?page=lawyer_remark",
+        data: { data: {caseId,"memberId":localStorage.userId,content} } //所有新消息对象传递给接口
+      });
+      this.addMsglist = []//发送完清空数组，避免切换状态时消息一直堆叠-刘咏辉20200603修改
     },
     // 调用接口，新增消息
     async addMsg() {
@@ -219,7 +232,17 @@ export default {
   }
 };
 </script>
+<style scoped>
 
+
+.out >>> .TAC .cell{
+  text-align: center;
+}
+</style>
 
 <style>
+/* 隐藏全选按钮 */
+.hide_slect_all  .n-table-head .el-table-column--selection .cell {
+    display: none !important;
+}
 </style>

@@ -159,8 +159,13 @@ export default {
           modifyJson: { read: 1 }
         }
       });
+      let unReadCountOld=this.$store.state.unReadCount//变量：{旧的未读消息数量}
+      let unReadCountNew=unReadCountOld-100;//变量：{新的未读消息数量}
+      if(unReadCountNew<=0){
+        unReadCountNew=undefined;
+      }
       // 将新消息数量保存到vuex中
-      this.$store.commit("setUnReadCount", undefined);
+      this.$store.commit("setUnReadCount", unReadCountNew);
     }
   },
   mounted() {

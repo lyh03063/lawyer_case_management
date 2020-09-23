@@ -208,19 +208,25 @@ export default {
         method: "post",
         url: PUB.domain + "/crossList?page=lawyer_msg",
         data: {
-          pageSize: 1000,
+          pageSize: 3000,
           findJson: {
             receiveMemberId: localStorage.userId, //未读消息数据根据登录的用户过来
             read: "0"
           }
         }
       });
+      console.log(`data.list.length:#####`, data.list.length);
       // 将数据保存到vuex保证实时响应
       if (data.list.length > 0) {
         this.$store.commit("setUnReadCount", data.list.length);
+
       } else {
         this.$store.commit("setUnReadCount", undefined);
       }
+      console.log(`this.$store.state.unReadCount:`, this.$store.state.unReadCount);
+
+
+
     },
     logout() {
       //退出登录函数
@@ -231,9 +237,17 @@ export default {
         (localStorage.loginUserName = null); //登录会员的用户名为空
       this.$router.push({ path: "/login" }); //跳转到manage
     },
-    // 点击消息跳转消息也买你
+    // 点击消息跳转消息页
     checkMsg() {
-      this.$router.push({ path: "/message_datail" }); //
+      let { path, fullPath } = this.$route;
+      console.log(`path:`, path);
+      console.log(`fullPath:`, fullPath);
+      if (fullPath == "/message_datail") {//Q1:已经进入了未读消息页
+       window.location.reload();//函数调用：{重载页面}
+      } else {//Q2:否则
+        this.$router.push({ path: "/message_datail" }); //
+      }
+
     }
   },
   computed: {
@@ -273,11 +287,11 @@ export default {
           icon: "el-icon-document",
           title: "案件",
           menuItem: [
-            { index: "list_case_unprocess", route: "/list_case", title: "在办诉讼案件" },
-            { index: "list_case_executing", route: "/list_case?type=executing", title: "在办执行案件" },
-            { index: "list_case_final_ex", route: "/list_case?type=final_ex", title: "执行终本案件" },
+            { index: "list_case_unprocess", route: "/list_case", title: "诉讼案件" },
+            { index: "list_case_executing", route: "/list_case?type=executing", title: "执行案件" },
+            // { index: "list_case_final_ex", route: "/list_case?type=final_ex", title: "执行终本案件" },
             { index: "list_case_end", route: "/list_case?type=end", title: "归档案件" },
-          
+
           ],
           show: true
         },
@@ -480,9 +494,6 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   z-index: 100;
 }
 
-a[title="删除"] {
- float: right;
- margin-right: 50px;
-}
+
 </style>
 

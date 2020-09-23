@@ -2,18 +2,41 @@
   <div class="main">
     <!-- <div class="box-intro">
 
-    </div> -->
+    </div>-->
 
     <div class="TAC">
-      <space height="80"></space>
+      <space height="30"></space>
+
       <div class="home-box">
-        <h1 class="FS24 home-head">欢迎使用案件管理系统</h1>
-        <div class="remark-box ">
-          <ul class=" W200 ML10">
-            <li>案件统一处理，安全高效</li>
-            <li>数据列表展示，快捷方便</li>
-            <li>状态变更提醒，及时清晰</li>
-          </ul>
+        <h1 class="FS34 FWN " style="margin-bottom:70px;">欢迎使用案件管理系统</h1>
+        <div class="box_table">
+          <div class="box_group">
+            <label>
+              <span class="iconfont iconanquanzhuye"></span>
+            </label>
+            <span>
+              案件权限管理
+              <br />安全可控
+            </span>
+          </div>
+          <div class="box_group">
+            <label>
+              <span class="iconfont iconzhifeiji"></span>
+            </label>
+            <span>
+              多维数据展示
+              <br />快捷方便
+            </span>
+          </div>
+          <div class="box_group">
+            <label>
+              <span class="iconfont icongaoxiaoguohu"></span>
+            </label>
+            <span>
+              状态变更提醒
+              <br />高效协同
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -28,9 +51,9 @@
   padding-top: 20px;
   margin-top: 50px;
   // background-color: rgb(230, 230, 230);
-  width: 240px;
+
   margin-left: auto;
-  
+
   margin-right: auto;
   border-radius: 20px;
   padding-bottom: 1px;
@@ -53,6 +76,53 @@
   margin: 160px auto;
 
   height: 200px;
+}
 
+
+
+
+</style>
+
+<style scoped>
+.main{
+  background-image: url(http://img1.dmagic.cn/bg_sys.png?1);
+  background-position: center bottom 30px;
+  background-repeat: no-repeat;
+
+  height: calc(100vh - 73px);
+}
+/*外部节点*/
+.box_table {
+  width: 900px;
+  padding: 0px 10px; /**/
+  flex-wrap: wrap; /**/
+  display: flex; /**/
+  margin: 0 auto;
+}
+/**/
+.box_group {
+  display: flex; /**/
+  align-items: center; /**/
+  margin: 0 0 0 0; /**/
+  padding: 5px; /**/
+  width: 33.3%; /*宽度*/
+}
+/**/
+.box_group > label {
+  width: 100px; /*宽度*/
+  margin-right: 10px; /**/
+  text-align: right; /**/
+  color: #999999; /**/
+}
+/**/
+.box_group > span {
+  font-size: 20px; /**/
+  flex: 1;
+  text-align: left; /**/
+}
+/**/
+.box_group .iconfont {
+  color: #ceab71; /**/
+  font-size: 50px; /**/
 }
 </style>

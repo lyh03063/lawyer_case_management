@@ -277,18 +277,18 @@ export default {
         { text: "收费标准：", index: "description" }
       ],
       caseMsgRight: [
-        { text: "所属地区：", index: "areaName" },
+        { text: "地区：", index: "areaName" },
         { text: "诉讼费：", index: "litigationFee" },
         { text: "担保费：", index: "guaranteeFee" },
         { text: "保全费：", index: "insuranceFee" },
         {
-          text: "原告信息：",
+          text: "原告/申请执行人信息：",
           index: "plaintiffInfo",
           company: "原告单位：",
           contact: "原告联系人："
         },
         {
-          text: "被告信息：",
+          text: "被告/被执行人信息",
           index: "defendantInfo",
           company: "被告单位：",
           contact: "被告联系人："

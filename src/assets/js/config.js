@@ -54,21 +54,22 @@ DYDICT.aaaaa = 1111;
 {
     let prop = "name", objBase = { label: "案件名称", prop, }
     D_ITEMS["caseName"] = { ...objBase, };
-    COLUMNS["caseName"] = { ...objBase, width: 320 };
+    COLUMNS["caseName"] = { ...objBase, width: 260 };
     F_ITEMS["caseName"] = { ...objBase, rules: [{ required: true, message: "案件名称不能为空" }] };
     F_ITEMS["caseName_search"] = { ...objBase, type: "input_find_vague" };
 }
 {
     let prop = "caseId", objBase = { label: "案号", prop, }
     D_ITEMS[prop] = { ...objBase, };
-    COLUMNS[prop] = { ...objBase, width: 200 };
+    COLUMNS[prop] = { ...objBase, width: 205 ,align:"center",cfColumn:{"class-name":"TAC"}};
     F_ITEMS[prop] = { ...objBase };
 }
 {
     let prop = "reasonId", objBase = { label: "案由", prop, }
     D_ITEMS[prop] = { ...objBase, };
     COLUMNS[prop] = {
-        ...objBase, width: 90, formatter: function (row) {
+        cfColumn:{"class-name":"TAC"},
+        ...objBase, width: 120, formatter: function (row) {
             return lodash.get(row, `reasonDoc.name`);
         }
     };
@@ -125,6 +126,7 @@ let arrCaseStatusFilter2 = [
     D_ITEMS["caseStatus"] = { ...objBase, };
     COLUMNS["caseStatus"] = {
         ...objBase, width: 130, filters: arrCaseStatusFilter1,
+        cfColumn:{"class-name":"TAC"},
         requireProp: ["collaborator", 'createPerson'],
         columnKey: 'status',
         slot: "slot_columns_item_status",
@@ -160,10 +162,10 @@ let arrCaseStatusFilter2 = [
     F_ITEMS[prop] = { ...objBase, type: "date" };
 }
 {
-    let prop = "areaId", objBase = { label: "所属地区", prop, }
+    let prop = "areaId", objBase = { label: "地区", prop, }
     D_ITEMS[prop] = { ...objBase, };
     COLUMNS[prop] = {
-        ...objBase, width: 90, filters: [],
+        ...objBase, width: 55, filters: [],
         requireProp: ["areaId"],
         columnKey: 'areaId',
         formatter: function (row) {
@@ -189,7 +191,8 @@ let arrCaseStatusFilter2 = [
     let prop = "personInCharge", objBase = { label: "主办律师", prop, }
     D_ITEMS[prop] = { ...objBase, };
     COLUMNS[prop] = {
-        ...objBase, width: 90,
+        ...objBase, width: 70,
+        cfColumn:{"class-name":"TAC"},
         formatter: data => {
             if (!data.personInChargeDoc) return
             let collaboratorList = [];
@@ -229,7 +232,7 @@ let arrCaseStatusFilter2 = [
     F_ITEMS[prop] = { ...objBase };
 }
 {
-    let prop = "plaintiffInfo", objBase = { label: "原告信息", prop, }
+    let prop = "plaintiffInfo", objBase = { label: "原告/申请执行人信息", prop, }
     D_ITEMS[prop] = { ...objBase, };
     COLUMNS[prop] = { ...objBase, width: 90 };
     F_ITEMS[prop] = {
@@ -250,10 +253,10 @@ let arrCaseStatusFilter2 = [
     };
 }
 {
-    let prop = "defendantInfo", objBase = { label: "被告信息", prop, }
+    let prop = "defendantInfo", objBase = { label: "被告/被执行人信息", prop, }
     D_ITEMS[prop] = { ...objBase, };
     COLUMNS[prop] = { ...objBase, width: 90 };
-    let objNeed =lodash.cloneDeep(F_ITEMS["plaintiffInfo"]);  //深拷贝
+    let objNeed = lodash.cloneDeep(F_ITEMS["plaintiffInfo"]);  //深拷贝
     F_ITEMS[prop] = { ...objNeed, ...objBase };//合并
 }
 {
@@ -312,11 +315,12 @@ let arrCaseStatusFilter2 = [
                     prop: "time",
                     type: "date"
                 },
+                // {
+                //     label: "保全费用",
+                //     prop: "money"
+                // },
                 {
-                    label: "保全费用",
-                    prop: "money"
-                },
-                {
+                    col_span: 24,
                     label: "保全结果",
                     prop: "result",
                     type: "textarea"
@@ -704,7 +708,7 @@ let arrCaseStatusFilter2 = [
 
 
 
-//END:#region 在办诉讼案件列表配置(新)
+//END:#region 诉讼案件列表配置(新)
 {
     let listIndex = "list_case_unprocess"
     PUB.listCF[listIndex] = {
@@ -712,10 +716,17 @@ let arrCaseStatusFilter2 = [
         focusMenu: true, //进行菜单聚焦
         flag: true,
         listIndex, //vuex对应的字段
-        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "案件" }, { value: "在办诉讼案件" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "案件" }, { value: "诉讼案件" }],
         findJsonDefault: {//初始查询参数
             $nor: [{ status: 8 }, { status: 9 }, { status: 10 }, { status: 15 }]
         },
+        singleBtns: {
+            addon: [
+                util.cfList.sBtns.detail,
+                util.cfList.sBtns.modify,
+            ]
+        },
+
         formDataAddInit: {
             createPerson: Number(localStorage.userId) //新增表单的初始数据
         },
@@ -748,7 +759,7 @@ let arrCaseStatusFilter2 = [
 
 
 
-//END:#region 在办执行案件列表配置(新)
+//END:#region 执行案件列表配置(新)
 
 {
     let listIndex = "list_case_executing"
@@ -756,18 +767,21 @@ let arrCaseStatusFilter2 = [
     //差异化配置
     let listCFAdd = {
         listIndex, //vuex对应的字段
-        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "案件" }, { value: "在办执行案件" }],
+        breadcrumb: [{ value: "首页", path: "listHome" }, { value: "案件" }, { value: "执行案件" }],
+        // findJsonDefault: {
+        //     status: 9//执行中状态
+        // },
         findJsonDefault: {
-            status: 9//执行中状态
+            $or: [{ status: 9 }, { status: 10 }]
         },
         //-------列配置数组------- 
-        columns: ["caseName", "caseId", "reasonId","personInCharge", "caseStatus_executing", "trialDate", "areaId",],
+        columns: ["caseName", "caseId", "reasonId", "personInCharge", "caseStatus_executing", "trialDate", "areaId",],
     }
     Object.assign(PUB.listCF[listIndex], listCFAdd);//合并对象
     util.reformCFListItem(PUB.listCF[listIndex])
 
 }
-//END:#region 执行终本案件列表配置(新)
+//END:#region 执行终本案件列表配置(新)-废弃
 
 {
     let listIndex = "list_case_final_ex"
@@ -780,7 +794,7 @@ let arrCaseStatusFilter2 = [
             status: 10//执行终本状态
         },
         //-------列配置数组------- 
-        columns: ["caseName", "caseId", "reasonId","personInCharge", "caseStatus_final_ex", "trialDate", "areaId",],
+        columns: ["caseName", "caseId", "reasonId", "personInCharge", "caseStatus_final_ex", "trialDate", "areaId",],
     }
     Object.assign(PUB.listCF[listIndex], listCFAdd);//合并对象
     util.reformCFListItem(PUB.listCF[listIndex])
@@ -800,7 +814,7 @@ let arrCaseStatusFilter2 = [
             $or: [{ status: 8 }, { status: 15 }]
         },
         //-------列配置数组------- 
-        columns: ["caseName", "caseId", "reasonId","personInCharge", "caseStatus_end", "trialDate", "areaId",],
+        columns: ["caseName", "caseId", "reasonId", "personInCharge", "caseStatus_end", "trialDate", "areaId",],
     }
     Object.assign(PUB.listCF[listIndex], listCFAdd);//合并对象
     util.reformCFListItem(PUB.listCF[listIndex])
@@ -884,7 +898,7 @@ import list_area from '@/assets/js/config/list_area.js'
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
-            "fileName_search","memberId_search",
+            "fileName_search", "memberId_search",
         ],
         //-------详情字段数组-------
         detailItems: [
