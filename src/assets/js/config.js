@@ -85,20 +85,21 @@ DYDICT.aaaaa = 1111;
 //END 案件状态字段差异化处理
 let arrCaseStatus = [
     { value: 11, label: "委托移交" },
-    { value: 1, label: "待立案" },
-    { value: 2, label: "已立案待保全" },
-    { value: 3, label: "已保全" },
-    { value: 6, label: "调解中" },
+    { value: 1, label: "立案" },
+   // { value: 2, label: "已立案待保全" },
+    { value: 3, label: "保全" },
+    { value: 16, label: "送达" },//新增的
+    { value: 6, label: "调解" },
     { value: 7, label: "收款监督" },
-    { value: 4, label: "待一审开庭" },
-    { value: 12, label: "待一审出判" },
-    { value: 5, label: "待二审开庭" },
-    { value: 13, label: "待二审出判" },
-    { value: 9, label: "执行中" },
+    { value: 4, label: "一审" },
+   // { value: 12, label: "待一审出判" },
+    { value: 5, label: "二审" },
+   // { value: 13, label: "待二审出判" },
+    { value: 9, label: "执行" },
     { value: 10, label: "执行终本" },
     { value: 14, label: "代理费清收" },
-    { value: 8, label: "已结案" },
-    { value: 15, label: "已退案" },
+    { value: 8, label: "结案" },
+    { value: 15, label: "退案" },
 ];
 var dictCaseStatus = lodash.keyBy(arrCaseStatus, "value");
 window.arrCaseStatus = arrCaseStatus
@@ -110,13 +111,13 @@ let arrCaseStatusFilter = arrCaseStatus.map(item => {
     return obj
 })
 let arrCaseStatusFilter1 = arrCaseStatusFilter.filter(item => {
-    return item.text != '已结案' && item.text != '已退案'
+    return item.text != '结案' && item.text != '退案'
 })
 
 
 let arrCaseStatusFilter2 = [
-    { value: 8, text: "已结案" },
-    { value: 15, text: "已退案" },
+    { value: 8, text: "结案" },
+    { value: 15, text: "退案" },
 ]
 
 

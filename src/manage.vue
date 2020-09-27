@@ -1,9 +1,9 @@
 <template >
   <div id="app" style="min-width:1200px">
     <el-container>
-      <el-header class="MB10">
-        <el-row>
-          <div class="FL FS24">
+     
+       <div class="MB10 DPFC WP100 PL7 PR20" style="background-color: #002842;" >
+          <div class=" FS28 FX1">
             <div class="DPF" style="align-items:center">
               <div class="n-img-box W45 W45 MR6 MT7">
                 <img
@@ -15,15 +15,17 @@
               <div class style="color:#CEAB71;margin-top:-2px">谨度律师事务所-案件管理系统</div>
             </div>
           </div>
-          <div class="FR MT30 C_fff">
+          <div class="  C_fff">
             <el-badge :value="unReadCount" class="item">
               <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg"></span>
             </el-badge>
             <span class="MR10 ML20">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
             <a href="javascript:;" class="MR10" @click="logout" style="color:#fff">退出登录</a>
           </div>
-        </el-row>
-      </el-header>
+       </div>
+         
+      
+    
     </el-container>
     <el-container>
       <NavMenu :cf="navMenuList"></NavMenu>
