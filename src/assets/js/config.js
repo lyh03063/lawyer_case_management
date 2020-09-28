@@ -114,13 +114,16 @@ let arrCaseStatusFilter1 = arrCaseStatusFilter.filter(item => {
     return item.text != '结案' && item.text != '退案'
 })
 
-
-let arrCaseStatusFilter2 = [
+//变量：{已结案案件列表的状态筛选条件}
+let arrCaseStatusFilter_end = [
     { value: 8, text: "结案" },
     { value: 15, text: "退案" },
 ]
-
-
+//变量：{执行案件列表的状态筛选条件}
+let arrCaseStatusFilter_executing = [
+    { value: 9, text: "执行" },
+    { value: 10, text: "执行终本" },
+]
 
 {
     let prop = "status", objBase = { label: "案件状态", prop, }
@@ -133,10 +136,10 @@ let arrCaseStatusFilter2 = [
         slot: "slot_columns_item_status",
     };
     //已结案的案件状态列，筛选项不一样
-    COLUMNS["caseStatus_end"] = { ...COLUMNS["caseStatus"], filters: arrCaseStatusFilter2 }
+    COLUMNS["caseStatus_end"] = { ...COLUMNS["caseStatus"], filters: arrCaseStatusFilter_end }
 
-    COLUMNS["caseStatus_executing"] = { ...COLUMNS["caseStatus"], }
-    delete COLUMNS["caseStatus_executing"].filters//移除筛选配置
+    COLUMNS["caseStatus_executing"] = { ...COLUMNS["caseStatus"],filters: arrCaseStatusFilter_executing }
+    
 
     COLUMNS["caseStatus_final_ex"] = COLUMNS["caseStatus_executing"]
 
@@ -830,7 +833,7 @@ import list_remark from '@/assets/js/config/list_remark.js'
 import list_message from '@/assets/js/config/list_message.js'
 import list_area from '@/assets/js/config/list_area.js'
 
-//TODO:会员列表配置
+//END:会员列表配置
 {
     let listIndex = "list_member"
     PUB.listCF[listIndex] = {
@@ -864,7 +867,7 @@ import list_area from '@/assets/js/config/list_area.js'
     }
     util.reformCFListItem(PUB.listCF[listIndex])
 }
-//TODO:附件列表配置
+//END:附件列表配置
 {
     let listIndex = "list_accessory"
     PUB.listCF[listIndex] = {
