@@ -1,31 +1,41 @@
 <template >
-  <div id="app" style="min-width:1200px">
+  <div id="app" style="min-width: 1200px">
     <el-container>
-     
-       <div class="MB10 DPFC WP100 PL7 PR20" style="background-color: #002842;" >
-          <div class=" FS28 FX1">
-            <div class="DPF" style="align-items:center">
-              <div class="n-img-box W45 W45 MR6 MT7">
-                <img
-                  class
-                  src="http://qn-dmagic.dmagic.cn/202006031443493232_61906_%E8%B0%A8%E5%BA%A6%E5%BE%8B%E5%B8%88%E4%BA%8B%E5%8A%A1%E6%89%80-logo-134-134.jpg"
-                  alt
-                />
-              </div>
-              <div class style="color:#CEAB71;margin-top:-2px">谨度律师事务所-案件管理系统</div>
+      <div class="MB10 DPFC WP100 PL7 PR20" style="background-color: #002842">
+        <div class="FS28 FX1">
+          <div class="DPF" style="align-items: center">
+            <div class="n-img-box W45 W45 MR6 MT7">
+              <img
+                class
+                src="http://qn-dmagic.dmagic.cn/202006031443493232_61906_%E8%B0%A8%E5%BA%A6%E5%BE%8B%E5%B8%88%E4%BA%8B%E5%8A%A1%E6%89%80-logo-134-134.jpg"
+                alt
+              />
+            </div>
+            <div class style="color: #ceab71; margin-top: -2px">
+              谨度律师事务所-案件管理系统
             </div>
           </div>
-          <div class="  C_fff">
-            <el-badge :value="unReadCount" class="item">
-              <span class="el-icon-message msg-alert" ref="msgAlert" @click="checkMsg"></span>
-            </el-badge>
-            <span class="MR10 ML20">当前登录用户：&nbsp;&nbsp;{{this. currentUserName}}</span>
-            <a href="javascript:;" class="MR10" @click="logout" style="color:#fff">退出登录</a>
-          </div>
-       </div>
-         
-      
-    
+        </div>
+        <div class="C_fff">
+          <el-badge :value="unReadCount" class="item">
+            <span
+              class="el-icon-message msg-alert"
+              ref="msgAlert"
+              @click="checkMsg"
+            ></span>
+          </el-badge>
+          <span class="MR10 ML20"
+            >当前登录用户：&nbsp;&nbsp;{{ this.currentUserName }}</span
+          >
+          <a
+            href="javascript:;"
+            class="MR10"
+            @click="logout"
+            style="color: #fff"
+            >退出登录</a
+          >
+        </div>
+      </div>
     </el-container>
     <el-container>
       <NavMenu :cf="navMenuList"></NavMenu>
@@ -39,40 +49,54 @@
         <div class="alert-case-title">
           <span>案件提醒</span>
           <el-button
-            style="float: right; padding: 3px 0;"
+            style="float: right; padding: 3px 0"
             type="text"
-            @click="showAlertCase=false"
-          >收起</el-button>
+            @click="showAlertCase = false"
+            >收起</el-button
+          >
         </div>
         <div class="alert-case-box">
-          <div v-for="(item,index) in caseAlertAllList" :key="index" class="alert-case-text">
-            <div v-if="item.alertType=='alertCase'">
-              {{item.name}}案件将于
-              <font color="red">{{item.trialDate}}</font>开庭
+          <div
+            v-for="(item, index) in caseAlertAllList"
+            :key="index"
+            class="alert-case-text"
+          >
+            <div v-if="item.alertType == 'alertCase'">
+              {{ item.name }}案件将于
+              <font color="red">{{ item.trialDate }}</font
+              >开庭
             </div>
-            <div v-if="item.alertType=='collectionControl'">
-              {{item.name}}案件将于
-              <font color="red">{{item.collectionControl.time}}</font>收款
-              <font color="red">{{item.collectionControl.money}}</font>元
+            <div v-if="item.alertType == 'collectionControl'">
+              {{ item.name }}案件将于
+              <font color="red">{{ item.collectionControl.time }}</font
+              >收款 <font color="red">{{ item.collectionControl.money }}</font
+              >元
             </div>
-            <div v-if="item.alertType=='alertGuarantee'">
-              {{item.name}}案件保全将于
-              <font color="red">{{item.guaranteeInfo.time}}</font>到期，保全费：
-              <font color="red">{{item.guaranteeInfo.money}}</font>元
+            <div v-if="item.alertType == 'alertGuarantee'">
+              {{ item.name }}案件保全将于
+              <font color="red">{{ item.guaranteeInfo.time }}</font
+              >到期，保全费：
+              <font color="red">{{ item.guaranteeInfo.money }}</font
+              >元
             </div>
           </div>
-          <div v-if="caseAlertAllList.length<=0">您暂时没有需要提醒的案件</div>
+          <div v-if="caseAlertAllList.length <= 0">
+            您暂时没有需要提醒的案件
+          </div>
         </div>
       </el-card>
     </div>
-    <div v-if="!showAlertCase" class="hidden-alert el-icon-bell" @click="showAlertCase=true"></div>
-    <div style="height:1px;width:100%"></div>
+    <div
+      v-if="!showAlertCase"
+      class="hidden-alert el-icon-bell"
+      @click="showAlertCase = true"
+    ></div>
+    <div style="height: 1px; width: 100%"></div>
   </div>
 </template>
 
 
 <script>
-import Vue from "vue";
 import NavMenu from "./components/NavMenu/NavMenu";
 // import { clearInterval, setInterval } from "timers";
 export default {
@@ -235,9 +259,37 @@ export default {
       localStorage.caseManageIsLogin = "0"; //登录状态设置为0
       localStorage.superAdmin = 0; //超级管理员登录状态为0
       localStorage.commonMerber = 0; //普通会员登录状态为0
-      (localStorage.userId = ""), //登录会员的id状态为空
-        (localStorage.loginUserName = null); //登录会员的用户名为空
+      localStorage.userId = ""; //登录会员的id状态为空
+      localStorage.loginUserName = null; //登录会员的用户名为空
+      localStorage.loginPassword = null; //登录会员的密码为空
       this.$router.push({ path: "/login" }); //跳转到manage
+
+    },
+
+    // 定时检测用户名密码是否匹配的函数，不匹配则自动退出---用于后台修改密码时
+    async intervalCheckUser() {
+      let resp = await axios({
+        //请求接口
+        method: "post",
+        url: PUB.domain + "/crossDetail?page=lawyer_member",
+        data: {
+          findJson: {
+            user: localStorage.loginUserName,
+            password: localStorage.loginPassword
+          }
+        } //传递参数
+      }).catch(function (error) {
+        alert("异常:" + error);
+      });
+      let docMember = lodash.get(resp, `data.doc`);
+      console.log(`docMember:###`, docMember);
+      if (!docMember) {
+        alert("检测到用户名或密码错误，退出登录");
+        this.logout()//调用：{退出登录函数}
+        window.location.reload();//函数调用：{重载页面}
+      }
+
+
     },
     // 点击消息跳转消息页
     checkMsg() {
@@ -245,7 +297,7 @@ export default {
       console.log(`path:`, path);
       console.log(`fullPath:`, fullPath);
       if (fullPath == "/message_datail") {//Q1:已经进入了未读消息页
-       window.location.reload();//函数调用：{重载页面}
+        window.location.reload();//函数调用：{重载页面}
       } else {//Q2:否则
         this.$router.push({ path: "/message_datail" }); //
       }
@@ -433,6 +485,8 @@ export default {
     this.getUnRead();
     setInterval(() => {
       this.getUnRead();
+
+      this.intervalCheckUser()//调用：{定时检测用户名密码是否匹配的函数}
     }, 20000);
   },
   beforeCreate() { }
@@ -495,7 +549,5 @@ body .el-radio-button__orig-radio:checked + .el-radio-button__inner {
   color: rgb(64, 158, 255);
   z-index: 100;
 }
-
-
 </style>
 

@@ -15,16 +15,28 @@
         >
           <el-form-item prop="userName">
             <div class>
-              <el-input v-model.number="ruleForm.userName" placeholder="请输入用户名">
+              <el-input
+                v-model.number="ruleForm.userName"
+                placeholder="请输入用户名"
+              >
                 <template slot="prepend">用户名</template>
               </el-input>
             </div>
           </el-form-item>
           <el-form-item prop="passWord">
-            <el-input v-model="ruleForm.passWord" placeholder="请输入密码" show-password></el-input>
+            <el-input
+              v-model="ruleForm.passWord"
+              placeholder="请输入密码"
+              show-password
+            ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="WP100" @click="submitForm('ruleForm')">登录</el-button>
+            <el-button
+              type="primary"
+              class="WP100"
+              @click="submitForm('ruleForm')"
+              >登录</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -52,14 +64,14 @@ export default {
     };
 
     return {
-      memberList:[],
+   
       objURL: {
         list: "/crossList?page=tangball_admin"
       },
       ruleForm: {
         //表单数据.
-        userName: "",
-        passWord: ""
+        userName: "",//熊旋
+        passWord: ""//123456
       },
       rules: {
         //校验规则，需要定在el-form的rules属性上
@@ -73,63 +85,46 @@ export default {
   },
 
   methods: {
-    // 获取会员接口数据
-    async getMemberList() {
-      let {data} = await axios({
+    
+    // 用户登录的方法
+    async userLogin() {
+      let resp = await axios({
+        //请求接口
         method: "post",
-        url: PUB.domain+"/crossList?page=lawyer_member",
-        data:{
-          pageIndex:1,
-          pageSize:99999
-        }
-      }).catch(function(error) {
+        url: PUB.domain + "/crossDetail?page=lawyer_member",
+        data: {
+          findJson: {
+            user: this.ruleForm.userName,
+            password: this.ruleForm.passWord
+          }
+        } //传递参数
+      }).catch(function (error) {
         alert("异常:" + error);
       });
-      this.memberList = data.list;
-    },
-    // 用户登录的方法
-    userLogin(){
-      // 遍历数据判断用户输入的用户名是否存在
-      let userList = this.memberList.filter((merber)=>{
-        return merber.user==this.ruleForm.userName
-      })
-      // 如果用户名存在,遍历数组判断密码是否正确
-      if (userList.length>0) {
-        let arr = userList.filter((merber)=>{
-          return merber.password == this.ruleForm.passWord
-        })
-        if (arr.length>0) {
-          this.$message({
-          message: '登录成功',
-          type: 'success'
-        });
-        // 如果是超级管理员登录
-          if(arr[0].role==1) {
-            // 超级管理员可以看到所有页面,所以不用设置id
-            localStorage.userId=arr[0].P1,
-            // 超级管理员登录为1
-            localStorage.superAdmin=1
-          }else{
-            // 普通管理员只能看到关于他的信息，保存普通会员的id
-            localStorage.userId=arr[0].P1
-            // 普通管理员登录为1 
-            localStorage.commonMerber=1
-          }
-          // 用户登录
-          localStorage.caseManageIsLogin = 1;
-          localStorage.loginUserName=arr[0].user//存储用户名
-          this.$router.push({ path: "/listhome" });
-        }else{
-          this.$message.error("密码错误,请重新输入");
-        }
-      }else{
-        this.$message.error("用户名错误,请重新输入");
+      let docMember = lodash.get(resp, `data.doc`);
+      console.log(`docMember:###`, docMember);
+      if (!docMember) return this.$message.error("用户名或密码错误");
+      this.$message({ message: '登录成功', type: 'success' });
+      // 如果是超级管理员登录
+      if (docMember.role == 1) {
+        // 超级管理员可以看到所有页面,所以不用设置id
+        localStorage.userId = docMember.P1,
+          // 超级管理员登录为1
+          localStorage.superAdmin = 1
+      } else {
+        // 普通管理员只能看到关于他的信息，保存普通会员的id
+        localStorage.userId = docMember.P1
+        // 普通管理员登录为1 
+        localStorage.commonMerber = 1
       }
-    },
-    submitForm(formName) {
-      this.$refs.ruleForm;
-      this.$refs["ruleForm"];
+      // 用户登录
+      localStorage.caseManageIsLogin = 1;
+      localStorage.loginUserName = docMember.user//存储用户名
+      localStorage.loginPassword = docMember.password//存储密码-待优化
+      this.$router.push({ path: "/listhome" });
 
+    },
+    submitForm() {
       this.$refs.ruleForm.validate(valid => {
         //表单组件执行validate校验方法
         if (valid) {
@@ -139,21 +134,20 @@ export default {
       });
     }
   },
-  beforeCreate(){
+  beforeCreate() {
     // 页面渲染钱判断用户是否已经登录,已登录跳回home界面
     if (localStorage.caseManageIsLogin == 1) {
       this.$message({
-          message: '登录成功',
-          type: 'success'
-        });
+        message: '登录成功',
+        type: 'success'
+      });
       setTimeout(() => {
         this.$router.push({ path: "/listHome" });
       }, 10);
     }
   },
-  mounted(){
-    // 加载页面获取会员所有接口数据
-        this.getMemberList();
+  mounted() {
+    
   }
 };
 </script>
